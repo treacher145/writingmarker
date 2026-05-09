@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Writing Marker — AI Writing Assessment for Australian Teachers</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f8f7f4; color: #1a1a1a; min-height: 100vh; }
+.page { max-width: 720px; margin: 0 auto; padding: 2rem 1.25rem 4rem; }
+.header { margin-bottom: 2rem; padding-bottom: 1.25rem; border-bottom: 1px solid #e5e3de; }
+.header h1 { font-size: 22px; font-weight: 600; color: #1a1a1a; margin-bottom: 4px; }
+.header p { font-size: 14px; color: #6b6b6b; }
+.card { background: #fff; border: 1px solid #e5e3de; border-radius: 12px; padding: 1.25rem; margin-bottom: 1rem; }
+.card-title { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: #9e9e9e; margin-bottom: 12px; }
+.selectors { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 10px; margin-bottom: 1rem; }
+.sel-group { display: flex; flex-direction: column; gap: 4px; }
+.sel-group label { font-size: 11px; font-weight: 600; color: #6b6b6b; text-transform: uppercase; letter-spacing: 0.05em; }
+select, input[type="text"] { padding: 8px 10px; font-size: 13px; border: 1px solid #e0ddd8; border-radius: 8px; background: #faf9f7; color: #1a1a1a; width: 100%; font-family: inherit; }
+select:focus, input:focus { outline: none; border-color: #8b7355; background: #fff; }
+.tabs { display: flex; gap: 6px; margin-bottom: 1rem; }
+.tab { padding: 8px 14px; border: 1px solid #e0ddd8; border-radius: 8px; font-size: 13px; cursor: pointer; background: #faf9f7; color: #6b6b6b; font-family: inherit; }
+.tab.active { background: #fff; color: #1a1a1a; border-color: #8b7355; }
+.tab:hover { background: #fff; }
+.panel { display: none; }
+.panel.active { display: block; }
+.privacy-note { display: flex; gap: 8px; align-items: flex-start; background: #fffbeb; border: 1px solid #f0e68c; border-radius: 8px; padding: 10px 12px; margin-bottom: 10px; }
+.privacy-note span { font-size: 12px; color: #7a6a00; line-height: 1.5; }
+.upload-zone { border: 1.5px dashed #d0cdc7; border-radius: 10px; padding: 2rem 1rem; text-align: center; cursor: pointer; background: #faf9f7; margin-bottom: 10px; transition: border-color 0.15s; }
+.upload-zone:hover { border-color: #8b7355; }
+.upload-zone .icon { font-size: 28px; margin-bottom: 8px; }
+.upload-zone p { font-size: 13px; color: #6b6b6b; margin: 0; }
+.upload-zone p.sub { font-size: 11px; color: #9e9e9e; margin-top: 4px; }
+#file-input { display: none; }
+#preview-img { max-width: 100%; max-height: 200px; border-radius: 8px; margin-bottom: 10px; display: none; }
+textarea { width: 100%; font-size: 13px; padding: 10px 12px; border: 1px solid #e0ddd8; border-radius: 8px; background: #faf9f7; color: #1a1a1a; resize: vertical; font-family: inherit; line-height: 1.6; min-height: 150px; }
+textarea:focus { outline: none; border-color: #8b7355; background: #fff; }
+.teacher-note-wrap { margin-top: 10px; }
+.teacher-note-wrap label { font-size: 11px; font-weight: 600; color: #6b6b6b; text-transform: uppercase; letter-spacing: 0.05em; display: block; margin-bottom: 4px; }
+.teacher-note-wrap textarea { min-height: 60px; }
+.privacy-check { display: flex; gap: 8px; align-items: flex-start; margin: 10px 0; padding: 10px 12px; border: 1px solid #e0ddd8; border-radius: 8px; background: #faf9f7; cursor: pointer; }
+.privacy-check input { width: 15px; height: 15px; cursor: pointer; flex-shrink: 0; margin-top: 2px; }
+.privacy-check span { font-size: 13px; color: #1a1a1a; line-height: 1.4; }
+.btn-mark { width: 100%; padding: 13px; font-size: 15px; font-weight: 600; background: #2c2c2c; border: none; border-radius: 10px; cursor: pointer; color: #fff; font-family: inherit; margin-top: 4px; transition: background 0.15s; }
+.btn-mark:hover { background: #1a1a1a; }
+.btn-mark:disabled { background: #c0bdb8; cursor: not-allowed; }
+.loading { text-align: center; padding: 2.5rem; display: none; }
+.loading p { font-size: 13px; color: #6b6b6b; margin-top: 12px; }
+.spinner { width: 28px; height: 28px; border: 2.5px solid #e0ddd8; border-top-color: #8b7355; border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.error-box { background: #fff5f5; border: 1px solid #fca5a5; border-radius: 8px; padding: 12px 16px; margin-top: 10px; display: none; }
+.error-box .etitle { font-size: 13px; font-weight: 600; color: #b91c1c; margin-bottom: 4px; }
+.error-box .edetail { font-size: 13px; color: #b91c1c; }
+.cam-wrap { background: #000; border-radius: 8px; overflow: hidden; margin-bottom: 10px; display: none; }
+video { width: 100%; display: block; }
+canvas { display: none; }
+#cam-preview { max-width: 100%; max-height: 200px; border-radius: 8px; margin-bottom: 10px; display: none; }
+.cam-btn-row { display: flex; gap: 8px; margin-bottom: 10px; }
+.cam-btn { flex: 1; padding: 9px; font-size: 13px; border: 1px solid #e0ddd8; border-radius: 8px; cursor: pointer; background: #faf9f7; color: #1a1a1a; font-family: inherit; }
+.cam-btn:hover { background: #fff; }
+
+/* Result card */
+.result-card { background: #fff; border: 1px solid #e5e3de; border-radius: 12px; padding: 1.5rem; margin-top: 1.25rem; display: none; }
+.result-top { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 10px; margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 1px solid #f0ede8; }
+.badges { display: flex; gap: 6px; flex-wrap: wrap; }
+.badge { display: inline-block; padding: 4px 12px; border-radius: 6px; font-size: 12px; font-weight: 600; }
+.badge-level { background: #dcfce7; color: #166534; }
+.badge-cur { background: #f3f0eb; color: #5a5a5a; }
+.badge-genre { background: #dbeafe; color: #1e40af; }
+.result-actions { display: flex; gap: 6px; }
+.btn-action { padding: 6px 12px; font-size: 12px; border: 1px solid #e0ddd8; border-radius: 7px; cursor: pointer; background: #faf9f7; color: #6b6b6b; font-family: inherit; }
+.btn-action:hover { background: #fff; color: #1a1a1a; }
+.student-meta { font-size: 13px; color: #6b6b6b; margin-bottom: 1rem; }
+.section-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: #9e9e9e; margin: 1.25rem 0 6px; }
+.section-label:first-of-type { margin-top: 0; }
+.feedback-text { font-size: 14px; color: #1a1a1a; line-height: 1.7; }
+.assessment-box { background: #faf9f7; border-radius: 8px; padding: 12px 14px; }
+.assessment-box p { font-size: 14px; color: #1a1a1a; line-height: 1.7; margin: 0; }
+
+/* Commendation — the star */
+.commendation { background: #f0fdf4; border-left: 3px solid #22c55e; border-radius: 0 8px 8px 0; padding: 14px 16px; }
+.commendation .quote { font-size: 15px; color: #1a1a1a; line-height: 1.7; font-style: italic; margin-bottom: 8px; }
+.commendation .comment { font-size: 13px; color: #4b7a5a; line-height: 1.6; }
+
+/* Goals */
+.goals-list { list-style: none; padding: 0; }
+.goals-list li { display: flex; gap: 12px; align-items: flex-start; padding: 10px 0; border-bottom: 1px solid #f0ede8; }
+.goals-list li:last-child { border-bottom: none; padding-bottom: 0; }
+.goal-num { width: 24px; height: 24px; border-radius: 50%; background: #dbeafe; color: #1e40af; font-size: 12px; font-weight: 600; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
+.goal-text { font-size: 14px; color: #1a1a1a; line-height: 1.7; }
+
+/* Curriculum section */
+.curriculum-section { margin-top: 1.25rem; padding-top: 1.25rem; border-top: 1px solid #f0ede8; }
+.outcome-pills { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; }
+.outcome-pill { display: inline-block; padding: 4px 10px; border-radius: 99px; font-size: 11px; border: 1px solid #e0ddd8; color: #5a5a5a; background: #faf9f7; line-height: 1.4; }
+.outcome-pill strong { color: #1a1a1a; }
+.teacher-note-display { background: #faf9f7; border-left: 2px solid #d0cdc7; padding: 8px 12px; font-size: 13px; color: #6b6b6b; font-style: italic; margin-top: 6px; border-radius: 0 6px 6px 0; }
+.divider { height: 1px; background: #f0ede8; margin: 1.25rem 0; }
+.bottom-row { display: flex; gap: 8px; margin-top: 1.25rem; flex-wrap: wrap; }
+.btn-outline { flex: 1; padding: 9px; font-size: 13px; border: 1px solid #e0ddd8; border-radius: 8px; cursor: pointer; background: #faf9f7; color: #6b6b6b; font-family: inherit; min-width: 120px; }
+.btn-outline:hover { background: #fff; color: #1a1a1a; }
+
+/* Session list */
+.session-wrap { margin-top: 1.25rem; display: none; }
+.session-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+.session-header h3 { font-size: 13px; font-weight: 600; color: #1a1a1a; }
+.session-item { border: 1px solid #e5e3de; border-radius: 8px; padding: 10px 14px; margin-bottom: 8px; cursor: pointer; background: #fff; }
+.session-item:hover { background: #faf9f7; }
+.session-item-top { display: flex; justify-content: space-between; align-items: center; }
+.session-item-name { font-size: 13px; font-weight: 600; color: #1a1a1a; }
+.session-item-time { font-size: 12px; color: #9e9e9e; }
+.session-item-meta { font-size: 12px; color: #6b6b6b; margin-top: 3px; }
+.empty-msg { font-size: 13px; color: #9e9e9e; text-align: center; padding: 1rem; }
+.footer { margin-top: 3rem; text-align: center; font-size: 12px; color: #9e9e9e; }
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="header">
+    <h1>Writing Marker</h1>
+    <p>Curriculum-aligned writing assessment for Australian teachers. All states and territories supported.</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Assessment settings</div>
+    <div class="selectors">
+      <div class="sel-group">
+        <label for="curriculum-select">State / curriculum</label>
+        <select id="curriculum-select" onchange="updateYearLevels()">
+          <option value="VIC">VIC — Victorian Curriculum</option>
+          <option value="NSW">NSW — English K-10 Syllabus</option>
+          <option value="QLD">QLD — Australian Curriculum v9</option>
+          <option value="SA">SA — Australian Curriculum</option>
+          <option value="WA">WA — WA Curriculum</option>
+          <option value="TAS">TAS — Australian Curriculum</option>
+          <option value="ACT">ACT — Australian Curriculum</option>
+          <option value="NT">NT — Australian Curriculum</option>
+          <option value="NAT">National — Australian Curriculum v9</option>
+        </select>
+      </div>
+      <div class="sel-group">
+        <label for="year-select">Year level</label>
+        <select id="year-select"></select>
+      </div>
+      <div class="sel-group">
+        <label for="genre-select">This writing type</label>
+        <select id="genre-select">
+          <option value="narrative">Narrative</option>
+          <option value="information report">Information report</option>
+          <option value="persuasive / argumentative">Persuasive</option>
+          <option value="recount">Recount</option>
+          <option value="descriptive">Descriptive</option>
+          <option value="procedural">Procedural</option>
+          <option value="any writing type">Any / unknown</option>
+        </select>
+      </div>
+      <div class="sel-group">
+        <label for="next-genre-select">Next writing type</label>
+        <select id="next-genre-select">
+          <option value="information report">Information report</option>
+          <option value="narrative">Narrative</option>
+          <option value="persuasive / argumentative">Persuasive</option>
+          <option value="recount">Recount</option>
+          <option value="descriptive">Descriptive</option>
+          <option value="procedural">Procedural</option>
+          <option value="the same writing type">Same type</option>
+        </select>
+      </div>
+      <div class="sel-group">
+        <label for="student-label">Student label</label>
+        <input type="text" id="student-label" placeholder="e.g. Student 1, initials">
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Student writing</div>
+    <div class="tabs">
+      <button class="tab active" onclick="switchTab('upload')">📎 Upload image</button>
+      <button class="tab" onclick="switchTab('camera')">📷 Camera</button>
+      <button class="tab" onclick="switchTab('text')">✏️ Type / paste</button>
+    </div>
+
+    <div id="panel-upload" class="panel active">
+      <div class="privacy-note">
+        <span>⚠️ Before uploading, ensure all student names, school names, and identifying information are covered or cropped from the image.</span>
+      </div>
+      <div class="upload-zone" onclick="document.getElementById('file-input').click()">
+        <div class="icon">🖼️</div>
+        <p>Click to upload a photo or scan of student writing</p>
+        <p class="sub">JPG, PNG accepted</p>
+      </div>
+      <input type="file" id="file-input" accept="image/*" onchange="handleFile(this)">
+      <img id="preview-img" alt="Uploaded writing preview">
+    </div>
+
+    <div id="panel-camera" class="panel">
+      <div class="privacy-note">
+        <span>⚠️ Position the page so student names and identifying details are not visible before capturing.</span>
+      </div>
+      <div class="cam-wrap" id="cam-wrap"><video id="video" autoplay playsinline></video></div>
+      <canvas id="cam-canvas"></canvas>
+      <img id="cam-preview" alt="Captured writing">
+      <div class="cam-btn-row">
+        <button class="cam-btn" onclick="startCamera()">📷 Start camera</button>
+        <button class="cam-btn" id="capture-btn" onclick="capturePhoto()" disabled>⏺ Capture</button>
+      </div>
+    </div>
+
+    <div id="panel-text" class="panel">
+      <div class="privacy-note">
+        <span>⚠️ Remove or replace any student names, school names, or locations before pasting. Use initials or "Student A" instead.</span>
+      </div>
+      <textarea id="text-input" placeholder="Type or paste student writing here. Remove any identifying information first."></textarea>
+    </div>
+
+    <div class="teacher-note-wrap">
+      <label>Teacher notes (optional — stays local, not sent for analysis)</label>
+      <textarea id="teacher-note" placeholder="e.g. Written under timed conditions, EAL/D student, first draft..."></textarea>
+    </div>
+
+    <label class="privacy-check">
+      <input type="checkbox" id="privacy-check">
+      <span>I confirm no student names, school names, or identifying information are included in this submission.</span>
+    </label>
+  </div>
+
+  <button class="btn-mark" id="mark-btn" onclick="markWriting()">✦ Mark this writing</button>
+
+  <div class="error-box" id="error-box">
+    <div class="etitle" id="err-title"></div>
+    <div class="edetail" id="err-detail"></div>
+  </div>
+
+  <div class="loading" id="loading">
+    <div class="spinner"></div>
+    <p id="loading-msg">Analysing writing and generating feedback...</p>
+  </div>
+
+  <div class="result-card" id="result-card">
+    <div class="result-top">
+      <div class="badges">
+        <span class="badge badge-level" id="level-badge"></span>
+        <span class="badge badge-cur" id="curriculum-badge"></span>
+        <span class="badge badge-genre" id="genre-badge"></span>
+      </div>
+      <div class="result-actions">
+        <button class="btn-action" onclick="saveToSession()">💾 Save</button>
+        <button class="btn-action" onclick="printResult()">🖨️ Print</button>
+      </div>
+    </div>
+
+    <div class="student-meta" id="student-meta" style="display:none;"></div>
+
+    <div class="section-label">Teacher assessment</div>
+    <div class="assessment-box"><p id="overall-text"></p></div>
+
+    <div class="section-label">From their writing</div>
+    <div class="commendation">
+      <div class="quote" id="commendation-quote"></div>
+      <div class="comment" id="commendation-comment"></div>
+    </div>
+
+    <div class="section-label">Goals for their next <span id="next-genre-label"></span></div>
+    <ul class="goals-list" id="goals-list"></ul>
+
+    <div class="curriculum-section">
+      <div class="section-label" id="curriculum-section-label"></div>
+      <div class="feedback-text" id="curriculum-text"></div>
+      <div class="outcome-pills" id="outcome-pills"></div>
+    </div>
+
+    <div id="teacher-note-display-wrap" style="display:none;">
+      <div class="section-label">Teacher notes</div>
+      <div class="teacher-note-display" id="teacher-note-display"></div>
+    </div>
+
+    <div class="bottom-row">
+      <button class="btn-outline" onclick="resetTool()">+ Mark another</button>
+      <button class="btn-outline" onclick="toggleSession()">📋 Session (<span id="session-count">0</span>)</button>
+    </div>
+  </div>
+
+  <div class="session-wrap" id="session-wrap">
+    <div class="session-header">
+      <h3>This session</h3>
+      <button class="btn-action" onclick="clearSession()">🗑 Clear all</button>
+    </div>
+    <div id="session-items"></div>
+    <p class="empty-msg" id="session-empty" style="display:none;">No results saved yet. Mark a piece of writing and click Save.</p>
+  </div>
+
+  <div class="footer">Writing Marker · Student data is not stored or retained · Built for Australian teachers</div>
+</div>
+
+<script>
+let currentTab = 'upload';
+let capturedImageBase64 = null;
+let stream = null;
+let sessionResults = [];
+let currentResult = null;
+
+const yearLevelMap = {
+  NSW: ['Early Stage 1 (Kindergarten)','Year 1 (Stage 1)','Year 2 (Stage 1)','Year 3 (Stage 2)','Year 4 (Stage 2)','Year 5 (Stage 3)','Year 6 (Stage 3)','Year 7 (Stage 4)','Year 8 (Stage 4)','Year 9 (Stage 5)','Year 10 (Stage 5)'],
+  default: ['Foundation / Prep','Year 1','Year 2','Year 3','Year 4','Year 5','Year 6','Year 7','Year 8','Year 9','Year 10','Year 11','Year 12']
+};
+
+const curriculumMeta = {
+  VIC: { name: 'Victorian Curriculum (F-10)', prompt: 'Assess against the Victorian Curriculum F-10 English. Reference Language, Literature, and Literacy strands and Victorian achievement standards by year level. Use Victorian Curriculum content description codes (format: VCELYxxx).' },
+  NSW: { name: 'NSW English K-10 Syllabus', prompt: 'Assess against the NSW English K-10 Syllabus. Stages: Early Stage 1 (Kindergarten), Stage 1 (Yrs 1-2), Stage 2 (Yrs 3-4), Stage 3 (Yrs 5-6), Stage 4 (Yrs 7-8), Stage 5 (Yrs 9-10). Reference NSW outcome codes (format: ENe-OLC-01, EN2-UARL-01 etc).' },
+  QLD: { name: 'Queensland Curriculum (AC v9)', prompt: 'Assess against the Australian Curriculum v9.0 as implemented in Queensland. Reference AC:E v9 content description codes (format: AC9EXxYYnn).' },
+  SA:  { name: 'South Australian Curriculum', prompt: 'Assess against the Australian Curriculum v9.0 as implemented in South Australia. Reference AC:E v9 content description codes.' },
+  WA:  { name: 'Western Australian Curriculum', prompt: 'Assess against the Western Australian Curriculum (aligned to AC v9). Reference AC:E v9 content description codes.' },
+  TAS: { name: 'Tasmanian Curriculum', prompt: 'Assess against the Australian Curriculum v9.0 as implemented in Tasmania. Reference AC:E v9 content description codes.' },
+  ACT: { name: 'ACT Curriculum', prompt: 'Assess against the Australian Curriculum v9.0 as implemented in the ACT. Reference AC:E v9 content description codes.' },
+  NT:  { name: 'Northern Territory Curriculum', prompt: 'Assess against the Australian Curriculum v9.0 as implemented in the NT. Reference AC:E v9 content description codes. Be sensitive to students for whom English is an additional language or dialect.' },
+  NAT: { name: 'Australian Curriculum v9.0', prompt: 'Assess against the Australian Curriculum: English v9.0. Reference AC:E v9 content description codes (format: AC9EXxYYnn).' }
+};
+
+function updateYearLevels() {
+  const key = document.getElementById('curriculum-select').value;
+  const levels = yearLevelMap[key] || yearLevelMap.default;
+  const sel = document.getElementById('year-select');
+  sel.innerHTML = '';
+  levels.forEach((lvl, i) => {
+    const opt = document.createElement('option');
+    opt.value = lvl; opt.textContent = lvl;
+    if (i === 4) opt.selected = true;
+    sel.appendChild(opt);
+  });
+}
+
+function switchTab(tab) {
+  currentTab = tab;
+  document.querySelectorAll('.tab').forEach((t, i) => t.classList.toggle('active', ['upload','camera','text'][i] === tab));
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.getElementById('panel-' + tab).classList.add('active');
+  if (tab !== 'camera' && stream) { stream.getTracks().forEach(t => t.stop()); stream = null; }
+}
+
+function handleFile(input) {
+  const file = input.files[0]; if (!file) return;
+  hideError();
+  const reader = new FileReader();
+  reader.onload = e => {
+    capturedImageBase64 = e.target.result.split(',')[1];
+    const img = document.getElementById('preview-img');
+    img.src = e.target.result; img.style.display = 'block';
+  };
+  reader.onerror = () => showError('File error', 'Could not read the file. Please try a JPG or PNG.');
+  reader.readAsDataURL(file);
+}
+
+async function startCamera() {
+  hideError();
+  try {
+    stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
+    document.getElementById('video').srcObject = stream;
+    document.getElementById('cam-wrap').style.display = 'block';
+    document.getElementById('capture-btn').disabled = false;
+  } catch(e) {
+    showError('Camera unavailable', 'Could not access camera: ' + e.message + '. Try the upload option instead.');
+  }
+}
+
+function capturePhoto() {
+  const video = document.getElementById('video');
+  const canvas = document.getElementById('cam-canvas');
+  canvas.width = video.videoWidth; canvas.height = video.videoHeight;
+  canvas.getContext('2d').drawImage(video, 0, 0);
+  const dataUrl = canvas.toDataURL('image/jpeg', 0.92);
+  capturedImageBase64 = dataUrl.split(',')[1];
+  const prev = document.getElementById('cam-preview');
+  prev.src = dataUrl; prev.style.display = 'block';
+  document.getElementById('cam-wrap').style.display = 'none';
+  if (stream) { stream.getTracks().forEach(t => t.stop()); stream = null; }
+}
+
+function scrubNames(text) {
+  return text
+    .replace(/\b(Mr|Mrs|Ms|Miss|Dr)\.?\s+[A-Z][a-z]+/g, '[name]')
+    .replace(/\b[A-Z][a-z]+ (Primary|Secondary|College|School|Academy)\b/g, '[school]')
+    .replace(/\bmy name is [A-Z][a-z]+/gi, 'my name is [name]')
+    .replace(/\bI am [A-Z][a-z]+\b/g, 'I am [name]');
+}
+
+function showError(title, detail) {
+  document.getElementById('err-title').textContent = title;
+  document.getElementById('err-detail').textContent = detail;
+  document.getElementById('error-box').style.display = 'block';
+}
+function hideError() { document.getElementById('error-box').style.display = 'none'; }
+
+function buildSystemPrompt(meta, nextGenre) {
+  return `You are an expert Australian writing assessor and experienced classroom teacher. ${meta.prompt}
+
+CRITICAL RULE: Never use commercial writing program level notation such as "3B", "4A", "2C" or any similar sub-level codes. These belong to commercial assessment products and must not appear anywhere in your response.
+
+Describe achievement using only curriculum achievement standard language such as:
+- "Achieving at the expected standard for Year 4"
+- "Working towards the Year 5 standard"
+- "Exceeding the expected standard for Year 3"
+- "Achieving at the expected standard — strong performance within Year 2"
+
+You produce two things:
+1. A professional teacher-facing assessment aligned to curriculum achievement standards
+2. A student feedback card modelled on exemplary classroom practice
+
+The feedback card must:
+- Pull one specific quote directly from the student's actual writing that genuinely stands out — celebrate it warmly and specifically, like a teacher who has really read and been moved by something in this child's writing
+- Explain in 1-2 sentences WHY that quote is impressive — what it reveals about this student as a writer
+- Provide exactly 3 specific, practical, actionable goals for their NEXT piece of writing (a ${nextGenre}), pitched precisely at their current level. Each goal should read like a teacher talking directly and encouragingly to a student, with a concrete example where helpful.
+
+Goals must be tailored to both the student's achievement level AND the next writing type (${nextGenre}).
+
+Respond ONLY with valid JSON, no markdown, no backticks:
+{
+  "achievementLevel": "curriculum achievement standard language only",
+  "curriculumStandard": "e.g. Victorian Curriculum Year 4 / NSW Stage 2 / Australian Curriculum Year 4",
+  "overall": "2-3 sentence professional teacher assessment using curriculum language only",
+  "commendationQuote": "the specific quote from the student's actual writing — their exact words",
+  "commendationComment": "1-2 warm genuine sentences on why this is impressive",
+  "goals": ["Goal 1", "Goal 2", "Goal 3"],
+  "curriculumAlignment": "2-3 sentences referencing specific strands, outcomes or achievement standards — no commercial level codes",
+  "outcomeCodes": [{"code": "VCELY301", "label": "Short label"}]
+}`;
+}
+
+async function markWriting() {
+  hideError();
+  if (!document.getElementById('privacy-check').checked) {
+    showError('Privacy confirmation needed', 'Please confirm no identifying information is included before submitting.');
+    return;
+  }
+  const currKey = document.getElementById('curriculum-select').value;
+  const meta = curriculumMeta[currKey];
+  const yearLevel = document.getElementById('year-select').value;
+  const genre = document.getElementById('genre-select').value;
+  const nextGenre = document.getElementById('next-genre-select').value;
+  const studentLabel = document.getElementById('student-label').value.trim() || 'Student';
+  const teacherNote = document.getElementById('teacher-note').value.trim();
+  let messages = [];
+
+  const contextNote = teacherNote ? `\n\nTeacher context: ${teacherNote}` : '';
+
+  if (currentTab === 'text') {
+    let txt = document.getElementById('text-input').value.trim();
+    if (!txt) { showError('No writing entered', 'Please type or paste student writing first.'); return; }
+    txt = scrubNames(txt);
+    messages = [{ role: 'user', content: `Assess this ${yearLevel} student's ${genre} writing. Their next piece will be a ${nextGenre}.${contextNote}\n\n${txt}` }];
+  } else if (capturedImageBase64) {
+    messages = [{ role: 'user', content: [
+      { type: 'image', source: { type: 'base64', media_type: 'image/jpeg', data: capturedImageBase64 } },
+      { type: 'text', text: `Assess this ${yearLevel} student's ${genre} handwritten work. Their next piece will be a ${nextGenre}.${contextNote}` }
+    ]}];
+  } else {
+    showError('No writing provided', 'Please upload an image, use the camera, or type/paste writing first.');
+    return;
+  }
+
+  document.getElementById('mark-btn').disabled = true;
+  document.getElementById('loading').style.display = 'block';
+  document.getElementById('loading-msg').textContent = `Analysing against ${meta.name}...`;
+  document.getElementById('result-card').style.display = 'none';
+  document.getElementById('session-wrap').style.display = 'none';
+
+  try {
+    const response = await fetch('/api/assess', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        system: buildSystemPrompt(meta, nextGenre),
+        messages: messages
+      })
+    });
+
+    if (!response.ok) {
+      const errData = await response.json().catch(() => ({}));
+      showError('API error ' + response.status, errData.error ? errData.error.message : 'Please try again.');
+      return;
+    }
+
+    const data = await response.json();
+    if (data.error) { showError('Error', data.error.message || JSON.stringify(data.error)); return; }
+
+    const raw = (data.content || []).map(i => i.text || '').join('').replace(/```json|```/g, '').trim();
+    if (!raw) { showError('Empty response', 'No response received. Please try again.'); return; }
+
+    let result;
+    try { result = JSON.parse(raw); }
+    catch(e) { showError('Could not read response', 'Unexpected format received. Please try again.'); return; }
+
+    currentResult = { studentLabel, yearLevel, curriculum: meta.name, genre, nextGenre, teacherNote, result, timestamp: new Date().toLocaleTimeString() };
+    renderResult(currentResult);
+
+  } catch(e) {
+    showError('Connection error', e.message);
+  } finally {
+    document.getElementById('loading').style.display = 'none';
+    document.getElementById('mark-btn').disabled = false;
+  }
+}
+
+function renderResult(r) {
+  const res = r.result;
+  const metaEl = document.getElementById('student-meta');
+  if (r.studentLabel && r.studentLabel !== 'Student') {
+    metaEl.textContent = r.studentLabel + ' · ' + r.yearLevel + ' · ' + r.genre + ' · ' + r.curriculum;
+    metaEl.style.display = 'block';
+  } else { metaEl.style.display = 'none'; }
+
+  document.getElementById('level-badge').textContent = res.achievementLevel;
+  document.getElementById('curriculum-badge').textContent = res.curriculumStandard;
+  document.getElementById('genre-badge').textContent = r.genre;
+  document.getElementById('overall-text').textContent = res.overall;
+  document.getElementById('commendation-quote').textContent = res.commendationQuote;
+  document.getElementById('commendation-comment').textContent = res.commendationComment;
+  document.getElementById('next-genre-label').textContent = r.nextGenre;
+
+  const goalsList = document.getElementById('goals-list');
+  goalsList.innerHTML = '';
+  (res.goals || []).forEach((goal, i) => {
+    const li = document.createElement('li');
+    li.innerHTML = `<span class="goal-num">${i+1}</span><span class="goal-text">${goal}</span>`;
+    goalsList.appendChild(li);
+  });
+
+  document.getElementById('curriculum-section-label').textContent = r.curriculum + ' alignment';
+  document.getElementById('curriculum-text').textContent = res.curriculumAlignment;
+
+  const pills = document.getElementById('outcome-pills');
+  pills.innerHTML = '';
+  (res.outcomeCodes || []).forEach(o => {
+    const span = document.createElement('span');
+    span.className = 'outcome-pill';
+    span.innerHTML = `<strong>${o.code}</strong> — ${o.label}`;
+    pills.appendChild(span);
+  });
+
+  const noteWrap = document.getElementById('teacher-note-display-wrap');
+  if (r.teacherNote) {
+    document.getElementById('teacher-note-display').textContent = r.teacherNote;
+    noteWrap.style.display = 'block';
+  } else { noteWrap.style.display = 'none'; }
+
+  document.getElementById('result-card').style.display = 'block';
+}
+
+function saveToSession() {
+  if (!currentResult) return;
+  sessionResults.push({...currentResult});
+  document.getElementById('session-count').textContent = sessionResults.length;
+  const btn = document.querySelectorAll('.btn-action')[0];
+  const orig = btn.textContent;
+  btn.textContent = '✓ Saved';
+  setTimeout(() => { btn.textContent = orig; }, 1500);
+}
+
+function toggleSession() {
+  const wrap = document.getElementById('session-wrap');
+  const showing = wrap.style.display !== 'none';
+  wrap.style.display = showing ? 'none' : 'block';
+  if (!showing) renderSessionList();
+}
+
+function renderSessionList() {
+  const items = document.getElementById('session-items');
+  const empty = document.getElementById('session-empty');
+  if (sessionResults.length === 0) { empty.style.display = 'block'; items.innerHTML = ''; return; }
+  empty.style.display = 'none';
+  items.innerHTML = '';
+  sessionResults.forEach((r, i) => {
+    const div = document.createElement('div');
+    div.className = 'session-item';
+    div.innerHTML = `<div class="session-item-top"><span class="session-item-name">${r.studentLabel}</span><span class="session-item-time">${r.timestamp}</span></div><div class="session-item-meta">${r.result.achievementLevel} · ${r.yearLevel} · ${r.genre}</div>`;
+    div.onclick = () => { renderResult(r); currentResult = r; document.getElementById('session-wrap').style.display = 'none'; };
+    items.appendChild(div);
+  });
+}
+
+function clearSession() {
+  if (!confirm('Clear all saved results for this session?')) return;
+  sessionResults = [];
+  document.getElementById('session-count').textContent = '0';
+  renderSessionList();
+}
+
+function printResult() {
+  if (!currentResult) return;
+  const r = currentResult;
+  const goals = (r.result.goals || []).map((g, i) => `<li><strong>${i+1}.</strong> ${g}</li>`).join('');
+  const codes = (r.result.outcomeCodes || []).map(o => `<span class="pill"><strong>${o.code}</strong> — ${o.label}</span>`).join('');
+  const noteHtml = r.teacherNote ? `<div class="section"><h2>Teacher notes</h2><p class="note">${r.teacherNote}</p></div>` : '';
+  const win = window.open('', '_blank');
+  win.document.write(`<!DOCTYPE html><html><head><title>Writing Feedback — ${r.studentLabel}</title>
+  <style>
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;max-width:680px;margin:2rem auto;padding:0 1.25rem 3rem;color:#1a1a1a;}
+  h1{font-size:20px;font-weight:600;margin-bottom:4px;}
+  .meta{font-size:13px;color:#6b6b6b;margin-bottom:1.25rem;}
+  .badges{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:1.5rem;}
+  .badge{display:inline-block;padding:4px 12px;border-radius:6px;font-size:12px;font-weight:600;}
+  .b1{background:#dcfce7;color:#166534;}
+  .b2{background:#f3f0eb;color:#5a5a5a;}
+  .b3{background:#dbeafe;color:#1e40af;}
+  .section{margin-bottom:1.25rem;}
+  h2{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.06em;color:#9e9e9e;margin-bottom:6px;}
+  p{font-size:14px;line-height:1.7;}
+  .assessment{background:#faf9f7;border-radius:8px;padding:12px 14px;}
+  .commendation{background:#f0fdf4;border-left:3px solid #22c55e;padding:12px 16px;border-radius:0 8px 8px 0;}
+  .quote{font-style:italic;font-size:15px;color:#1a1a1a;margin-bottom:8px;}
+  .comment{font-size:13px;color:#4b7a5a;}
+  .goals{list-style:none;padding:0;}
+  .goals li{padding:8px 0;border-bottom:1px solid #f0ede8;font-size:14px;line-height:1.6;}
+  .goals li:last-child{border:none;}
+  .divider{height:1px;background:#f0ede8;margin:1.25rem 0;}
+  .pills{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;}
+  .pill{display:inline-block;padding:3px 10px;border-radius:99px;font-size:11px;border:1px solid #e0ddd8;color:#5a5a5a;background:#faf9f7;}
+  .note{background:#faf9f7;border-left:2px solid #d0cdc7;padding:8px 12px;font-style:italic;font-size:13px;color:#6b6b6b;}
+  .footer{margin-top:2rem;font-size:11px;color:#9e9e9e;border-top:1px solid #f0ede8;padding-top:8px;}
+  @media print{body{margin:1rem;}}.footer{position:running(footer);}
+  </style></head><body>
+  <h1>Writing Feedback</h1>
+  <div class="meta">${r.studentLabel} · ${r.yearLevel} · ${r.genre} → ${r.nextGenre} · ${new Date().toLocaleDateString('en-AU')}</div>
+  <div class="badges">
+    <span class="badge b1">${r.result.achievementLevel}</span>
+    <span class="badge b2">${r.result.curriculumStandard}</span>
+    <span class="badge b3">${r.genre}</span>
+  </div>
+  <div class="section"><h2>Teacher assessment</h2><div class="assessment"><p>${r.result.overall}</p></div></div>
+  <div class="section"><h2>From their writing</h2>
+  <div class="commendation"><p class="quote">${r.result.commendationQuote}</p><p class="comment">${r.result.commendationComment}</p></div></div>
+  <div class="section"><h2>Goals for their next ${r.nextGenre}</h2><ul class="goals">${goals}</ul></div>
+  <div class="divider"></div>
+  <div class="section"><h2>${r.curriculum} alignment</h2><p>${r.result.curriculumAlignment}</p><div class="pills">${codes}</div></div>
+  ${noteHtml}
+  <div class="footer">Writing Marker · ${r.curriculum} · Student data not stored or retained.</div>
+  </body></html>`);
+  win.document.close();
+  win.print();
+}
+
+function resetTool() {
+  capturedImageBase64 = null;
+  document.getElementById('preview-img').style.display = 'none';
+  document.getElementById('cam-preview').style.display = 'none';
+  document.getElementById('text-input').value = '';
+  document.getElementById('teacher-note').value = '';
+  document.getElementById('student-label').value = '';
+  document.getElementById('privacy-check').checked = false;
+  document.getElementById('result-card').style.display = 'none';
+  document.getElementById('file-input').value = '';
+  document.getElementById('session-wrap').style.display = 'none';
+  hideError();
+  currentResult = null;
+}
+
+updateYearLevels();
+</script>
+</body>
+</html>
