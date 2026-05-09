@@ -266,6 +266,7 @@ canvas { display: none; }
     <div class="section-label">Goals for their next <span id="next-genre-label"></span></div>
     <ul class="goals-list" id="goals-list"></ul>
 
+    <div class="divider"></div>
     <div id="extracted-text-wrap" style="display:none;">
       <div class="section-label" style="cursor:pointer;" onclick="toggleExtracted()">What the AI read <span id="extracted-toggle" style="font-size:10px;color:#9e9e9e;">▼ show</span></div>
       <div id="extracted-text-box" style="display:none;background:#faf9f7;border:1px solid #e0ddd8;border-radius:8px;padding:12px 14px;font-size:13px;color:#6b6b6b;line-height:1.7;white-space:pre-wrap;max-height:200px;overflow-y:auto;margin-top:4px;"></div>
@@ -468,6 +469,8 @@ You produce two things:
 1. A professional teacher-facing assessment aligned to curriculum achievement standards
 2. A student feedback card modelled on exemplary classroom practice
 
+TRANSCRIPTION: Always transcribe the full text of the writing exactly as the student wrote it into the transcribedText field. For images and PDFs, read every word carefully and reproduce it accurately including spelling errors, unconventional punctuation, and crossed out words. This allows the teacher to verify you read the writing correctly.
+
 The feedback card must:
 - Pull one specific quote directly from the student's actual writing that genuinely stands out — celebrate it warmly and specifically, like a teacher who has really read and been moved by something in this child's writing
 - Explain in 1-2 sentences WHY that quote is impressive — what it reveals about this student as a writer
@@ -484,6 +487,7 @@ Respond ONLY with valid JSON, no markdown, no backticks:
   "commendationComment": "1-2 warm genuine sentences on why this is impressive",
   "goals": ["Goal 1", "Goal 2", "Goal 3"],
   "curriculumAlignment": "2-3 sentences referencing specific strands, outcomes or achievement standards — no commercial level codes",
+  "transcribedText": "the full text of the writing exactly as you read it — every word the student wrote, transcribed accurately. If submitted as typed text, reproduce it as given.",
   "outcomeCodes": [{"code": "VCELY301", "label": "Short label"}]
 }`;
 }
@@ -614,14 +618,12 @@ function renderResult(r) {
     noteWrap.style.display = 'block';
   } else { noteWrap.style.display = 'none'; }
 
-  // Show extracted text section — always visible
+  // Show transcribed text section — what the AI actually read
   const extractedWrap = document.getElementById('extracted-text-wrap');
   const extractedBox = document.getElementById('extracted-text-box');
   const extractedToggle = document.getElementById('extracted-toggle');
-  const extractedContent = r.extractedText && r.extractedText !== '[Image/PDF uploaded]'
-    ? r.extractedText
-    : 'Writing was submitted as an image or PDF — the AI read it directly from the file.';
-  extractedBox.textContent = extractedContent;
+  const transcribed = r.result.transcribedText || r.extractedText || 'No text available.';
+  extractedBox.textContent = transcribed;
   extractedBox.style.display = 'none';
   extractedToggle.textContent = '▼ show';
   extractedWrap.style.display = 'block';
