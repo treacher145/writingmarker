@@ -272,9 +272,14 @@ canvas { display: none; }
     </div>
 
     <div class="curriculum-section">
-      <div class="section-label" id="curriculum-section-label"></div>
-      <div class="feedback-text" id="curriculum-text"></div>
-      <div class="outcome-pills" id="outcome-pills"></div>
+      <div class="section-label" style="cursor:pointer;display:flex;justify-content:space-between;align-items:center;" onclick="toggleCurriculum()">
+        <span id="curriculum-section-label"></span>
+        <span id="curriculum-toggle" style="font-size:10px;color:#9e9e9e;font-weight:400;text-transform:none;letter-spacing:0;">▼ show</span>
+      </div>
+      <div id="curriculum-body" style="display:none;margin-top:6px;">
+        <div class="feedback-text" id="curriculum-text"></div>
+        <div class="outcome-pills" id="outcome-pills"></div>
+      </div>
     </div>
 
     <div id="teacher-note-display-wrap" style="display:none;">
@@ -423,6 +428,14 @@ function toggleExtracted() {
   const toggle = document.getElementById('extracted-toggle');
   const showing = box.style.display !== 'none';
   box.style.display = showing ? 'none' : 'block';
+  toggle.textContent = showing ? '▼ show' : '▲ hide';
+}
+
+function toggleCurriculum() {
+  const body = document.getElementById('curriculum-body');
+  const toggle = document.getElementById('curriculum-toggle');
+  const showing = body.style.display !== 'none';
+  body.style.display = showing ? 'none' : 'block';
   toggle.textContent = showing ? '▼ show' : '▲ hide';
 }
 
@@ -601,23 +614,17 @@ function renderResult(r) {
     noteWrap.style.display = 'block';
   } else { noteWrap.style.display = 'none'; }
 
-  // Show extracted text section
+  // Show extracted text section — always visible
   const extractedWrap = document.getElementById('extracted-text-wrap');
   const extractedBox = document.getElementById('extracted-text-box');
   const extractedToggle = document.getElementById('extracted-toggle');
-  if (r.extractedText && r.extractedText !== '[Image/PDF uploaded]') {
-    extractedBox.textContent = r.extractedText;
-    extractedBox.style.display = 'none';
-    extractedToggle.textContent = '▼ show';
-    extractedWrap.style.display = 'block';
-  } else if (r.extractedText === '[Image/PDF uploaded]') {
-    extractedBox.textContent = 'Writing was submitted as an image or PDF.';
-    extractedBox.style.display = 'none';
-    extractedToggle.textContent = '▼ show';
-    extractedWrap.style.display = 'block';
-  } else {
-    extractedWrap.style.display = 'none';
-  }
+  const extractedContent = r.extractedText && r.extractedText !== '[Image/PDF uploaded]'
+    ? r.extractedText
+    : 'Writing was submitted as an image or PDF — the AI read it directly from the file.';
+  extractedBox.textContent = extractedContent;
+  extractedBox.style.display = 'none';
+  extractedToggle.textContent = '▼ show';
+  extractedWrap.style.display = 'block';
 
   document.getElementById('result-card').style.display = 'block';
 }
