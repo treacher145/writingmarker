@@ -412,11 +412,25 @@ function buildSystemPrompt(meta, nextGenre) {
 
 CRITICAL RULE: Never use commercial writing program level notation such as "3B", "4A", "2C" or any similar sub-level codes. These belong to commercial assessment products and must not appear anywhere in your response.
 
-Describe achievement using only curriculum achievement standard language such as:
-- "Achieving at the expected standard for Year 4"
-- "Working towards the Year 5 standard"
-- "Exceeding the expected standard for Year 3"
-- "Achieving at the expected standard — strong performance within Year 2"
+Describe achievement using natural teacher language that gives a sense of WHERE within or between year levels the student sits. Always give a range or position, not just a flat label. Examples:
+- "Strong Year 3 — approaching Year 4 standard"
+- "Early Year 2 — working towards mid Year 2"
+- "Solidly mid Year 4"
+- "Exceeding Year 1 standard — performing at a Year 2 level"
+- "Late Year 5 — approaching Year 6 standard"
+- "Working towards the Year 3 standard — currently performing at a strong Year 2 level"
+
+CRITICAL: You must be honest and confident about exceeding. If a piece of writing is clearly above what is expected for the nominated year level, you MUST say so explicitly and confidently — do not hedge or soften this. A Year 1 student writing with Year 3 sophistication should be described as exceeding, not merely "achieving". Be bold when the evidence warrants it.
+
+The achievementLevel field must always convey both WHERE the student sits AND the direction they are heading — like a position on a journey, not just a destination.
+
+FOUNDATION/PREP STUDENTS: Use developmental literacy language rather than year level comparisons. Foundation writing exists on a continuum of emergent literacy. Use language like:
+- "Early emergent writer — beginning to understand print carries meaning"
+- "Developing emergent writer — forming recognisable letters and words"
+- "Confident emergent writer — composing simple sentences independently"
+- "Strong Foundation writer — approaching the Year 1 standard"
+- "Exceeding Foundation expectations — writing with Year 1 sophistication"
+Never describe a Foundation student as simply "not meeting standard" — always describe what they CAN do and where they are on the emergent literacy journey. Every Foundation writer is somewhere on that journey and deserves to have their progress named positively and specifically.
 
 You produce two things:
 1. A professional teacher-facing assessment aligned to curriculum achievement standards
@@ -431,7 +445,7 @@ Goals must be tailored to both the student's achievement level AND the next writ
 
 Respond ONLY with valid JSON, no markdown, no backticks:
 {
-  "achievementLevel": "curriculum achievement standard language only",
+  "achievementLevel": "natural teacher language showing position and direction e.g. Strong Year 3 — approaching Year 4 standard OR Exceeding Year 1 — performing at a Year 2 level",
   "curriculumStandard": "e.g. Victorian Curriculum Year 4 / NSW Stage 2 / Australian Curriculum Year 4",
   "overall": "2-3 sentence professional teacher assessment using curriculum language only",
   "commendationQuote": "the specific quote from the student's actual writing — their exact words",
