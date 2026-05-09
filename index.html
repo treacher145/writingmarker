@@ -176,7 +176,7 @@ canvas { display: none; }
   <div class="card">
     <div class="card-title">Student writing</div>
     <div class="tabs">
-      <button class="tab active" onclick="switchTab('upload')">📎 Upload image</button>
+      <button class="tab active" onclick="switchTab('upload')">📎 Upload</button>
       <button class="tab" onclick="switchTab('camera')">📷 Camera</button>
       <button class="tab" onclick="switchTab('text')">✏️ Type / paste</button>
     </div>
@@ -188,10 +188,11 @@ canvas { display: none; }
       <div class="upload-zone" onclick="document.getElementById('file-input').click()">
         <div class="icon">🖼️</div>
         <p>Click to upload a photo or scan of student writing</p>
-        <p class="sub">JPG, PNG accepted</p>
+        <p class="sub">JPG, PNG, PDF accepted</p>
       </div>
-      <input type="file" id="file-input" accept="image/*" onchange="handleFile(this)">
-      <img id="preview-img" alt="Uploaded writing preview">
+      <input type="file" id="file-input" accept="image/*,application/pdf" onchange="handleFile(this)">
+      <img id="preview-img" alt="Uploaded writing preview" style="max-width:100%;max-height:200px;border-radius:8px;margin-bottom:10px;display:none;">
+      <div id="pdf-notice" style="display:none;background:#f0fdf4;border:1px solid #86efac;border-radius:8px;padding:10px 14px;margin-bottom:10px;font-size:13px;color:#166534;">✅ PDF uploaded and ready to mark.</div>
     </div>
 
     <div id="panel-camera" class="panel">
@@ -295,6 +296,7 @@ canvas { display: none; }
 
 <script>
 let currentTab = 'upload';
+let currentFileType = 'image/jpeg';
 let capturedImageBase64 = null;
 let stream = null;
 let sessionResults = [];
@@ -341,13 +343,27 @@ function switchTab(tab) {
 function handleFile(input) {
   const file = input.files[0]; if (!file) return;
   hideError();
+  capturedImageBase64 = null;
+  currentFileType = file.type;
+
   const reader = new FileReader();
   reader.onload = e => {
-    capturedImageBase64 = e.target.result.split(',')[1];
+    const dataUrl = e.target.result;
+    capturedImageBase64 = dataUrl.split(',')[1];
+
     const img = document.getElementById('preview-img');
-    img.src = e.target.result; img.style.display = 'block';
+    if (file.type === 'application/pdf') {
+      // For PDFs show a placeholder message instead of image preview
+      img.style.display = 'none';
+      document.getElementById('pdf-notice').style.display = 'block';
+    } else {
+      img.src = dataUrl;
+      img.style.display = 'block';
+      img.onload = () => { img.style.display = 'block'; };
+      document.getElementById('pdf-notice').style.display = 'none';
+    }
   };
-  reader.onerror = () => showError('File error', 'Could not read the file. Please try a JPG or PNG.');
+  reader.onerror = () => showError('File error', 'Could not read the file. Please try a JPG, PNG or PDF.');
   reader.readAsDataURL(file);
 }
 
@@ -449,8 +465,13 @@ async function markWriting() {
     txt = scrubNames(txt);
     messages = [{ role: 'user', content: `Assess this ${yearLevel} student's ${genre} writing. Their next piece will be a ${nextGenre}.${contextNote}\n\n${txt}` }];
   } else if (capturedImageBase64) {
+    const mediaType = currentFileType === 'application/pdf' ? 'application/pdf' : 'image/jpeg';
+    const contentType = currentFileType === 'application/pdf' ? 'document' : 'image';
+    const sourceObj = currentFileType === 'application/pdf'
+      ? { type: 'base64', media_type: 'application/pdf', data: capturedImageBase64 }
+      : { type: 'base64', media_type: 'image/jpeg', data: capturedImageBase64 };
     messages = [{ role: 'user', content: [
-      { type: 'image', source: { type: 'base64', media_type: 'image/jpeg', data: capturedImageBase64 } },
+      { type: contentType, source: sourceObj },
       { type: 'text', text: `Assess this ${yearLevel} student's ${genre} handwritten work. Their next piece will be a ${nextGenre}.${contextNote}` }
     ]}];
   } else {
@@ -650,6 +671,7 @@ function resetTool() {
   document.getElementById('privacy-check').checked = false;
   document.getElementById('result-card').style.display = 'none';
   document.getElementById('file-input').value = '';
+  document.getElementById('pdf-notice').style.display = 'none';
   document.getElementById('session-wrap').style.display = 'none';
   hideError();
   currentResult = null;
