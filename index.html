@@ -157,8 +157,9 @@ canvas { display: none; }
       <div class="sel-group">
         <label for="next-genre-select">Next writing type</label>
         <select id="next-genre-select">
-          <option value="information report">Information report</option>
+          <option value="general writing goals not tied to a specific text type">General goals</option>
           <option value="narrative">Narrative</option>
+          <option value="information report">Information report</option>
           <option value="persuasive / argumentative">Persuasive</option>
           <option value="recount">Recount</option>
           <option value="descriptive">Descriptive</option>
@@ -192,7 +193,7 @@ canvas { display: none; }
       </div>
       <input type="file" id="file-input" accept="image/*,application/pdf" onchange="handleFile(this)">
       <img id="preview-img" alt="Uploaded writing preview" style="max-width:100%;max-height:200px;border-radius:8px;margin-bottom:10px;display:none;">
-      <div id="pdf-notice" style="display:none;background:#f0fdf4;border:1px solid #86efac;border-radius:8px;padding:10px 14px;margin-bottom:10px;font-size:13px;color:#166534;">✅ PDF uploaded and ready to mark.</div>
+      <div id="pdf-notice" style="display:none;background:#f0fdf4;border:1px solid #86efac;border-radius:8px;padding:10px 14px;margin-bottom:10px;font-size:13px;color:#166534;"><span id="pdf-filename"></span></div>
     </div>
 
     <div id="panel-camera" class="panel">
@@ -246,7 +247,7 @@ canvas { display: none; }
         <span class="badge badge-genre" id="genre-badge"></span>
       </div>
       <div class="result-actions">
-        <button class="btn-action" onclick="saveToSession()">💾 Save</button>
+        <button class="btn-action" onclick="forgetCurrent()">🗑 Forget</button>
         <button class="btn-action" onclick="printResult()">🖨️ Print</button>
       </div>
     </div>
@@ -265,6 +266,11 @@ canvas { display: none; }
     <div class="section-label">Goals for their next <span id="next-genre-label"></span></div>
     <ul class="goals-list" id="goals-list"></ul>
 
+    <div id="extracted-text-wrap" style="display:none;">
+      <div class="section-label" style="cursor:pointer;" onclick="toggleExtracted()">What the AI read <span id="extracted-toggle" style="font-size:10px;color:#9e9e9e;">▼ show</span></div>
+      <div id="extracted-text-box" style="display:none;background:#faf9f7;border:1px solid #e0ddd8;border-radius:8px;padding:12px 14px;font-size:13px;color:#6b6b6b;line-height:1.7;white-space:pre-wrap;max-height:200px;overflow-y:auto;margin-top:4px;"></div>
+    </div>
+
     <div class="curriculum-section">
       <div class="section-label" id="curriculum-section-label"></div>
       <div class="feedback-text" id="curriculum-text"></div>
@@ -277,7 +283,7 @@ canvas { display: none; }
     </div>
 
     <div class="bottom-row">
-      <button class="btn-outline" onclick="resetTool()">+ Mark another</button>
+      <button class="btn-outline" onclick="resetTool()" style="color:#b91c1c;border-color:#fca5a5;">🗑 Forget this writing</button>
       <button class="btn-outline" onclick="toggleSession()">📋 Session (<span id="session-count">0</span>)</button>
     </div>
   </div>
@@ -297,6 +303,8 @@ canvas { display: none; }
 <script>
 let currentTab = 'upload';
 let currentFileType = 'image/jpeg';
+let currentFileName = '';
+let extractedText = '';
 let capturedImageBase64 = null;
 let stream = null;
 let sessionResults = [];
@@ -345,6 +353,7 @@ function handleFile(input) {
   hideError();
   capturedImageBase64 = null;
   currentFileType = file.type;
+  currentFileName = file.name;
 
   const reader = new FileReader();
   reader.onload = e => {
@@ -352,15 +361,17 @@ function handleFile(input) {
     capturedImageBase64 = dataUrl.split(',')[1];
 
     const img = document.getElementById('preview-img');
+    const pdfNotice = document.getElementById('pdf-notice');
+    const pdfFilename = document.getElementById('pdf-filename');
+
     if (file.type === 'application/pdf') {
-      // For PDFs show a placeholder message instead of image preview
       img.style.display = 'none';
-      document.getElementById('pdf-notice').style.display = 'block';
+      pdfFilename.textContent = '📄 ' + file.name + ' — ready to mark';
+      pdfNotice.style.display = 'block';
     } else {
+      pdfNotice.style.display = 'none';
       img.src = dataUrl;
       img.style.display = 'block';
-      img.onload = () => { img.style.display = 'block'; };
-      document.getElementById('pdf-notice').style.display = 'none';
     }
   };
   reader.onerror = () => showError('File error', 'Could not read the file. Please try a JPG, PNG or PDF.');
@@ -406,6 +417,14 @@ function showError(title, detail) {
   document.getElementById('error-box').style.display = 'block';
 }
 function hideError() { document.getElementById('error-box').style.display = 'none'; }
+
+function toggleExtracted() {
+  const box = document.getElementById('extracted-text-box');
+  const toggle = document.getElementById('extracted-toggle');
+  const showing = box.style.display !== 'none';
+  box.style.display = showing ? 'none' : 'block';
+  toggle.textContent = showing ? '▼ show' : '▲ hide';
+}
 
 function buildSystemPrompt(meta, nextGenre) {
   return `You are an expert Australian writing assessor and experienced classroom teacher. ${meta.prompt}
@@ -525,7 +544,11 @@ async function markWriting() {
     try { result = JSON.parse(raw); }
     catch(e) { showError('Could not read response', 'Unexpected format received. Please try again.'); return; }
 
-    currentResult = { studentLabel, yearLevel, curriculum: meta.name, genre, nextGenre, teacherNote, result, timestamp: new Date().toLocaleTimeString() };
+    extractedText = extractedText || (currentTab !== 'text' ? '[Image/PDF uploaded]' : '');
+    currentResult = { studentLabel, yearLevel, curriculum: meta.name, genre, nextGenre, teacherNote, result, extractedText, timestamp: new Date().toLocaleTimeString() };
+    // Auto-save to session
+    sessionResults.push({...currentResult});
+    document.getElementById('session-count').textContent = sessionResults.length;
     renderResult(currentResult);
 
   } catch(e) {
@@ -578,17 +601,35 @@ function renderResult(r) {
     noteWrap.style.display = 'block';
   } else { noteWrap.style.display = 'none'; }
 
+  // Show extracted text section
+  const extractedWrap = document.getElementById('extracted-text-wrap');
+  const extractedBox = document.getElementById('extracted-text-box');
+  const extractedToggle = document.getElementById('extracted-toggle');
+  if (r.extractedText && r.extractedText !== '[Image/PDF uploaded]') {
+    extractedBox.textContent = r.extractedText;
+    extractedBox.style.display = 'none';
+    extractedToggle.textContent = '▼ show';
+    extractedWrap.style.display = 'block';
+  } else if (r.extractedText === '[Image/PDF uploaded]') {
+    extractedBox.textContent = 'Writing was submitted as an image or PDF.';
+    extractedBox.style.display = 'none';
+    extractedToggle.textContent = '▼ show';
+    extractedWrap.style.display = 'block';
+  } else {
+    extractedWrap.style.display = 'none';
+  }
+
   document.getElementById('result-card').style.display = 'block';
 }
 
-function saveToSession() {
+function forgetCurrent() {
   if (!currentResult) return;
-  sessionResults.push({...currentResult});
+  if (!confirm('Remove this result from the session? This cannot be undone.')) return;
+  // Find and remove from session
+  const idx = sessionResults.findIndex(r => r.timestamp === currentResult.timestamp && r.studentLabel === currentResult.studentLabel);
+  if (idx > -1) sessionResults.splice(idx, 1);
   document.getElementById('session-count').textContent = sessionResults.length;
-  const btn = document.querySelectorAll('.btn-action')[0];
-  const orig = btn.textContent;
-  btn.textContent = '✓ Saved';
-  setTimeout(() => { btn.textContent = orig; }, 1500);
+  resetTool();
 }
 
 function toggleSession() {
@@ -607,10 +648,17 @@ function renderSessionList() {
   sessionResults.forEach((r, i) => {
     const div = document.createElement('div');
     div.className = 'session-item';
-    div.innerHTML = `<div class="session-item-top"><span class="session-item-name">${r.studentLabel}</span><span class="session-item-time">${r.timestamp}</span></div><div class="session-item-meta">${r.result.achievementLevel} · ${r.yearLevel} · ${r.genre}</div>`;
+    div.innerHTML = `<div class="session-item-top"><span class="session-item-name">${r.studentLabel}</span><div style="display:flex;gap:6px;align-items:center;"><span class="session-item-time">${r.timestamp}</span><button onclick="event.stopPropagation();forgetFromSession(${i})" style="font-size:11px;padding:2px 7px;border:1px solid #fca5a5;border-radius:5px;background:#fff5f5;color:#b91c1c;cursor:pointer;">🗑 Forget</button></div></div><div class="session-item-meta">${r.result.achievementLevel} · ${r.yearLevel} · ${r.genre}</div>`;
     div.onclick = () => { renderResult(r); currentResult = r; document.getElementById('session-wrap').style.display = 'none'; };
     items.appendChild(div);
   });
+}
+
+function forgetFromSession(idx) {
+  if (!confirm('Forget this result?')) return;
+  sessionResults.splice(idx, 1);
+  document.getElementById('session-count').textContent = sessionResults.length;
+  renderSessionList();
 }
 
 function clearSession() {
@@ -689,6 +737,7 @@ function resetTool() {
   document.getElementById('session-wrap').style.display = 'none';
   hideError();
   currentResult = null;
+  extractedText = '';
 }
 
 updateYearLevels();
