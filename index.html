@@ -268,8 +268,17 @@ canvas { display: none; }
 
     <div class="divider"></div>
     <div id="extracted-text-wrap" style="display:none;">
-      <div class="section-label" style="cursor:pointer;" onclick="toggleExtracted()">What the AI read <span id="extracted-toggle" style="font-size:10px;color:#9e9e9e;">▼ show</span></div>
-      <div id="extracted-text-box" style="display:none;background:#faf9f7;border:1px solid #e0ddd8;border-radius:8px;padding:12px 14px;font-size:13px;color:#6b6b6b;line-height:1.7;white-space:pre-wrap;max-height:200px;overflow-y:auto;margin-top:4px;"></div>
+      <div class="section-label" style="cursor:pointer;display:flex;justify-content:space-between;align-items:center;" onclick="toggleExtracted()">
+        <span>What the AI read</span>
+        <span id="extracted-toggle" style="font-size:10px;color:#9e9e9e;font-weight:400;text-transform:none;letter-spacing:0;">▼ show</span>
+      </div>
+      <div id="extracted-text-body" style="display:none;margin-top:6px;">
+        <textarea id="extracted-text-box" style="width:100%;min-height:120px;font-size:13px;padding:10px 12px;border:1px solid #e0ddd8;border-radius:8px;background:#faf9f7;color:#6b6b6b;line-height:1.7;font-family:inherit;resize:vertical;"></textarea>
+        <div style="display:flex;justify-content:flex-end;margin-top:6px;">
+          <button onclick="reanalyse()" style="padding:7px 14px;font-size:13px;border:1px solid #8b7355;border-radius:8px;background:#fff;color:#8b7355;cursor:pointer;font-family:inherit;">↻ Re-analyse with corrected text</button>
+        </div>
+        <p style="font-size:11px;color:#9e9e9e;margin-top:6px;">You can edit the text above if the AI misread any words, then click Re-analyse to update the assessment.</p>
+      </div>
     </div>
 
     <div class="curriculum-section">
@@ -425,10 +434,10 @@ function showError(title, detail) {
 function hideError() { document.getElementById('error-box').style.display = 'none'; }
 
 function toggleExtracted() {
-  const box = document.getElementById('extracted-text-box');
+  const body = document.getElementById('extracted-text-body');
   const toggle = document.getElementById('extracted-toggle');
-  const showing = box.style.display !== 'none';
-  box.style.display = showing ? 'none' : 'block';
+  const showing = body.style.display !== 'none';
+  body.style.display = showing ? 'none' : 'block';
   toggle.textContent = showing ? '▼ show' : '▲ hide';
 }
 
@@ -438,6 +447,62 @@ function toggleCurriculum() {
   const showing = body.style.display !== 'none';
   body.style.display = showing ? 'none' : 'block';
   toggle.textContent = showing ? '▼ show' : '▲ hide';
+}
+
+async function reanalyse() {
+  if (!currentResult) return;
+  const correctedText = document.getElementById('extracted-text-box').value.trim();
+  if (!correctedText) { showError('No text', 'Please make sure there is text in the box before re-analysing.'); return; }
+
+  const meta = Object.values(curriculumMeta).find(m => m.name === currentResult.curriculum) || Object.values(curriculumMeta)[0];
+  const nextGenre = currentResult.nextGenre;
+  const yearLevel = currentResult.yearLevel;
+  const genre = currentResult.genre;
+  const teacherNote = currentResult.teacherNote;
+  const contextNote = teacherNote ? `
+
+Teacher context: ${teacherNote}` : '';
+
+  const messages = [{ role: 'user', content: `Assess this ${yearLevel} student's ${genre} writing. Their next piece will be a ${nextGenre}.${contextNote}
+
+${correctedText}` }];
+
+  document.getElementById('loading').style.display = 'block';
+  document.getElementById('loading-msg').textContent = 'Re-analysing with corrected text...';
+  document.getElementById('mark-btn').disabled = true;
+
+  try {
+    const response = await fetch('/api/assess', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ system: buildSystemPrompt(meta, nextGenre), messages })
+    });
+    if (!response.ok) { const e = await response.json().catch(()=>({})); showError('API error', e.error ? e.error.message : 'Please try again.'); return; }
+    const data = await response.json();
+    const raw = (data.content || []).map(i => i.text || '').join('').replace(/```json|```/g,'').trim();
+    const result = JSON.parse(raw);
+
+    // Update current result with new analysis but keep corrected text
+    currentResult.result = result;
+    currentResult.extractedText = correctedText;
+    currentResult.result.transcribedText = correctedText;
+
+    // Update session
+    const idx = sessionResults.findIndex(r => r.timestamp === currentResult.timestamp && r.studentLabel === currentResult.studentLabel);
+    if (idx > -1) sessionResults[idx] = {...currentResult};
+
+    renderResult(currentResult);
+
+    // Re-open the extracted text panel
+    document.getElementById('extracted-text-body').style.display = 'block';
+    document.getElementById('extracted-toggle').textContent = '▲ hide';
+
+  } catch(e) {
+    showError('Connection error', e.message);
+  } finally {
+    document.getElementById('loading').style.display = 'none';
+    document.getElementById('mark-btn').disabled = false;
+  }
 }
 
 function buildSystemPrompt(meta, nextGenre) {
@@ -623,8 +688,9 @@ function renderResult(r) {
   const extractedBox = document.getElementById('extracted-text-box');
   const extractedToggle = document.getElementById('extracted-toggle');
   const transcribed = r.result.transcribedText || r.extractedText || 'No text available.';
-  extractedBox.textContent = transcribed;
-  extractedBox.style.display = 'none';
+  extractedBox.value = transcribed;
+  const extractedBody = document.getElementById('extracted-text-body');
+  extractedBody.style.display = 'none';
   extractedToggle.textContent = '▼ show';
   extractedWrap.style.display = 'block';
 
