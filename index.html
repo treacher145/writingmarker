@@ -140,7 +140,7 @@ canvas { display: none; }
       </div>
       <div class="sel-group">
         <label for="year-select">Year level</label>
-        <select id="year-select"></select>
+        <select id="year-select" onchange="updateEarlyYearsTip()"></select>
       </div>
       <div class="sel-group">
         <label for="genre-select">This writing type</label>
@@ -357,6 +357,15 @@ function updateYearLevels() {
     if (i === 4) opt.selected = true;
     sel.appendChild(opt);
   });
+  updateEarlyYearsTip();
+}
+
+function updateEarlyYearsTip() {
+  const yearLevel = document.getElementById('year-select').value;
+  const earlyYears = ['Foundation', 'Prep', 'Year 1', 'Year 2', 'Kindergarten'];
+  const isEarly = earlyYears.some(y => yearLevel.includes(y));
+  const tip = document.getElementById('early-years-tip');
+  if (tip) tip.style.display = isEarly ? 'block' : 'none';
 }
 
 function switchTab(tab) {
@@ -367,34 +376,115 @@ function switchTab(tab) {
   if (tab !== 'camera' && stream) { stream.getTracks().forEach(t => t.stop()); stream = null; }
 }
 
+// Store multiple image data for multi-page support
+let multiImageData = []; // [{name, base64, dataUrl}]
+
 function handleFile(input) {
-  const file = input.files[0]; if (!file) return;
+  const files = Array.from(input.files);
+  if (!files.length) return;
   hideError();
   capturedImageBase64 = null;
-  currentFileType = file.type;
-  currentFileName = file.name;
+  currentFileType = files[0].type;
+  currentFileName = files[0].name;
+  multiImageData = [];
 
-  const reader = new FileReader();
-  reader.onload = e => {
-    const dataUrl = e.target.result;
-    capturedImageBase64 = dataUrl.split(',')[1];
+  const img = document.getElementById('preview-img');
+  const pdfNotice = document.getElementById('pdf-notice');
+  const pdfFilename = document.getElementById('pdf-filename');
+  const multiPanel = document.getElementById('multi-image-panel');
 
-    const img = document.getElementById('preview-img');
-    const pdfNotice = document.getElementById('pdf-notice');
-    const pdfFilename = document.getElementById('pdf-filename');
-
-    if (file.type === 'application/pdf') {
+  // Single PDF
+  if (files.length === 1 && files[0].type === 'application/pdf') {
+    const reader = new FileReader();
+    reader.onload = e => {
+      capturedImageBase64 = e.target.result.split(',')[1];
       img.style.display = 'none';
-      pdfFilename.textContent = '📄 ' + file.name + ' — ready to mark';
+      pdfFilename.textContent = '📄 ' + files[0].name + ' — ready to mark';
       pdfNotice.style.display = 'block';
-    } else {
-      pdfNotice.style.display = 'none';
-      img.src = dataUrl;
+      multiPanel.style.display = 'none';
+    };
+    reader.onerror = () => showError('File error', 'Could not read the PDF.');
+    reader.readAsDataURL(files[0]);
+    return;
+  }
+
+  // Single image
+  if (files.length === 1) {
+    const reader = new FileReader();
+    reader.onload = e => {
+      capturedImageBase64 = e.target.result.split(',')[1];
+      img.src = e.target.result;
       img.style.display = 'block';
-    }
-  };
-  reader.onerror = () => showError('File error', 'Could not read the file. Please try a JPG, PNG or PDF.');
-  reader.readAsDataURL(file);
+      pdfNotice.style.display = 'none';
+      multiPanel.style.display = 'none';
+    };
+    reader.onerror = () => showError('File error', 'Could not read the image.');
+    reader.readAsDataURL(files[0]);
+    return;
+  }
+
+  // Multiple images — read all then show reorder panel
+  img.style.display = 'none';
+  pdfNotice.style.display = 'none';
+  multiPanel.style.display = 'none';
+
+  let loaded = 0;
+  const tempData = new Array(files.length);
+
+  files.forEach((file, idx) => {
+    const reader = new FileReader();
+    reader.onload = e => {
+      tempData[idx] = { name: file.name, base64: e.target.result.split(',')[1], dataUrl: e.target.result };
+      loaded++;
+      if (loaded === files.length) {
+        multiImageData = tempData;
+        renderMultiImagePanel();
+      }
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+function renderMultiImagePanel() {
+  const panel = document.getElementById('multi-image-panel');
+  const list = document.getElementById('image-sort-list');
+  list.innerHTML = '';
+
+  multiImageData.forEach((img, idx) => {
+    const item = document.createElement('div');
+    item.draggable = true;
+    item.dataset.idx = idx;
+    item.style.cssText = 'display:flex;align-items:center;gap:10px;background:#fff;border:1px solid #e0ddd8;border-radius:8px;padding:8px 12px;cursor:grab;';
+    item.innerHTML = \`
+      <span style="font-size:18px;color:#9e9e9e;">⠿</span>
+      <img src="\${img.dataUrl}" style="width:50px;height:50px;object-fit:cover;border-radius:4px;border:1px solid #e0ddd8;">
+      <span style="font-size:13px;color:#1a1a1a;flex:1;">Page \${idx + 1} — \${img.name}</span>
+    \`;
+
+    // Drag events
+    item.addEventListener('dragstart', e => {
+      e.dataTransfer.setData('text/plain', idx);
+      item.style.opacity = '0.5';
+    });
+    item.addEventListener('dragend', () => { item.style.opacity = '1'; });
+    item.addEventListener('dragover', e => { e.preventDefault(); item.style.background = '#f0fdf4'; });
+    item.addEventListener('dragleave', () => { item.style.background = '#fff'; });
+    item.addEventListener('drop', e => {
+      e.preventDefault();
+      item.style.background = '#fff';
+      const fromIdx = parseInt(e.dataTransfer.getData('text/plain'));
+      const toIdx = parseInt(item.dataset.idx);
+      if (fromIdx !== toIdx) {
+        const moved = multiImageData.splice(fromIdx, 1)[0];
+        multiImageData.splice(toIdx, 0, moved);
+        renderMultiImagePanel();
+      }
+    });
+
+    list.appendChild(item);
+  });
+
+  panel.style.display = 'block';
 }
 
 async function startCamera() {
@@ -741,7 +831,7 @@ function renderResult(r) {
     metaEl.style.display = 'block';
   } else { metaEl.style.display = 'none'; }
 
-  // Show confidence warning if handwriting was hard to read
+  // Show confidence warning for any year level when handwriting is hard to read
   const confWarning = document.getElementById('confidence-warning');
   const conf = (r.result.transcriptionConfidence || 'HIGH').toUpperCase();
   confWarning.style.display = (conf === 'MEDIUM' || conf === 'LOW') ? 'block' : 'none';
@@ -907,9 +997,12 @@ function resetTool() {
   document.getElementById('file-input').value = '';
   document.getElementById('pdf-notice').style.display = 'none';
   document.getElementById('session-wrap').style.display = 'none';
+  document.getElementById('multi-image-panel').style.display = 'none';
+  document.getElementById('confidence-warning').style.display = 'none';
   hideError();
   currentResult = null;
   extractedText = '';
+  multiImageData = [];
 }
 
 updateYearLevels();
