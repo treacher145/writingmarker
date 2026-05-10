@@ -11,7 +11,7 @@ export default async function handler(req, res) {
 
   try {
     const isTranscription = req.body.transcription === true;
-    const maxTokens = isTranscription ? 2000 : 1500;
+    const maxTokens = isTranscription ? 2000 : 2500;
 
     const response = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
