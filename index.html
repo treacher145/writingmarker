@@ -762,9 +762,17 @@ async function markWriting() {
     let txt = document.getElementById('text-input').value.trim();
     if (!txt) { showError('No writing entered', 'Please type or paste student writing first.'); return; }
     txt = scrubNames(txt);
+    extractedText = txt;
     messages = [{ role: 'user', content: `Assess this ${yearLevel} student's ${genre} writing. Their next piece will be a ${nextGenre}.${contextNote}\n\n${txt}` }];
+  } else if (multiImageData.length > 1) {
+    const imageBlocks = multiImageData.map(img => ({
+      type: 'image',
+      source: { type: 'base64', media_type: 'image/jpeg', data: img.base64 }
+    }));
+    imageBlocks.push({ type: 'text', text: `These are ${multiImageData.length} pages of the same student's writing in order. Read all pages together as one piece and assess this ${yearLevel} student's ${genre} writing. Their next piece will be a ${nextGenre}.${contextNote}` });
+    messages = [{ role: 'user', content: imageBlocks }];
+    extractedText = '[Multiple pages uploaded]';
   } else if (capturedImageBase64) {
-    const mediaType = currentFileType === 'application/pdf' ? 'application/pdf' : 'image/jpeg';
     const contentType = currentFileType === 'application/pdf' ? 'document' : 'image';
     const sourceObj = currentFileType === 'application/pdf'
       ? { type: 'base64', media_type: 'application/pdf', data: capturedImageBase64 }
@@ -773,6 +781,7 @@ async function markWriting() {
       { type: contentType, source: sourceObj },
       { type: 'text', text: `Assess this ${yearLevel} student's ${genre} handwritten work. Their next piece will be a ${nextGenre}.${contextNote}` }
     ]}];
+    extractedText = '[Single image or PDF uploaded]';
   } else {
     showError('No writing provided', 'Please upload an image, use the camera, or type/paste writing first.');
     return;
