@@ -10,6 +10,9 @@ export default async function handler(req, res) {
   }
 
   try {
+    const isTranscription = req.body.transcription === true;
+    const maxTokens = isTranscription ? 2000 : 1500;
+
     const response = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
       headers: {
@@ -19,7 +22,7 @@ export default async function handler(req, res) {
       },
       body: JSON.stringify({
         model: 'claude-sonnet-4-5',
-        max_tokens: 1500,
+        max_tokens: maxTokens,
         system: req.body.system,
         messages: req.body.messages
       })
