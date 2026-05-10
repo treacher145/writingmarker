@@ -197,6 +197,7 @@ canvas { display: none; }
       <div id="pdf-notice" style="display:none;background:#f0fdf4;border:1px solid #86efac;border-radius:8px;padding:10px 14px;margin-bottom:10px;font-size:13px;color:#166534;"><span id="pdf-filename"></span></div>
       <div id="read-handwriting-btn-single" style="display:none;margin-bottom:10px;">
         <button onclick="triggerTranscription()" style="width:100%;padding:10px;font-size:13px;font-weight:500;border:1px solid #8b7355;border-radius:8px;background:#fff;color:#8b7355;cursor:pointer;font-family:inherit;">📖 Read handwriting</button>
+      <p style="font-size:11px;color:#9e9e9e;margin-top:6px;">The Mark button will activate once handwriting has been read.</p>
       </div>
       <div id="transcription-loading" style="display:none;background:#f0fdf4;border:1px solid #86efac;border-radius:8px;padding:10px 14px;margin-bottom:10px;font-size:13px;color:#166534;">
         <span id="transcription-loading-text">📖 Reading handwriting...</span>
@@ -439,6 +440,12 @@ function switchTab(tab) {
   document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
   document.getElementById('panel-' + tab).classList.add('active');
   if (tab !== 'camera' && stream) { stream.getTracks().forEach(t => t.stop()); stream = null; }
+  // Text tab doesn't need transcription — always enable mark button
+  if (tab === 'text') {
+    document.getElementById('mark-btn').disabled = false;
+    document.getElementById('mark-btn').textContent = '✦ Mark this writing';
+    transcriptionReady = true;
+  }
 }
 
 // Store multiple image data for multi-page support
@@ -548,6 +555,8 @@ async function triggerTranscription() {
   previewCard.style.display = 'none';
   loadingEl.style.display = 'block';
   loadingText.textContent = '📖 Reading handwriting...';
+  document.getElementById('mark-btn').disabled = true;
+  document.getElementById('mark-btn').textContent = '⏳ Reading handwriting first...';
 
   try {
     let result;
@@ -567,6 +576,8 @@ async function triggerTranscription() {
     transcriptionReady = true;
     loadingEl.style.display = 'none';
     previewCard.style.display = 'block';
+    document.getElementById('mark-btn').disabled = false;
+    document.getElementById('mark-btn').textContent = '✦ Mark this writing';
 
   } catch(e) {
     loadingEl.style.display = 'none';
@@ -575,6 +586,8 @@ async function triggerTranscription() {
     previewBox.value = '';
     previewCard.style.display = 'block';
     transcriptionReady = true;
+    document.getElementById('mark-btn').disabled = false;
+    document.getElementById('mark-btn').textContent = '✦ Mark this writing';
     console.error('Transcription error:', e);
   }
 }
@@ -991,6 +1004,11 @@ async function markWriting() {
   let messages = [];
 
   const contextNote = teacherNote ? `\n\nTeacher context: ${teacherNote}` : '';
+
+  if (currentTab !== 'text' && !transcriptionReady && (multiImageData.length > 0 || capturedImageBase64)) {
+    showError('Read handwriting first', 'Please click "Read handwriting" and wait for the transcription to complete before marking.');
+    return;
+  }
 
   if (currentTab === 'text') {
     let txt = document.getElementById('text-input').value.trim();
