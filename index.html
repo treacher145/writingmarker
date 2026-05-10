@@ -1051,8 +1051,15 @@ async function markWriting() {
     if (!raw) { showError('Empty response', 'No response received. Please try again.'); return; }
 
     let result;
-    try { result = JSON.parse(raw); }
-    catch(e) { showError('Could not read response', 'Unexpected format received. Please try again.'); return; }
+    try {
+      // Try to extract JSON even if there's surrounding text
+      const jsonMatch = raw.match(/\{[\s\S]*\}/);
+      const jsonStr = jsonMatch ? jsonMatch[0] : raw;
+      result = JSON.parse(jsonStr);
+    } catch(e) {
+      showError('Could not read response', 'Parse error: ' + e.message + '. Raw (first 300 chars): ' + raw.substring(0, 300));
+      return;
+    }
 
     extractedText = extractedText || (currentTab !== 'text' ? '[Image/PDF uploaded]' : '');
     currentResult = { studentLabel, yearLevel, curriculum: meta.name, genre, nextGenre, teacherNote, result, extractedText, timestamp: new Date().toLocaleTimeString() };
