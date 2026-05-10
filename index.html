@@ -379,21 +379,7 @@ function updateYearLevels() {
   updateEarlyYearsTip();
 }
 
-const TRANSCRIPTION_PROMPT = `You are a careful and expert reader of handwritten text. Your ONLY job right now is to transcribe exactly what is written on the page — nothing else.
-
-Instructions:
-- First check for a title at the top of the page and include it on its own line
-- Orient yourself correctly — if the image is rotated, sideways or upside down, mentally correct this first
-- Read line by line from top to bottom, left to right
-- For cursive or joined handwriting, use context clues to work out unclear words — the meaning of surrounding words and sentences should guide you
-- Reproduce the student's actual spelling exactly as written — do NOT correct spelling errors
-- If a word is genuinely illegible after careful reading, write [illegible]
-- Include all punctuation you can see
-- For multi-page submissions, transcribe each page in order with a line break between pages
-- Do not add any commentary, assessment, or feedback — just the transcribed text
-- Rate your confidence at the very end on a new line as: CONFIDENCE: HIGH, CONFIDENCE: MEDIUM, or CONFIDENCE: LOW
-
-Return ONLY the transcribed text followed by the confidence rating. No JSON, no explanation.`;
+const TRANSCRIPTION_PROMPT = "You are a careful and expert reader of handwritten text. Your ONLY job right now is to transcribe exactly what is written on the page - nothing else.\n\nInstructions:\n- First check for a title at the top of the page and include it on its own line\n- Orient yourself correctly - if the image is rotated, sideways or upside down, mentally correct this first\n- Read line by line from top to bottom, left to right\n- For cursive or joined handwriting, use context clues to work out unclear words\n- Reproduce the student's actual spelling exactly as written - do NOT correct spelling errors\n- If a word is genuinely illegible after careful reading, write [illegible]\n- Include all punctuation you can see\n- For multi-page submissions, transcribe each page in order with a line break between pages\n- Do not add any commentary, assessment, or feedback - just the transcribed text\n- Rate your confidence at the very end on a new line as: CONFIDENCE: HIGH, CONFIDENCE: MEDIUM, or CONFIDENCE: LOW\n\nReturn ONLY the transcribed text followed by the confidence rating. No JSON, no explanation.";
 
 async function runTranscription(imageData, mediaType, isMultiPage) {
   let userContent;
@@ -564,11 +550,12 @@ async function triggerTranscription() {
 
   } catch(e) {
     loadingEl.style.display = 'none';
-    loadingText.textContent = '⚠️ Could not read handwriting automatically. You can type the text manually below.';
+    loadingText.textContent = '⚠️ Error: ' + e.message + '. You can type the text manually below.';
     loadingEl.style.display = 'block';
     previewBox.value = '';
     previewCard.style.display = 'block';
     transcriptionReady = true;
+    console.error('Transcription error:', e);
   }
 }
 
