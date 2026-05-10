@@ -418,7 +418,8 @@ async function runTranscription(imageData, mediaType, isMultiPage) {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
       system: TRANSCRIPTION_PROMPT,
-      messages: [{ role: 'user', content: userContent }]
+      messages: [{ role: 'user', content: userContent }],
+      transcription: true
     })
   });
 
