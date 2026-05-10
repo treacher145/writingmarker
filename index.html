@@ -186,6 +186,7 @@ canvas { display: none; }
       <div class="privacy-note">
         <span>⚠️ Before uploading, ensure all student names, school names, and identifying information are covered or cropped from the image.</span>
       </div>
+      <div style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:8px;padding:10px 12px;margin-bottom:10px;font-size:12px;color:#1d4ed8;">💡 <strong>Tip:</strong> For Foundation and Year 1 students, the Type / paste tab gives the most accurate results. For clearest image recognition, photograph writing straight-on in good lighting.</div>
       <div class="upload-zone" onclick="document.getElementById('file-input').click()">
         <div class="icon">🖼️</div>
         <p>Click to upload a photo or scan of student writing</p>
@@ -253,6 +254,9 @@ canvas { display: none; }
     </div>
 
     <div class="student-meta" id="student-meta" style="display:none;"></div>
+    <div id="confidence-warning" style="display:none;background:#fff7ed;border:1px solid #fed7aa;border-radius:8px;padding:10px 14px;margin-bottom:1rem;font-size:13px;color:#c2410c;line-height:1.5;">
+      ⚠️ <strong>Handwriting was difficult to read.</strong> The transcription may contain errors which could affect the accuracy of this assessment. Please check <em>What the AI read</em> below, correct any mistakes, and click Re-analyse for a more accurate result. For Foundation and Year 1 students, typing the writing directly gives the most reliable assessment.
+    </div>
 
     <div class="section-label">Teacher assessment</div>
     <div class="assessment-box"><p id="overall-text"></p></div>
@@ -535,12 +539,27 @@ You produce two things:
 2. A student feedback card modelled on exemplary classroom practice
 
 TRANSCRIPTION: Always transcribe the full text of the writing exactly as the student wrote it into the transcribedText field. For images and PDFs:
-- First, orient yourself correctly — if the image appears rotated, sideways, or upside down, mentally rotate it to read the text in its correct orientation before transcribing
+- First, check for a title — if there is a title at the top of the page, include it at the start of your transcription on its own line
+- Orient yourself correctly — if the image appears rotated, sideways, or upside down, mentally rotate it to read the text in its correct orientation before transcribing
 - Read every word carefully, working line by line from top to bottom
 - For young writers with developing handwriting, take extra care — letters may be irregularly formed, sizing inconsistent, or spacing unconventional
 - Reproduce the text accurately including spelling errors, unconventional punctuation, and crossed out words — do NOT correct spelling
 - If a word is genuinely illegible, write [illegible] in your transcription
+- Rate your own transcription confidence at the end: HIGH (most words clearly readable), MEDIUM (some words uncertain), or LOW (significant portions unclear)
 - This allows the teacher to verify you read the writing correctly and correct any misreads
+
+CRITICAL — TRANSCRIPTION CONFIDENCE AND ASSESSMENT RELIABILITY:
+If your transcription confidence is MEDIUM or LOW, you must:
+- Clearly state in your overall assessment that the handwriting was difficult to read and the assessment may not be fully accurate
+- Be conservative in your achievement level — do not award exceeding or high levels when you cannot reliably read the writing
+- Strongly recommend the teacher use the "What the AI read" section to correct the transcription and re-analyse
+- Never assess a garbled or largely illegible transcription as exceeding — if you cannot read it reliably, you cannot assess it reliably
+
+HANDWRITING GUIDANCE FOR FOUNDATION AND YEAR 1:
+Very young writers often have irregular letter formation, inconsistent sizing, and unconventional spacing. For these students:
+- Focus on what you CAN read rather than what you cannot
+- Look for evidence of letters, words, sentences and meaning even if imperfectly formed
+- If the handwriting is so unclear that reliable assessment is impossible, say so honestly and recommend the teacher types the text directly
 
 VICTORIAN CURRICULUM ACHIEVEMENT PARAMETERS — use these specific criteria when assessing:
 
@@ -625,6 +644,7 @@ Respond ONLY with valid JSON, no markdown, no backticks:
   "goals": ["Goal 1", "Goal 2", "Goal 3"],
   "curriculumAlignment": "2-3 sentences referencing specific strands, outcomes or achievement standards — no commercial level codes",
   "transcribedText": "the full text of the writing exactly as you read it — every word the student wrote, transcribed accurately. If submitted as typed text, reproduce it as given.",
+  "transcriptionConfidence": "HIGH, MEDIUM, or LOW based on how clearly you could read the handwriting",
   "outcomeCodes": [{"code": "VCELY301", "label": "Short label"}]
 }`;
 }
@@ -720,6 +740,11 @@ function renderResult(r) {
     metaEl.textContent = r.studentLabel + ' · ' + r.yearLevel + ' · ' + r.genre + ' · ' + r.curriculum;
     metaEl.style.display = 'block';
   } else { metaEl.style.display = 'none'; }
+
+  // Show confidence warning if handwriting was hard to read
+  const confWarning = document.getElementById('confidence-warning');
+  const conf = (r.result.transcriptionConfidence || 'HIGH').toUpperCase();
+  confWarning.style.display = (conf === 'MEDIUM' || conf === 'LOW') ? 'block' : 'none';
 
   document.getElementById('level-badge').textContent = res.achievementLevel;
   document.getElementById('curriculum-badge').textContent = res.curriculumStandard;
