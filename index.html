@@ -140,7 +140,7 @@ canvas { display: none; }
       </div>
       <div class="sel-group">
         <label for="year-select">Year level</label>
-        <select id="year-select" onchange="updateEarlyYearsTip()"></select>
+        <select id="year-select"></select>
       </div>
       <div class="sel-group">
         <label for="genre-select">This writing type</label>
@@ -357,15 +357,6 @@ function updateYearLevels() {
     if (i === 4) opt.selected = true;
     sel.appendChild(opt);
   });
-  updateEarlyYearsTip();
-}
-
-function updateEarlyYearsTip() {
-  const yearLevel = document.getElementById('year-select').value;
-  const earlyYears = ['Foundation', 'Prep', 'Year 1', 'Year 2', 'Kindergarten'];
-  const isEarly = earlyYears.some(y => yearLevel.includes(y));
-  const tip = document.getElementById('early-years-tip');
-  if (tip) tip.style.display = isEarly ? 'block' : 'none';
 }
 
 function switchTab(tab) {
