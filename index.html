@@ -479,13 +479,24 @@ function handleFile(input) {
   if (files.length === 1) {
     const reader = new FileReader();
     reader.onload = e => {
-      capturedImageBase64 = e.target.result.split(',')[1];
-      img.src = e.target.result;
-      img.style.display = 'block';
-      pdfNotice.style.display = 'none';
-      multiPanel.style.display = 'none';
-      document.getElementById('read-handwriting-btn-single').style.display = 'block';
-      document.getElementById('transcription-preview-card').style.display = 'none';
+      // Normalise to JPEG via canvas to avoid media type mismatches
+      const tempImg = new Image();
+      tempImg.onload = () => {
+        const canvas = document.createElement('canvas');
+        canvas.width = tempImg.width;
+        canvas.height = tempImg.height;
+        canvas.getContext('2d').drawImage(tempImg, 0, 0);
+        const jpegDataUrl = canvas.toDataURL('image/jpeg', 0.92);
+        capturedImageBase64 = jpegDataUrl.split(',')[1];
+        currentFileType = 'image/jpeg';
+        img.src = jpegDataUrl;
+        img.style.display = 'block';
+        pdfNotice.style.display = 'none';
+        multiPanel.style.display = 'none';
+        document.getElementById('read-handwriting-btn-single').style.display = 'block';
+        document.getElementById('transcription-preview-card').style.display = 'none';
+      };
+      tempImg.src = e.target.result;
     };
     reader.onerror = () => showError('File error', 'Could not read the image.');
     reader.readAsDataURL(files[0]);
@@ -503,13 +514,22 @@ function handleFile(input) {
   files.forEach((file, idx) => {
     const reader = new FileReader();
     reader.onload = e => {
-      const mtype = ['image/png','image/gif','image/webp'].includes(file.type) ? file.type : 'image/jpeg';
-      tempData[idx] = { name: file.name, base64: e.target.result.split(',')[1], dataUrl: e.target.result, mediaType: mtype };
-      loaded++;
-      if (loaded === files.length) {
-        multiImageData = tempData;
-        renderMultiImagePanel();
-      }
+      // Normalise to JPEG via canvas
+      const tempImg = new Image();
+      tempImg.onload = () => {
+        const canvas = document.createElement('canvas');
+        canvas.width = tempImg.width;
+        canvas.height = tempImg.height;
+        canvas.getContext('2d').drawImage(tempImg, 0, 0);
+        const jpegDataUrl = canvas.toDataURL('image/jpeg', 0.92);
+        tempData[idx] = { name: file.name, base64: jpegDataUrl.split(',')[1], dataUrl: jpegDataUrl, mediaType: 'image/jpeg' };
+        loaded++;
+        if (loaded === files.length) {
+          multiImageData = tempData;
+          renderMultiImagePanel();
+        }
+      };
+      tempImg.src = e.target.result;
     };
     reader.readAsDataURL(file);
   });
@@ -535,7 +555,7 @@ async function triggerTranscription() {
       result = await runTranscription(multiImageData, null, true);
     } else if (capturedImageBase64) {
       const mediaType = currentFileType === 'application/pdf' ? 'application/pdf' 
-        : (['image/png','image/gif','image/webp'].includes(currentFileType) ? currentFileType : 'image/jpeg');
+        : (currentFileType === 'image/png' ? 'image/png' : 'image/jpeg');
       result = await runTranscription(capturedImageBase64, mediaType, false);
     } else {
       loadingEl.style.display = 'none';
@@ -665,6 +685,7 @@ function applyRotationToImage(idx, degrees) {
     const rotatedDataUrl = canvas.toDataURL('image/jpeg', 0.92);
     multiImageData[idx].dataUrl = rotatedDataUrl;
     multiImageData[idx].base64 = rotatedDataUrl.split(',')[1];
+    multiImageData[idx].mediaType = 'image/jpeg';
   };
   image.src = imgData.dataUrl;
 }
