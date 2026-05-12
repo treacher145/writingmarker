@@ -113,6 +113,12 @@ canvas { display: none; }
 .empty-msg { font-size: 13px; color: #9e9e9e; text-align: center; padding: 1rem; }
 .footer { margin-top: 3rem; text-align: center; font-size: 12px; color: #9e9e9e; }
 </style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script>
+  if (typeof pdfjsLib !== 'undefined') {
+    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+  }
+</script>
 </head>
 <body>
 <div class="page">
@@ -428,9 +434,9 @@ async function runTranscription(imageData, mediaType, isMultiPage) {
     imageBlocks.push({ type: 'text', text: 'These are multiple pages of the same student writing, in order. Transcribe all pages in sequence.' });
     userContent = imageBlocks;
   } else {
-    const contentType = mediaType === 'application/pdf' ? 'document' : 'image';
+    // PDFs are converted to images before this point, so always send as image
     userContent = [
-      { type: contentType, source: { type: 'base64', media_type: mediaType, data: imageData } },
+      { type: 'image', source: { type: 'base64', media_type: 'image/jpeg', data: imageData } },
       { type: 'text', text: 'Please transcribe this handwritten text.' }
     ];
   }
@@ -502,18 +508,87 @@ function handleFile(input) {
 
   // Single PDF
   if (files.length === 1 && files[0].type === 'application/pdf') {
+    // Convert PDF pages to compressed images using PDF.js
+    pdfFilename.textContent = '📄 ' + files[0].name + ' — converting...';
+    pdfNotice.style.display = 'block';
+    img.style.display = 'none';
+    multiPanel.style.display = 'none';
+    document.getElementById('read-handwriting-btn-single').style.display = 'none';
+    document.getElementById('transcription-preview-card').style.display = 'none';
+
+    if (typeof pdfjsLib === 'undefined') {
+      showError('PDF error', 'PDF library not loaded. Please refresh and try again.');
+      return;
+    }
+
     const reader = new FileReader();
-    reader.onload = e => {
-      capturedImageBase64 = e.target.result.split(',')[1];
-      img.style.display = 'none';
-      pdfFilename.textContent = '📄 ' + files[0].name + ' — ready to mark';
-      pdfNotice.style.display = 'block';
-      multiPanel.style.display = 'none';
-      document.getElementById('read-handwriting-btn-single').style.display = 'block';
-      document.getElementById('transcription-preview-card').style.display = 'none';
+    reader.onload = async e => {
+      try {
+        const typedArray = new Uint8Array(e.target.result);
+        const pdf = await pdfjsLib.getDocument({ data: typedArray }).promise;
+        const pageCount = pdf.numPages;
+
+        if (pageCount === 1) {
+          // Single page PDF — convert to single compressed image
+          const page = await pdf.getPage(1);
+          const viewport = page.getViewport({ scale: 1.5 });
+          const canvas = document.createElement('canvas');
+          canvas.width = viewport.width;
+          canvas.height = viewport.height;
+          await page.render({ canvasContext: canvas.getContext('2d'), viewport }).promise;
+          const dataUrl = canvas.toDataURL('image/jpeg', 0.80);
+          // Apply size compression
+          resizeImageToJpeg(dataUrl, (compressed) => {
+            capturedImageBase64 = compressed.split(',')[1];
+            currentFileType = 'image/jpeg';
+            img.src = compressed;
+            img.style.display = 'block';
+            img.style.cursor = 'zoom-in';
+            img.onclick = () => openLightbox(img.src);
+            pdfNotice.style.display = 'none';
+            pdfFilename.textContent = '';
+            document.getElementById('read-handwriting-btn-single').style.display = 'block';
+          }, 200000);
+        } else {
+          // Multi-page PDF — convert each page, treat as multi-image
+          const pages = [];
+          for (let i = 1; i <= pageCount; i++) {
+            pdfFilename.textContent = '📄 Converting page ' + i + ' of ' + pageCount + '...';
+            const page = await pdf.getPage(i);
+            const viewport = page.getViewport({ scale: 1.5 });
+            const canvas = document.createElement('canvas');
+            canvas.width = viewport.width;
+            canvas.height = viewport.height;
+            await page.render({ canvasContext: canvas.getContext('2d'), viewport }).promise;
+            const dataUrl = canvas.toDataURL('image/jpeg', 0.80);
+            pages.push({ dataUrl, name: files[0].name + ' p' + i });
+          }
+          // Compress each page and populate multiImageData
+          let processed = 0;
+          const tempData = new Array(pages.length);
+          pages.forEach((p, idx) => {
+            resizeImageToJpeg(p.dataUrl, (compressed) => {
+              tempData[idx] = { name: p.name, base64: compressed.split(',')[1], dataUrl: compressed, mediaType: 'image/jpeg' };
+              processed++;
+              if (processed === pages.length) {
+                multiImageData = tempData;
+                currentFileType = 'image/jpeg';
+                pdfNotice.style.display = 'none';
+                pdfFilename.textContent = '';
+                img.style.display = 'none';
+                renderMultiImagePanel();
+                multiPanel.style.display = 'block';
+                document.getElementById('read-handwriting-btn-single').style.display = 'block';
+              }
+            }, 150000);
+          });
+        }
+      } catch (err) {
+        showError('PDF error', 'Could not read this PDF. Try saving as JPG images instead. (' + err.message + ')');
+      }
     };
     reader.onerror = () => showError('File error', 'Could not read the PDF.');
-    reader.readAsDataURL(files[0]);
+    reader.readAsArrayBuffer(files[0]);
     return;
   }
 
