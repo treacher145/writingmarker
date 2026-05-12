@@ -221,6 +221,9 @@ canvas { display: none; }
       <div class="cam-wrap" id="cam-wrap"><video id="video" autoplay playsinline></video></div>
       <canvas id="cam-canvas"></canvas>
       <img id="cam-preview" alt="Captured writing">
+      <div id="cam-rotate-row" style="display:none;margin-bottom:8px;">
+        <button class="cam-btn" onclick="rotateCameraPhoto()" style="color:#8b7355;border-color:#8b7355;">↻ Rotate photo</button>
+      </div>
       <div class="cam-btn-row">
         <button class="cam-btn" onclick="startCamera()">📷 Start camera</button>
         <button class="cam-btn" id="capture-btn" onclick="capturePhoto()" disabled>⏺ Capture</button>
@@ -880,11 +883,38 @@ function capturePhoto() {
   canvas.width = video.videoWidth; canvas.height = video.videoHeight;
   canvas.getContext('2d').drawImage(video, 0, 0);
   const dataUrl = canvas.toDataURL('image/jpeg', 0.92);
-  capturedImageBase64 = dataUrl.split(',')[1];
-  const prev = document.getElementById('cam-preview');
-  prev.src = dataUrl; prev.style.display = 'block';
+  // Compress to stay under size limits
+  resizeImageToJpeg(dataUrl, (compressed) => {
+    capturedImageBase64 = compressed.split(',')[1];
+    currentFileType = 'image/jpeg';
+    const prev = document.getElementById('cam-preview');
+    prev.src = compressed; prev.style.display = 'block';
+    document.getElementById('cam-rotate-row').style.display = 'block';
+  }, 200000);
   document.getElementById('cam-wrap').style.display = 'none';
   if (stream) { stream.getTracks().forEach(t => t.stop()); stream = null; }
+}
+
+let cameraRotation = 0;
+
+function rotateCameraPhoto() {
+  cameraRotation = (cameraRotation + 90) % 360;
+  const prev = document.getElementById('cam-preview');
+  const img = new Image();
+  img.onload = () => {
+    const canvas = document.createElement('canvas');
+    const swap = cameraRotation % 180 !== 0;
+    canvas.width = swap ? img.height : img.width;
+    canvas.height = swap ? img.width : img.height;
+    const ctx = canvas.getContext('2d');
+    ctx.translate(canvas.width / 2, canvas.height / 2);
+    ctx.rotate(cameraRotation * Math.PI / 180);
+    ctx.drawImage(img, -img.width / 2, -img.height / 2);
+    const rotatedDataUrl = canvas.toDataURL('image/jpeg', 0.82);
+    capturedImageBase64 = rotatedDataUrl.split(',')[1];
+    prev.src = rotatedDataUrl;
+  };
+  img.src = prev.src;
 }
 
 function scrubNames(text) {
@@ -1533,6 +1563,8 @@ function resetTool() {
   transcriptionConfidenceLevel = 'HIGH';
   imageRotations = [];
   singleImageRotation = 0;
+  cameraRotation = 0;
+  document.getElementById('cam-rotate-row').style.display = 'none';
   document.getElementById('read-handwriting-btn-single').style.display = 'none';
   const previewImg = document.getElementById('preview-img');
   previewImg.onclick = null;
