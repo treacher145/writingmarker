@@ -318,6 +318,10 @@ canvas { display: none; }
       </div>
       <div id="curriculum-body" style="display:none;margin-top:6px;">
         <div class="feedback-text" id="curriculum-text"></div>
+        <div id="editing-observation-wrap" style="display:none;margin-top:10px;padding:10px 12px;background:#f0fdf4;border:1px solid #86efac;border-radius:8px;">
+          <div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.06em;color:#166534;margin-bottom:4px;">✏️ Editing &amp; revision</div>
+          <div class="feedback-text" id="editing-observation-text" style="color:#166534;font-size:13px;"></div>
+        </div>
         <div class="outcome-pills" id="outcome-pills"></div>
       </div>
     </div>
@@ -1032,6 +1036,16 @@ SEPARATE SPELLING ASSESSMENT FROM TRANSCRIPTION:
 - If you are unsure whether a word is the student's spelling error or your misread, do not count it against them
 - Note in your assessment if spelling was difficult to evaluate due to handwriting clarity
 
+EDITING AND REVISION OBSERVATION:
+Carefully examine the image for visible evidence of self-editing. Look for:
+- Words or phrases crossed out or scribbled over
+- Words inserted above the line (carets or squeeze-ins)
+- Words or sentences rewritten or replaced
+- Changes to punctuation or capitalisation
+- Any other visible corrections or improvements
+
+This is important curriculum evidence — re-reading and editing is an explicit Victorian Curriculum achievement standard from Year 1 onwards. Note what you observe in the editingObservation field. If no visible editing is present, say so briefly. For typed/pasted text, note that editing is not observable.
+
 WEIGHT STRUCTURAL AND NARRATIVE FEATURES HEAVILY FOR HANDWRITTEN WORK:
 These features are visible even through imperfect transcription and should anchor your level assessment:
 - Overall text structure (orientation, complication, resolution in narratives)
@@ -1212,6 +1226,7 @@ Respond ONLY with valid JSON, no markdown, no backticks:
   "commendationComment": "1-2 warm genuine sentences on why this is impressive",
   "goals": ["Goal 1", "Goal 2", "Goal 3"],
   "curriculumAlignment": "2-3 sentences referencing specific strands, outcomes or achievement standards — no commercial level codes",
+  "editingObservation": "1-2 sentences describing visible editing evidence in the image (crossings out, insertions, corrections) and what this suggests about the student as a self-monitoring writer. If no editing visible, note briefly. If typed text, note not observable.",
   "transcribedText": "the full text of the writing exactly as you read it — every word the student wrote, transcribed accurately. If submitted as typed text, reproduce it as given.",
   "transcriptionConfidence": "HIGH, MEDIUM, or LOW based on how clearly you could read the handwriting",
   "outcomeCodes": [{"code": "VCELY301", "label": "Short label"}]
@@ -1364,6 +1379,16 @@ function renderResult(r) {
     span.innerHTML = `<strong>${o.code}</strong> — ${o.label}`;
     pills.appendChild(span);
   });
+
+  // Render editing observation
+  const editingWrap = document.getElementById('editing-observation-wrap');
+  const editingText = document.getElementById('editing-observation-text');
+  if (res.editingObservation) {
+    editingText.textContent = res.editingObservation;
+    editingWrap.style.display = 'block';
+  } else {
+    editingWrap.style.display = 'none';
+  }
 
   const noteWrap = document.getElementById('teacher-note-display-wrap');
   if (r.teacherNote) {
