@@ -384,11 +384,13 @@ function updateYearLevels() {
   updateEarlyYearsTip();
 }
 
-// Resize and compress image to max 1600px on longest side, 85% quality
-function resizeImageToJpeg(dataUrl, callback) {
+// Resize and compress image — enforces a max byte size per image
+// For multi-page submissions each image must be well under limit
+function resizeImageToJpeg(dataUrl, callback, targetBytes) {
+  targetBytes = targetBytes || 400000; // 400KB per image default
   const img = new Image();
   img.onload = () => {
-    const MAX = 1600;
+    const MAX = 1200; // reduced from 1600
     let w = img.width;
     let h = img.height;
     if (w > MAX || h > MAX) {
@@ -399,7 +401,16 @@ function resizeImageToJpeg(dataUrl, callback) {
     canvas.width = w;
     canvas.height = h;
     canvas.getContext('2d').drawImage(img, 0, 0, w, h);
-    callback(canvas.toDataURL('image/jpeg', 0.85));
+
+    // Try progressively lower quality until under targetBytes
+    const qualities = [0.82, 0.72, 0.62, 0.50, 0.40];
+    let result = canvas.toDataURL('image/jpeg', 0.82);
+    for (let i = 0; i < qualities.length; i++) {
+      result = canvas.toDataURL('image/jpeg', qualities[i]);
+      // base64 is ~4/3 of binary size
+      if ((result.length * 0.75) <= targetBytes) break;
+    }
+    callback(result);
   };
   img.src = dataUrl;
 }
@@ -539,6 +550,7 @@ function handleFile(input) {
   files.forEach((file, idx) => {
     const reader = new FileReader();
     reader.onload = e => {
+      // For multi-page, target 250KB per image so combined payload stays well under limit
       resizeImageToJpeg(e.target.result, (jpegDataUrl) => {
         tempData[idx] = { name: file.name, base64: jpegDataUrl.split(',')[1], dataUrl: jpegDataUrl, mediaType: 'image/jpeg' };
         loaded++;
@@ -546,7 +558,7 @@ function handleFile(input) {
           multiImageData = tempData;
           renderMultiImagePanel();
         }
-      });
+      }, 250000);
     };
     reader.readAsDataURL(file);
   });
@@ -695,7 +707,7 @@ function renderMultiImagePanel() {
         ctx2.translate(c.width / 2, c.height / 2);
         ctx2.rotate(rotation * Math.PI / 180);
         ctx2.drawImage(tempImg2, -tempImg2.width / 2, -tempImg2.height / 2);
-        const rotatedDataUrl = c.toDataURL('image/jpeg', 0.85);
+        const rotatedDataUrl = c.toDataURL('image/jpeg', 0.72);
         multiImageData[currentIdx].dataUrl = rotatedDataUrl;
         multiImageData[currentIdx].base64 = rotatedDataUrl.split(',')[1];
         multiImageData[currentIdx].mediaType = 'image/jpeg';
