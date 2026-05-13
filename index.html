@@ -433,7 +433,9 @@ const yearLevelMap = {
 
 const curriculumMeta = {
   VIC: { name: 'Victorian Curriculum (F-10)', prompt: 'Assess against the Victorian Curriculum F-10 English. Reference Language, Literature, and Literacy strands and Victorian achievement standards by year level. Use Victorian Curriculum content description codes (format: VCELYxxx).' },
-  NSW: { name: 'NSW English K-10 Syllabus', prompt: `Assess against the NSW English K-10 Syllabus as published by NESA (NSW Education Standards Authority). NSW uses a Stage-based structure, not year levels. Reference NSW outcome codes (format: ENe-OLC-01, EN1-UARL-01, EN2-UARL-01 etc).
+  NSW: { name: 'NSW English K-10 Syllabus', prompt: `Assess against the NSW English K-10 Syllabus as published by NESA (NSW Education Standards Authority). NSW uses a Stage-based structure, not year levels. Reference NSW outcome codes using the 2022 NESA syllabus format (e.g. ENE-CWT-01, EN1-CWT-01, EN2-CWT-01, EN3-CWT-01, EN4-ECA-01, EN5-ECA-01).
+
+CRITICAL — OUTCOME CODES: Only use the specific NSW NESA outcome codes listed in the achievement standards below. Do not invent or generate codes that are not explicitly listed. If unsure, use the closest matching code from the list provided.
 
 NSW STAGE STRUCTURE:
 - Early Stage 1 = Kindergarten
@@ -455,7 +457,7 @@ Describe achievement using natural teacher language that references NSW stages. 
 
 NSW ENGLISH K-10 ACHIEVEMENT STANDARDS (WRITING):
 
-EARLY STAGE 1 / KINDERGARTEN (ENe-OLC-01, ENe-UARL-01, ENe-CWT-01):
+EARLY STAGE 1 / KINDERGARTEN (ENE-CWT-01, ENE-SPELL-01, ENE-HANDW-01, ENE-VOCAB-01):
 - Creates texts to communicate ideas using familiar words, letters and beginning writing
 - Demonstrates understanding that writing carries meaning
 - Uses letter-sound knowledge with developing letter formation
@@ -464,7 +466,7 @@ EARLY STAGE 1 / KINDERGARTEN (ENe-OLC-01, ENe-UARL-01, ENe-CWT-01):
 - Word count guide: emergent — focus on letters, words and short phrases rather than word count
 - A strong Early Stage 1 writer creates short texts with recognisable words and sentences
 
-STAGE 1 / YEARS 1-2 (EN1-OLC-01, EN1-UARL-01, EN1-CWT-01, EN1-SPELL-01):
+STAGE 1 / YEARS 1-2 (EN1-CWT-01, EN1-SPELL-01, EN1-HANDW-01, EN1-VOCAB-01):
 - Creates short imaginative, informative and persuasive texts using developing text knowledge
 - Writes simple and compound sentences with subject-verb-object structure
 - Uses capital letters, full stops and question marks with growing consistency
@@ -474,7 +476,7 @@ STAGE 1 / YEARS 1-2 (EN1-OLC-01, EN1-UARL-01, EN1-CWT-01, EN1-SPELL-01):
 - Word count guide: Year 1 minimum 20-40 words; Year 2 minimum 50 words; a strong Stage 1 writer produces 80-120+ words by end of Year 2
 - A strong Stage 1 writer produces linked sentences with appropriate text structure and basic punctuation
 
-STAGE 2 / YEARS 3-4 (EN2-OLC-01, EN2-UARL-01, EN2-CWT-01, EN2-SPELL-01):
+STAGE 2 / YEARS 3-4 (EN2-CWT-01, EN2-CWT-02, EN2-CWT-03, EN2-SPELL-01, EN2-HANDW-01):
 - Plans, composes and reviews imaginative, informative and persuasive texts
 - Uses simple, compound and complex sentences to express and combine ideas
 - Uses paragraphs to organise and sequence content
@@ -484,7 +486,7 @@ STAGE 2 / YEARS 3-4 (EN2-OLC-01, EN2-UARL-01, EN2-CWT-01, EN2-SPELL-01):
 - Word count guide: Year 3 minimum 150 words; Year 4 minimum 250 words; a strong Stage 2 writer produces 280-350+ words by end of Year 4
 - A strong Stage 2 writer uses varied sentence structures and organises ideas in paragraphs with purpose
 
-STAGE 3 / YEARS 5-6 (EN3-OLC-01, EN3-UARL-01, EN3-CWT-01, EN3-SPELL-01):
+STAGE 3 / YEARS 5-6 (EN3-CWT-01, EN3-CWT-02, EN3-CWT-03, EN3-SPELL-01, EN3-HANDW-01):
 - Plans, composes and reviews sustained imaginative, informative and persuasive texts
 - Uses complex sentences, varied vocabulary and deliberate language choices
 - Structures texts with well-developed paragraphs, topic sentences and cohesive devices
@@ -494,7 +496,7 @@ STAGE 3 / YEARS 5-6 (EN3-OLC-01, EN3-UARL-01, EN3-CWT-01, EN3-SPELL-01):
 - Word count guide: Year 5 minimum 250 words; Year 6 minimum 300 words; a strong Stage 3 writer produces 350-500+ words by end of Year 6
 - A strong Stage 3 writer produces sustained texts with controlled language and clear authorial voice
 
-STAGE 4 / YEARS 7-8 (EN4-OLC-01, EN4-UARL-01, EN4-CWT-01, EN4-SPELL-01):
+STAGE 4 / YEARS 7-8 (EN4-ECA-01, EN4-ECB-01, EN4-RVL-01):
 - Composes sustained imaginative, informative and persuasive texts
 - Uses deliberate language choices to position and engage audiences
 - Selects and sequences ideas to develop a sustained argument or narrative
@@ -503,7 +505,7 @@ STAGE 4 / YEARS 7-8 (EN4-OLC-01, EN4-UARL-01, EN4-CWT-01, EN4-SPELL-01):
 - Word count guide: Year 7 minimum 300 words; Year 8 minimum 350 words; a strong Stage 4 writer produces 400-550+ words by end of Year 8
 - A strong Stage 4 writer produces sustained texts demonstrating deliberate and controlled language choices
 
-STAGE 5 / YEARS 9-10 (EN5-OLC-01, EN5-UARL-01, EN5-CWT-01, EN5-SPELL-01):
+STAGE 5 / YEARS 9-10 (EN5-ECA-01, EN5-ECB-01, EN5-RVL-01):
 - Composes sustained, complex texts on challenging issues with depth and nuance
 - Selects and manipulates language features for deliberate effect
 - Structures sustained arguments or narratives with sophisticated control
@@ -517,6 +519,8 @@ STAGE 5 / YEARS 9-10 (EN5-OLC-01, EN5-UARL-01, EN5-CWT-01, EN5-SPELL-01):
   TAS: { name: 'Tasmanian Curriculum', prompt: 'Assess against the Australian Curriculum v9.0 as implemented in Tasmania. Reference AC:E v9 content description codes.' },
   ACT: { name: 'ACT Curriculum', prompt: 'Assess against the Australian Curriculum v9.0 as implemented in the ACT. Reference AC:E v9 content description codes.' },
   NT:  { name: 'Northern Territory Curriculum (AC v9)', prompt: `Assess against the Australian Curriculum v9.0 as implemented in the Northern Territory. The NT follows AC v9.0 directly. Reference AC:E v9 content description codes (format: AC9EXxYYnn).
+
+CRITICAL — OUTCOME CODES: Only use the specific AC v9.0 codes listed in the achievement standards below. Do not invent or generate codes that are not explicitly listed. If unsure, use the closest matching code from the list provided.
 
 CRITICAL — NT CONTEXT:
 The Northern Territory has a uniquely diverse student population. Many NT students are Aboriginal and/or Torres Strait Islander. Many speak English as an additional language or dialect (EAL/D), with some speaking English as a third or fourth language. This must profoundly shape how you interpret writing samples.
@@ -537,7 +541,7 @@ ABORIGINAL AND TORRES STRAIT ISLANDER CULTURAL RESPONSIVENESS:
 AC v9.0 ACHIEVEMENT STANDARDS FOR ENGLISH (WRITING):
 Use these standards when assessing. Reference AC9 codes.
 
-FOUNDATION (AC9EFLE01, AC9EFLE03):
+FOUNDATION (AC9EFLY06, AC9EFLY08, AC9EFLY12, AC9EFLY13):
 - Creates texts using familiar words and beginning writing to communicate ideas
 - Demonstrates understanding that writing carries meaning
 - Uses letter-sound knowledge with some recognisable letters and words
@@ -546,7 +550,7 @@ FOUNDATION (AC9EFLE01, AC9EFLE03):
 - Word count guide: emergent — focus on letters, words and short phrases rather than word count
 - A strong Foundation writer attempts simple sentences with letter-sound awareness
 
-YEAR 1 (AC9E1LE01, AC9E1LE03, AC9E1LY05):
+YEAR 1 (AC9E1LY06, AC9E1LY08, AC9E1LY09, AC9E1LA05):
 - Creates short imaginative and informative texts using simple text structures
 - Writes simple sentences with subject-verb-object structure
 - Uses capital letters and full stops with growing consistency
@@ -555,7 +559,7 @@ YEAR 1 (AC9E1LE01, AC9E1LE03, AC9E1LY05):
 - Word count guide: minimum 2-3 readable sentences; a strong Year 1 writer produces 20-40+ words
 - A strong Year 1 writer produces linked sentences on a topic with basic punctuation
 
-YEAR 2 (AC9E2LE01, AC9E2LE03, AC9E2LY05):
+YEAR 2 (AC9E2LY06, AC9E2LY08, AC9E2LY09, AC9E2LA05):
 - Creates short imaginative, informative and persuasive texts
 - Uses simple and compound sentences to sequence ideas
 - Applies knowledge of common letter patterns and high-frequency words
@@ -564,7 +568,7 @@ YEAR 2 (AC9E2LE01, AC9E2LE03, AC9E2LY05):
 - Word count guide: minimum 50 words; a strong Year 2 writer produces 80-120+ words
 - A strong Year 2 writer produces structured texts with sentence variety and appropriate text structure
 
-YEAR 3 (AC9E3LE01, AC9E3LE03, AC9E3LY05):
+YEAR 3 (AC9E3LY06, AC9E3LY08, AC9E3LY09, AC9E3LA05):
 - Plans, creates and reviews imaginative, informative and persuasive texts
 - Uses simple, compound and emerging complex sentences
 - Begins to use paragraphs to organise ideas
@@ -573,7 +577,7 @@ YEAR 3 (AC9E3LE01, AC9E3LE03, AC9E3LY05):
 - Word count guide: minimum 150 words; a strong Year 3 writer produces 180-250+ words
 - A strong Year 3 writer sequences ideas clearly with growing vocabulary range
 
-YEAR 4 (AC9E4LE01, AC9E4LE03, AC9E4LY05):
+YEAR 4 (AC9E4LY06, AC9E4LY08, AC9E4LY09, AC9E4LA05):
 - Plans, creates and reviews texts with key information and supporting details
 - Uses simple, compound and complex sentences with increasing control
 - Uses consistent paragraphing to sequence content
@@ -582,7 +586,7 @@ YEAR 4 (AC9E4LE01, AC9E4LE03, AC9E4LY05):
 - Word count guide: minimum 250 words; a strong Year 4 writer produces 280-350+ words
 - A strong Year 4 writer uses language features effectively with clear editing evidence
 
-YEAR 5 (AC9E5LE01, AC9E5LE03, AC9E5LY05):
+YEAR 5 (AC9E5LY06, AC9E5LY08, AC9E5LY09, AC9E5LA05):
 - Plans, creates and reviews imaginative, informative and persuasive texts
 - Uses well-structured paragraphs with topic sentences and supporting detail
 - Controls complex sentence structures and verb tenses
@@ -591,7 +595,7 @@ YEAR 5 (AC9E5LE01, AC9E5LE03, AC9E5LY05):
 - Word count guide: minimum 250 words; a strong Year 5 writer produces 300-400+ words
 - A strong Year 5 writer sustains quality and voice across a longer piece
 
-YEAR 6 (AC9E6LE01, AC9E6LE03, AC9E6LY05):
+YEAR 6 (AC9E6LY06, AC9E6LY08, AC9E6LY09, AC9E6LA05):
 - Plans, creates and reviews texts experimenting with text structures and language features
 - Uses rhetorical devices, imagery and deliberate language choices
 - Creates texts for different audiences with clear sense of purpose
@@ -599,7 +603,7 @@ YEAR 6 (AC9E6LE01, AC9E6LE03, AC9E6LY05):
 - Word count guide: minimum 300 words; a strong Year 6 writer produces 350-500+ words
 - A strong Year 6 writer experiments deliberately with structure and produces individual voice
 
-YEAR 7 (AC9E7LE01, AC9E7LE03, AC9E7LY05):
+YEAR 7 (AC9E7LY06, AC9E7LY08, AC9E7LY09, AC9E7LA05):
 - Plans, creates and reviews imaginative, informative and persuasive texts
 - Selects language, visual and audio features purposefully
 - Uses specific rhetorical devices to engage audiences
@@ -607,7 +611,7 @@ YEAR 7 (AC9E7LE01, AC9E7LE03, AC9E7LY05):
 - Word count guide: minimum 300 words; a strong Year 7 writer produces 350-500+ words
 - A strong Year 7 writer selects subject matter and language deliberately for purpose and audience
 
-YEAR 8 (AC9E8LE01, AC9E8LE03, AC9E8LY05):
+YEAR 8 (AC9E8LY06, AC9E8LY08, AC9E8LY09, AC9E8LA05):
 - Creates texts that raise issues, report events and advance opinions
 - Uses deliberate language and textual choices throughout
 - Selects vocabulary to influence meaning and position the audience
@@ -615,7 +619,7 @@ YEAR 8 (AC9E8LE01, AC9E8LE03, AC9E8LY05):
 - Word count guide: minimum 350 words; a strong Year 8 writer produces 400-550+ words
 - A strong Year 8 writer advances opinions through controlled and deliberate language choices
 
-YEAR 9 (AC9E9LE01, AC9E9LE03, AC9E9LY05):
+YEAR 9 (AC9E9LY06, AC9E9LE06, AC9E9LY07, AC9E9LA03):
 - Creates imaginative, informative and persuasive texts presenting a point of view
 - Structures sustained arguments with clear line of reasoning
 - Controls complex sentence structures and varied vocabulary
@@ -623,7 +627,7 @@ YEAR 9 (AC9E9LE01, AC9E9LE03, AC9E9LY05):
 - Word count guide: minimum 400 words; a strong Year 9 writer produces 450-600+ words
 - A strong Year 9 writer produces sustained, structured arguments with confident language control
 
-YEAR 10 (AC9E10LE01, AC9E10LE03, AC9E10LY05):
+YEAR 10 (AC9E10LY06, AC9E10LE06, AC9E10LY07, AC9E10LA03):
 - Creates sustained texts on complex issues with depth and nuance
 - Reflects on and critiques own texts prior to publishing
 - Controls all language features for effect and precision
