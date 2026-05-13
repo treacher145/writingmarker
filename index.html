@@ -175,6 +175,7 @@ canvas { display: none; }
       <div class="sel-group">
         <label for="curriculum-select">State / curriculum</label>
         <select id="curriculum-select" onchange="updateYearLevels()">
+          <option value="" disabled selected>Please choose</option>
           <option value="VIC">VIC</option>
           <option value="NSW">NSW</option>
           <option value="QLD">QLD</option>
@@ -193,6 +194,7 @@ canvas { display: none; }
       <div class="sel-group">
         <label for="genre-select">This writing type</label>
         <select id="genre-select">
+          <option value="" disabled selected>Please choose</option>
           <option value="narrative">Narrative</option>
           <option value="information report">Information report</option>
           <option value="persuasive / argumentative">Persuasive</option>
@@ -1228,14 +1230,15 @@ YEAR 10 (AC9E10LY06, AC9E10LE06, AC9E10LY07, AC9E10LA03):
 
 function updateYearLevels() {
   const key = document.getElementById('curriculum-select').value;
-
   const levels = yearLevelMap[key] || yearLevelMap.default;
   const sel = document.getElementById('year-select');
   sel.innerHTML = '';
-  levels.forEach((lvl, i) => {
+  const placeholder = document.createElement('option');
+  placeholder.value = ''; placeholder.textContent = 'Please choose'; placeholder.disabled = true; placeholder.selected = true;
+  sel.appendChild(placeholder);
+  levels.forEach((lvl) => {
     const opt = document.createElement('option');
     opt.value = lvl; opt.textContent = lvl;
-    if (i === 4) opt.selected = true;
     sel.appendChild(opt);
   });
   updateEarlyYearsTip();
@@ -2121,6 +2124,18 @@ async function markWriting() {
   hideError();
   if (!document.getElementById('privacy-check').checked) {
     showError('Privacy confirmation needed', 'Please confirm no identifying information is included before submitting.');
+    return;
+  }
+  if (!document.getElementById('curriculum-select').value) {
+    showError('Please choose a state', 'Select a state or territory before marking.');
+    return;
+  }
+  if (!document.getElementById('year-select').value) {
+    showError('Please choose a year level', 'Select a year level before marking.');
+    return;
+  }
+  if (!document.getElementById('genre-select').value) {
+    showError('Please choose a writing type', 'Select the writing type before marking.');
     return;
   }
   const currKey = document.getElementById('curriculum-select').value;
