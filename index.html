@@ -178,13 +178,13 @@ canvas { display: none; }
         <select id="curriculum-select" onchange="updateYearLevels()">
           <option value="VIC">VIC — Victorian Curriculum</option>
           <option value="NSW">NSW — NSW Curriculum</option>
-          <option value="QLD" disabled style="color:#ccc;">QLD — Coming soon</option>
-          <option value="SA" disabled style="color:#ccc;">SA — Coming soon</option>
-          <option value="WA" disabled style="color:#ccc;">WA — Coming soon</option>
-          <option value="TAS" disabled style="color:#ccc;">TAS — Coming soon</option>
-          <option value="ACT" disabled style="color:#ccc;">ACT — Coming soon</option>
-          <option value="NT">NT — Northern Territory Curriculum</option>
-          <option value="NAT" disabled style="color:#ccc;">National — Coming soon</option>
+          <option value="QLD">QLD — Australian Curriculum v9.0</option>
+          <option value="SA">SA — Australian Curriculum v9.0</option>
+          <option value="WA">WA — Australian Curriculum v9.0</option>
+          <option value="TAS">TAS — Australian Curriculum v9.0</option>
+          <option value="ACT">ACT — Australian Curriculum v9.0</option>
+          <option value="NT">NT — Australian Curriculum v9.0</option>
+          <option value="NAT">National — Australian Curriculum v9.0</option>
         </select>
       </div>
       <div class="sel-group">
@@ -513,30 +513,9 @@ STAGE 5 / YEARS 9-10 (EN5-ECA-01, EN5-ECB-01, EN5-RVL-01):
 - Controls all language features including syntax, vocabulary and punctuation for precision
 - Word count guide: Year 9 minimum 400 words; Year 10 minimum 450 words; a strong Stage 5 writer produces 500-700+ words by end of Year 10
 - A strong Stage 5 writer produces purposeful, refined texts demonstrating sophisticated authorial control` },
-  QLD: { name: 'Queensland Curriculum (AC v9)', prompt: 'Assess against the Australian Curriculum v9.0 as implemented in Queensland. Reference AC:E v9 content description codes (format: AC9EXxYYnn).' },
-  SA:  { name: 'South Australian Curriculum', prompt: 'Assess against the Australian Curriculum v9.0 as implemented in South Australia. Reference AC:E v9 content description codes.' },
-  WA:  { name: 'Western Australian Curriculum', prompt: 'Assess against the Western Australian Curriculum (aligned to AC v9). Reference AC:E v9 content description codes.' },
-  TAS: { name: 'Tasmanian Curriculum', prompt: 'Assess against the Australian Curriculum v9.0 as implemented in Tasmania. Reference AC:E v9 content description codes.' },
-  ACT: { name: 'ACT Curriculum', prompt: 'Assess against the Australian Curriculum v9.0 as implemented in the ACT. Reference AC:E v9 content description codes.' },
-  NT:  { name: 'Northern Territory Curriculum (AC v9)', prompt: `Assess against the Australian Curriculum v9.0 as implemented in the Northern Territory. The NT follows AC v9.0 directly. Reference AC:E v9 content description codes (format: AC9EXxYYnn).
+  QLD: { name: 'Queensland Curriculum (AC v9)', prompt: `Assess against the Australian Curriculum v9.0 as implemented in Queensland. The curriculum follows AC v9.0 directly. Reference AC:E v9 content description codes.
 
 CRITICAL — OUTCOME CODES: Only use the specific AC v9.0 codes listed in the achievement standards below. Do not invent or generate codes that are not explicitly listed. If unsure, use the closest matching code from the list provided.
-
-CRITICAL — NT CONTEXT:
-The Northern Territory has a uniquely diverse student population. Many NT students are Aboriginal and/or Torres Strait Islander. Many speak English as an additional language or dialect (EAL/D), with some speaking English as a third or fourth language. This must profoundly shape how you interpret writing samples.
-
-EAL/D ASSESSMENT PRINCIPLES FOR NT:
-- Language transfer features (grammar structures from home language appearing in English) are NOT errors — they are evidence of a multilingual developing writer
-- Code-switching and use of home language features in English writing demonstrates metalinguistic awareness, not deficit
-- Do not penalise for English-specific features (articles, prepositions, verb agreement) that reflect the student's language background
-- Focus on meaning-making, ideas, and narrative/textual control — these often develop ahead of surface English accuracy in EAL/D writers
-- A student who constructs a compelling narrative with developing English syntax may be performing at a higher level than surface features suggest
-- Where EAL/D is flagged, explicitly note this in your assessment and explain how it informs your judgement
-
-ABORIGINAL AND TORRES STRAIT ISLANDER CULTURAL RESPONSIVENESS:
-- Writing may reflect oral storytelling traditions — circular narrative structures, community-centred perspectives, and non-linear time are culturally valid, not structurally deficient
-- References to Country, community, and cultural knowledge are evidence of rich content and voice
-- Celebrate cultural knowledge and perspective as a writing strength
 
 AC v9.0 ACHIEVEMENT STANDARDS FOR ENGLISH (WRITING):
 Use these standards when assessing. Reference AC9 codes.
@@ -633,13 +612,621 @@ YEAR 10 (AC9E10LY06, AC9E10LE06, AC9E10LY07, AC9E10LA03):
 - Controls all language features for effect and precision
 - Word count guide: minimum 450 words; a strong Year 10 writer produces 500-700+ words
 - A strong Year 10 writer produces purposeful, refined texts demonstrating sophisticated control` },
-  NAT: { name: 'Australian Curriculum v9.0', prompt: 'Assess against the Australian Curriculum: English v9.0. Reference AC:E v9 content description codes (format: AC9EXxYYnn).' }
+  SA:  { name: 'South Australian Curriculum (AC v9)', prompt: `Assess against the Australian Curriculum v9.0 as implemented in South Australia. The curriculum follows AC v9.0 directly. Reference AC:E v9 content description codes.
+
+CRITICAL — OUTCOME CODES: Only use the specific AC v9.0 codes listed in the achievement standards below. Do not invent or generate codes that are not explicitly listed. If unsure, use the closest matching code from the list provided.
+
+AC v9.0 ACHIEVEMENT STANDARDS FOR ENGLISH (WRITING):
+Use these standards when assessing. Reference AC9 codes.
+
+FOUNDATION (AC9EFLY06, AC9EFLY08, AC9EFLY12, AC9EFLY13):
+- Creates texts using familiar words and beginning writing to communicate ideas
+- Demonstrates understanding that writing carries meaning
+- Uses letter-sound knowledge with some recognisable letters and words
+- Shows left-to-right, top-to-bottom orientation
+- Produces some recognisable letters with developing formation
+- Word count guide: emergent — focus on letters, words and short phrases rather than word count
+- A strong Foundation writer attempts simple sentences with letter-sound awareness
+
+YEAR 1 (AC9E1LY06, AC9E1LY08, AC9E1LY09, AC9E1LA05):
+- Creates short imaginative and informative texts using simple text structures
+- Writes simple sentences with subject-verb-object structure
+- Uses capital letters and full stops with growing consistency
+- Applies phonological knowledge to spell simple words
+- Re-reads and makes simple changes to improve meaning
+- Word count guide: minimum 2-3 readable sentences; a strong Year 1 writer produces 20-40+ words
+- A strong Year 1 writer produces linked sentences on a topic with basic punctuation
+
+YEAR 2 (AC9E2LY06, AC9E2LY08, AC9E2LY09, AC9E2LA05):
+- Creates short imaginative, informative and persuasive texts
+- Uses simple and compound sentences to sequence ideas
+- Applies knowledge of common letter patterns and high-frequency words
+- Uses appropriate punctuation including capital letters, full stops and question marks
+- Re-reads and edits for spelling and punctuation
+- Word count guide: minimum 50 words; a strong Year 2 writer produces 80-120+ words
+- A strong Year 2 writer produces structured texts with sentence variety and appropriate text structure
+
+YEAR 3 (AC9E3LY06, AC9E3LY08, AC9E3LY09, AC9E3LA05):
+- Plans, creates and reviews imaginative, informative and persuasive texts
+- Uses simple, compound and emerging complex sentences
+- Begins to use paragraphs to organise ideas
+- Selects vocabulary for purpose and audience
+- Spells most common words correctly and attempts unknown words using strategies
+- Word count guide: minimum 150 words; a strong Year 3 writer produces 180-250+ words
+- A strong Year 3 writer sequences ideas clearly with growing vocabulary range
+
+YEAR 4 (AC9E4LY06, AC9E4LY08, AC9E4LY09, AC9E4LA05):
+- Plans, creates and reviews texts with key information and supporting details
+- Uses simple, compound and complex sentences with increasing control
+- Uses consistent paragraphing to sequence content
+- Selects vocabulary to suit topic and communication purpose
+- Re-reads and edits for meaning, grammar and spelling accuracy
+- Word count guide: minimum 250 words; a strong Year 4 writer produces 280-350+ words
+- A strong Year 4 writer uses language features effectively with clear editing evidence
+
+YEAR 5 (AC9E5LY06, AC9E5LY08, AC9E5LY09, AC9E5LA05):
+- Plans, creates and reviews imaginative, informative and persuasive texts
+- Uses well-structured paragraphs with topic sentences and supporting detail
+- Controls complex sentence structures and verb tenses
+- Selects vocabulary for effect and precision
+- Edits for flow, organisation and language choices
+- Word count guide: minimum 250 words; a strong Year 5 writer produces 300-400+ words
+- A strong Year 5 writer sustains quality and voice across a longer piece
+
+YEAR 6 (AC9E6LY06, AC9E6LY08, AC9E6LY09, AC9E6LA05):
+- Plans, creates and reviews texts experimenting with text structures and language features
+- Uses rhetorical devices, imagery and deliberate language choices
+- Creates texts for different audiences with clear sense of purpose
+- Edits for coherence, vocabulary, structure and effect
+- Word count guide: minimum 300 words; a strong Year 6 writer produces 350-500+ words
+- A strong Year 6 writer experiments deliberately with structure and produces individual voice
+
+YEAR 7 (AC9E7LY06, AC9E7LY08, AC9E7LY09, AC9E7LA05):
+- Plans, creates and reviews imaginative, informative and persuasive texts
+- Selects language, visual and audio features purposefully
+- Uses specific rhetorical devices to engage audiences
+- Edits for meaning, impact and control of language features
+- Word count guide: minimum 300 words; a strong Year 7 writer produces 350-500+ words
+- A strong Year 7 writer selects subject matter and language deliberately for purpose and audience
+
+YEAR 8 (AC9E8LY06, AC9E8LY08, AC9E8LY09, AC9E8LA05):
+- Creates texts that raise issues, report events and advance opinions
+- Uses deliberate language and textual choices throughout
+- Selects vocabulary to influence meaning and position the audience
+- Experiments with text structures to refine and clarify ideas
+- Word count guide: minimum 350 words; a strong Year 8 writer produces 400-550+ words
+- A strong Year 8 writer advances opinions through controlled and deliberate language choices
+
+YEAR 9 (AC9E9LY06, AC9E9LE06, AC9E9LY07, AC9E9LA03):
+- Creates imaginative, informative and persuasive texts presenting a point of view
+- Structures sustained arguments with clear line of reasoning
+- Controls complex sentence structures and varied vocabulary
+- Reviews and edits for clarity, cohesion and control
+- Word count guide: minimum 400 words; a strong Year 9 writer produces 450-600+ words
+- A strong Year 9 writer produces sustained, structured arguments with confident language control
+
+YEAR 10 (AC9E10LY06, AC9E10LE06, AC9E10LY07, AC9E10LA03):
+- Creates sustained texts on complex issues with depth and nuance
+- Reflects on and critiques own texts prior to publishing
+- Controls all language features for effect and precision
+- Word count guide: minimum 450 words; a strong Year 10 writer produces 500-700+ words
+- A strong Year 10 writer produces purposeful, refined texts demonstrating sophisticated control` },
+  WA:  { name: 'Western Australian Curriculum (AC v9)', prompt: `Assess against the Australian Curriculum v9.0 as implemented in Western Australia. The curriculum follows AC v9.0 directly. Reference AC:E v9 content description codes.
+
+CRITICAL — OUTCOME CODES: Only use the specific AC v9.0 codes listed in the achievement standards below. Do not invent or generate codes that are not explicitly listed. If unsure, use the closest matching code from the list provided.
+
+AC v9.0 ACHIEVEMENT STANDARDS FOR ENGLISH (WRITING):
+Use these standards when assessing. Reference AC9 codes.
+
+FOUNDATION (AC9EFLY06, AC9EFLY08, AC9EFLY12, AC9EFLY13):
+- Creates texts using familiar words and beginning writing to communicate ideas
+- Demonstrates understanding that writing carries meaning
+- Uses letter-sound knowledge with some recognisable letters and words
+- Shows left-to-right, top-to-bottom orientation
+- Produces some recognisable letters with developing formation
+- Word count guide: emergent — focus on letters, words and short phrases rather than word count
+- A strong Foundation writer attempts simple sentences with letter-sound awareness
+
+YEAR 1 (AC9E1LY06, AC9E1LY08, AC9E1LY09, AC9E1LA05):
+- Creates short imaginative and informative texts using simple text structures
+- Writes simple sentences with subject-verb-object structure
+- Uses capital letters and full stops with growing consistency
+- Applies phonological knowledge to spell simple words
+- Re-reads and makes simple changes to improve meaning
+- Word count guide: minimum 2-3 readable sentences; a strong Year 1 writer produces 20-40+ words
+- A strong Year 1 writer produces linked sentences on a topic with basic punctuation
+
+YEAR 2 (AC9E2LY06, AC9E2LY08, AC9E2LY09, AC9E2LA05):
+- Creates short imaginative, informative and persuasive texts
+- Uses simple and compound sentences to sequence ideas
+- Applies knowledge of common letter patterns and high-frequency words
+- Uses appropriate punctuation including capital letters, full stops and question marks
+- Re-reads and edits for spelling and punctuation
+- Word count guide: minimum 50 words; a strong Year 2 writer produces 80-120+ words
+- A strong Year 2 writer produces structured texts with sentence variety and appropriate text structure
+
+YEAR 3 (AC9E3LY06, AC9E3LY08, AC9E3LY09, AC9E3LA05):
+- Plans, creates and reviews imaginative, informative and persuasive texts
+- Uses simple, compound and emerging complex sentences
+- Begins to use paragraphs to organise ideas
+- Selects vocabulary for purpose and audience
+- Spells most common words correctly and attempts unknown words using strategies
+- Word count guide: minimum 150 words; a strong Year 3 writer produces 180-250+ words
+- A strong Year 3 writer sequences ideas clearly with growing vocabulary range
+
+YEAR 4 (AC9E4LY06, AC9E4LY08, AC9E4LY09, AC9E4LA05):
+- Plans, creates and reviews texts with key information and supporting details
+- Uses simple, compound and complex sentences with increasing control
+- Uses consistent paragraphing to sequence content
+- Selects vocabulary to suit topic and communication purpose
+- Re-reads and edits for meaning, grammar and spelling accuracy
+- Word count guide: minimum 250 words; a strong Year 4 writer produces 280-350+ words
+- A strong Year 4 writer uses language features effectively with clear editing evidence
+
+YEAR 5 (AC9E5LY06, AC9E5LY08, AC9E5LY09, AC9E5LA05):
+- Plans, creates and reviews imaginative, informative and persuasive texts
+- Uses well-structured paragraphs with topic sentences and supporting detail
+- Controls complex sentence structures and verb tenses
+- Selects vocabulary for effect and precision
+- Edits for flow, organisation and language choices
+- Word count guide: minimum 250 words; a strong Year 5 writer produces 300-400+ words
+- A strong Year 5 writer sustains quality and voice across a longer piece
+
+YEAR 6 (AC9E6LY06, AC9E6LY08, AC9E6LY09, AC9E6LA05):
+- Plans, creates and reviews texts experimenting with text structures and language features
+- Uses rhetorical devices, imagery and deliberate language choices
+- Creates texts for different audiences with clear sense of purpose
+- Edits for coherence, vocabulary, structure and effect
+- Word count guide: minimum 300 words; a strong Year 6 writer produces 350-500+ words
+- A strong Year 6 writer experiments deliberately with structure and produces individual voice
+
+YEAR 7 (AC9E7LY06, AC9E7LY08, AC9E7LY09, AC9E7LA05):
+- Plans, creates and reviews imaginative, informative and persuasive texts
+- Selects language, visual and audio features purposefully
+- Uses specific rhetorical devices to engage audiences
+- Edits for meaning, impact and control of language features
+- Word count guide: minimum 300 words; a strong Year 7 writer produces 350-500+ words
+- A strong Year 7 writer selects subject matter and language deliberately for purpose and audience
+
+YEAR 8 (AC9E8LY06, AC9E8LY08, AC9E8LY09, AC9E8LA05):
+- Creates texts that raise issues, report events and advance opinions
+- Uses deliberate language and textual choices throughout
+- Selects vocabulary to influence meaning and position the audience
+- Experiments with text structures to refine and clarify ideas
+- Word count guide: minimum 350 words; a strong Year 8 writer produces 400-550+ words
+- A strong Year 8 writer advances opinions through controlled and deliberate language choices
+
+YEAR 9 (AC9E9LY06, AC9E9LE06, AC9E9LY07, AC9E9LA03):
+- Creates imaginative, informative and persuasive texts presenting a point of view
+- Structures sustained arguments with clear line of reasoning
+- Controls complex sentence structures and varied vocabulary
+- Reviews and edits for clarity, cohesion and control
+- Word count guide: minimum 400 words; a strong Year 9 writer produces 450-600+ words
+- A strong Year 9 writer produces sustained, structured arguments with confident language control
+
+YEAR 10 (AC9E10LY06, AC9E10LE06, AC9E10LY07, AC9E10LA03):
+- Creates sustained texts on complex issues with depth and nuance
+- Reflects on and critiques own texts prior to publishing
+- Controls all language features for effect and precision
+- Word count guide: minimum 450 words; a strong Year 10 writer produces 500-700+ words
+- A strong Year 10 writer produces purposeful, refined texts demonstrating sophisticated control` },
+  TAS: { name: 'Tasmanian Curriculum (AC v9)', prompt: `Assess against the Australian Curriculum v9.0 as implemented in Tasmania. The curriculum follows AC v9.0 directly. Reference AC:E v9 content description codes.
+
+CRITICAL — OUTCOME CODES: Only use the specific AC v9.0 codes listed in the achievement standards below. Do not invent or generate codes that are not explicitly listed. If unsure, use the closest matching code from the list provided.
+
+AC v9.0 ACHIEVEMENT STANDARDS FOR ENGLISH (WRITING):
+Use these standards when assessing. Reference AC9 codes.
+
+FOUNDATION (AC9EFLY06, AC9EFLY08, AC9EFLY12, AC9EFLY13):
+- Creates texts using familiar words and beginning writing to communicate ideas
+- Demonstrates understanding that writing carries meaning
+- Uses letter-sound knowledge with some recognisable letters and words
+- Shows left-to-right, top-to-bottom orientation
+- Produces some recognisable letters with developing formation
+- Word count guide: emergent — focus on letters, words and short phrases rather than word count
+- A strong Foundation writer attempts simple sentences with letter-sound awareness
+
+YEAR 1 (AC9E1LY06, AC9E1LY08, AC9E1LY09, AC9E1LA05):
+- Creates short imaginative and informative texts using simple text structures
+- Writes simple sentences with subject-verb-object structure
+- Uses capital letters and full stops with growing consistency
+- Applies phonological knowledge to spell simple words
+- Re-reads and makes simple changes to improve meaning
+- Word count guide: minimum 2-3 readable sentences; a strong Year 1 writer produces 20-40+ words
+- A strong Year 1 writer produces linked sentences on a topic with basic punctuation
+
+YEAR 2 (AC9E2LY06, AC9E2LY08, AC9E2LY09, AC9E2LA05):
+- Creates short imaginative, informative and persuasive texts
+- Uses simple and compound sentences to sequence ideas
+- Applies knowledge of common letter patterns and high-frequency words
+- Uses appropriate punctuation including capital letters, full stops and question marks
+- Re-reads and edits for spelling and punctuation
+- Word count guide: minimum 50 words; a strong Year 2 writer produces 80-120+ words
+- A strong Year 2 writer produces structured texts with sentence variety and appropriate text structure
+
+YEAR 3 (AC9E3LY06, AC9E3LY08, AC9E3LY09, AC9E3LA05):
+- Plans, creates and reviews imaginative, informative and persuasive texts
+- Uses simple, compound and emerging complex sentences
+- Begins to use paragraphs to organise ideas
+- Selects vocabulary for purpose and audience
+- Spells most common words correctly and attempts unknown words using strategies
+- Word count guide: minimum 150 words; a strong Year 3 writer produces 180-250+ words
+- A strong Year 3 writer sequences ideas clearly with growing vocabulary range
+
+YEAR 4 (AC9E4LY06, AC9E4LY08, AC9E4LY09, AC9E4LA05):
+- Plans, creates and reviews texts with key information and supporting details
+- Uses simple, compound and complex sentences with increasing control
+- Uses consistent paragraphing to sequence content
+- Selects vocabulary to suit topic and communication purpose
+- Re-reads and edits for meaning, grammar and spelling accuracy
+- Word count guide: minimum 250 words; a strong Year 4 writer produces 280-350+ words
+- A strong Year 4 writer uses language features effectively with clear editing evidence
+
+YEAR 5 (AC9E5LY06, AC9E5LY08, AC9E5LY09, AC9E5LA05):
+- Plans, creates and reviews imaginative, informative and persuasive texts
+- Uses well-structured paragraphs with topic sentences and supporting detail
+- Controls complex sentence structures and verb tenses
+- Selects vocabulary for effect and precision
+- Edits for flow, organisation and language choices
+- Word count guide: minimum 250 words; a strong Year 5 writer produces 300-400+ words
+- A strong Year 5 writer sustains quality and voice across a longer piece
+
+YEAR 6 (AC9E6LY06, AC9E6LY08, AC9E6LY09, AC9E6LA05):
+- Plans, creates and reviews texts experimenting with text structures and language features
+- Uses rhetorical devices, imagery and deliberate language choices
+- Creates texts for different audiences with clear sense of purpose
+- Edits for coherence, vocabulary, structure and effect
+- Word count guide: minimum 300 words; a strong Year 6 writer produces 350-500+ words
+- A strong Year 6 writer experiments deliberately with structure and produces individual voice
+
+YEAR 7 (AC9E7LY06, AC9E7LY08, AC9E7LY09, AC9E7LA05):
+- Plans, creates and reviews imaginative, informative and persuasive texts
+- Selects language, visual and audio features purposefully
+- Uses specific rhetorical devices to engage audiences
+- Edits for meaning, impact and control of language features
+- Word count guide: minimum 300 words; a strong Year 7 writer produces 350-500+ words
+- A strong Year 7 writer selects subject matter and language deliberately for purpose and audience
+
+YEAR 8 (AC9E8LY06, AC9E8LY08, AC9E8LY09, AC9E8LA05):
+- Creates texts that raise issues, report events and advance opinions
+- Uses deliberate language and textual choices throughout
+- Selects vocabulary to influence meaning and position the audience
+- Experiments with text structures to refine and clarify ideas
+- Word count guide: minimum 350 words; a strong Year 8 writer produces 400-550+ words
+- A strong Year 8 writer advances opinions through controlled and deliberate language choices
+
+YEAR 9 (AC9E9LY06, AC9E9LE06, AC9E9LY07, AC9E9LA03):
+- Creates imaginative, informative and persuasive texts presenting a point of view
+- Structures sustained arguments with clear line of reasoning
+- Controls complex sentence structures and varied vocabulary
+- Reviews and edits for clarity, cohesion and control
+- Word count guide: minimum 400 words; a strong Year 9 writer produces 450-600+ words
+- A strong Year 9 writer produces sustained, structured arguments with confident language control
+
+YEAR 10 (AC9E10LY06, AC9E10LE06, AC9E10LY07, AC9E10LA03):
+- Creates sustained texts on complex issues with depth and nuance
+- Reflects on and critiques own texts prior to publishing
+- Controls all language features for effect and precision
+- Word count guide: minimum 450 words; a strong Year 10 writer produces 500-700+ words
+- A strong Year 10 writer produces purposeful, refined texts demonstrating sophisticated control` },
+  ACT: { name: 'ACT Curriculum (AC v9)', prompt: `Assess against the Australian Curriculum v9.0 as implemented in the ACT. The curriculum follows AC v9.0 directly. Reference AC:E v9 content description codes.
+
+CRITICAL — OUTCOME CODES: Only use the specific AC v9.0 codes listed in the achievement standards below. Do not invent or generate codes that are not explicitly listed. If unsure, use the closest matching code from the list provided.
+
+AC v9.0 ACHIEVEMENT STANDARDS FOR ENGLISH (WRITING):
+Use these standards when assessing. Reference AC9 codes.
+
+FOUNDATION (AC9EFLY06, AC9EFLY08, AC9EFLY12, AC9EFLY13):
+- Creates texts using familiar words and beginning writing to communicate ideas
+- Demonstrates understanding that writing carries meaning
+- Uses letter-sound knowledge with some recognisable letters and words
+- Shows left-to-right, top-to-bottom orientation
+- Produces some recognisable letters with developing formation
+- Word count guide: emergent — focus on letters, words and short phrases rather than word count
+- A strong Foundation writer attempts simple sentences with letter-sound awareness
+
+YEAR 1 (AC9E1LY06, AC9E1LY08, AC9E1LY09, AC9E1LA05):
+- Creates short imaginative and informative texts using simple text structures
+- Writes simple sentences with subject-verb-object structure
+- Uses capital letters and full stops with growing consistency
+- Applies phonological knowledge to spell simple words
+- Re-reads and makes simple changes to improve meaning
+- Word count guide: minimum 2-3 readable sentences; a strong Year 1 writer produces 20-40+ words
+- A strong Year 1 writer produces linked sentences on a topic with basic punctuation
+
+YEAR 2 (AC9E2LY06, AC9E2LY08, AC9E2LY09, AC9E2LA05):
+- Creates short imaginative, informative and persuasive texts
+- Uses simple and compound sentences to sequence ideas
+- Applies knowledge of common letter patterns and high-frequency words
+- Uses appropriate punctuation including capital letters, full stops and question marks
+- Re-reads and edits for spelling and punctuation
+- Word count guide: minimum 50 words; a strong Year 2 writer produces 80-120+ words
+- A strong Year 2 writer produces structured texts with sentence variety and appropriate text structure
+
+YEAR 3 (AC9E3LY06, AC9E3LY08, AC9E3LY09, AC9E3LA05):
+- Plans, creates and reviews imaginative, informative and persuasive texts
+- Uses simple, compound and emerging complex sentences
+- Begins to use paragraphs to organise ideas
+- Selects vocabulary for purpose and audience
+- Spells most common words correctly and attempts unknown words using strategies
+- Word count guide: minimum 150 words; a strong Year 3 writer produces 180-250+ words
+- A strong Year 3 writer sequences ideas clearly with growing vocabulary range
+
+YEAR 4 (AC9E4LY06, AC9E4LY08, AC9E4LY09, AC9E4LA05):
+- Plans, creates and reviews texts with key information and supporting details
+- Uses simple, compound and complex sentences with increasing control
+- Uses consistent paragraphing to sequence content
+- Selects vocabulary to suit topic and communication purpose
+- Re-reads and edits for meaning, grammar and spelling accuracy
+- Word count guide: minimum 250 words; a strong Year 4 writer produces 280-350+ words
+- A strong Year 4 writer uses language features effectively with clear editing evidence
+
+YEAR 5 (AC9E5LY06, AC9E5LY08, AC9E5LY09, AC9E5LA05):
+- Plans, creates and reviews imaginative, informative and persuasive texts
+- Uses well-structured paragraphs with topic sentences and supporting detail
+- Controls complex sentence structures and verb tenses
+- Selects vocabulary for effect and precision
+- Edits for flow, organisation and language choices
+- Word count guide: minimum 250 words; a strong Year 5 writer produces 300-400+ words
+- A strong Year 5 writer sustains quality and voice across a longer piece
+
+YEAR 6 (AC9E6LY06, AC9E6LY08, AC9E6LY09, AC9E6LA05):
+- Plans, creates and reviews texts experimenting with text structures and language features
+- Uses rhetorical devices, imagery and deliberate language choices
+- Creates texts for different audiences with clear sense of purpose
+- Edits for coherence, vocabulary, structure and effect
+- Word count guide: minimum 300 words; a strong Year 6 writer produces 350-500+ words
+- A strong Year 6 writer experiments deliberately with structure and produces individual voice
+
+YEAR 7 (AC9E7LY06, AC9E7LY08, AC9E7LY09, AC9E7LA05):
+- Plans, creates and reviews imaginative, informative and persuasive texts
+- Selects language, visual and audio features purposefully
+- Uses specific rhetorical devices to engage audiences
+- Edits for meaning, impact and control of language features
+- Word count guide: minimum 300 words; a strong Year 7 writer produces 350-500+ words
+- A strong Year 7 writer selects subject matter and language deliberately for purpose and audience
+
+YEAR 8 (AC9E8LY06, AC9E8LY08, AC9E8LY09, AC9E8LA05):
+- Creates texts that raise issues, report events and advance opinions
+- Uses deliberate language and textual choices throughout
+- Selects vocabulary to influence meaning and position the audience
+- Experiments with text structures to refine and clarify ideas
+- Word count guide: minimum 350 words; a strong Year 8 writer produces 400-550+ words
+- A strong Year 8 writer advances opinions through controlled and deliberate language choices
+
+YEAR 9 (AC9E9LY06, AC9E9LE06, AC9E9LY07, AC9E9LA03):
+- Creates imaginative, informative and persuasive texts presenting a point of view
+- Structures sustained arguments with clear line of reasoning
+- Controls complex sentence structures and varied vocabulary
+- Reviews and edits for clarity, cohesion and control
+- Word count guide: minimum 400 words; a strong Year 9 writer produces 450-600+ words
+- A strong Year 9 writer produces sustained, structured arguments with confident language control
+
+YEAR 10 (AC9E10LY06, AC9E10LE06, AC9E10LY07, AC9E10LA03):
+- Creates sustained texts on complex issues with depth and nuance
+- Reflects on and critiques own texts prior to publishing
+- Controls all language features for effect and precision
+- Word count guide: minimum 450 words; a strong Year 10 writer produces 500-700+ words
+- A strong Year 10 writer produces purposeful, refined texts demonstrating sophisticated control` },
+  NT:  { name: 'Northern Territory Curriculum (AC v9)', prompt: `Assess against the Australian Curriculum v9.0 as implemented in the Northern Territory. The curriculum follows AC v9.0 directly. Reference AC:E v9 content description codes.
+
+CRITICAL — OUTCOME CODES: Only use the specific AC v9.0 codes listed in the achievement standards below. Do not invent or generate codes that are not explicitly listed. If unsure, use the closest matching code from the list provided.
+
+AC v9.0 ACHIEVEMENT STANDARDS FOR ENGLISH (WRITING):
+Use these standards when assessing. Reference AC9 codes.
+
+FOUNDATION (AC9EFLY06, AC9EFLY08, AC9EFLY12, AC9EFLY13):
+- Creates texts using familiar words and beginning writing to communicate ideas
+- Demonstrates understanding that writing carries meaning
+- Uses letter-sound knowledge with some recognisable letters and words
+- Shows left-to-right, top-to-bottom orientation
+- Produces some recognisable letters with developing formation
+- Word count guide: emergent — focus on letters, words and short phrases rather than word count
+- A strong Foundation writer attempts simple sentences with letter-sound awareness
+
+YEAR 1 (AC9E1LY06, AC9E1LY08, AC9E1LY09, AC9E1LA05):
+- Creates short imaginative and informative texts using simple text structures
+- Writes simple sentences with subject-verb-object structure
+- Uses capital letters and full stops with growing consistency
+- Applies phonological knowledge to spell simple words
+- Re-reads and makes simple changes to improve meaning
+- Word count guide: minimum 2-3 readable sentences; a strong Year 1 writer produces 20-40+ words
+- A strong Year 1 writer produces linked sentences on a topic with basic punctuation
+
+YEAR 2 (AC9E2LY06, AC9E2LY08, AC9E2LY09, AC9E2LA05):
+- Creates short imaginative, informative and persuasive texts
+- Uses simple and compound sentences to sequence ideas
+- Applies knowledge of common letter patterns and high-frequency words
+- Uses appropriate punctuation including capital letters, full stops and question marks
+- Re-reads and edits for spelling and punctuation
+- Word count guide: minimum 50 words; a strong Year 2 writer produces 80-120+ words
+- A strong Year 2 writer produces structured texts with sentence variety and appropriate text structure
+
+YEAR 3 (AC9E3LY06, AC9E3LY08, AC9E3LY09, AC9E3LA05):
+- Plans, creates and reviews imaginative, informative and persuasive texts
+- Uses simple, compound and emerging complex sentences
+- Begins to use paragraphs to organise ideas
+- Selects vocabulary for purpose and audience
+- Spells most common words correctly and attempts unknown words using strategies
+- Word count guide: minimum 150 words; a strong Year 3 writer produces 180-250+ words
+- A strong Year 3 writer sequences ideas clearly with growing vocabulary range
+
+YEAR 4 (AC9E4LY06, AC9E4LY08, AC9E4LY09, AC9E4LA05):
+- Plans, creates and reviews texts with key information and supporting details
+- Uses simple, compound and complex sentences with increasing control
+- Uses consistent paragraphing to sequence content
+- Selects vocabulary to suit topic and communication purpose
+- Re-reads and edits for meaning, grammar and spelling accuracy
+- Word count guide: minimum 250 words; a strong Year 4 writer produces 280-350+ words
+- A strong Year 4 writer uses language features effectively with clear editing evidence
+
+YEAR 5 (AC9E5LY06, AC9E5LY08, AC9E5LY09, AC9E5LA05):
+- Plans, creates and reviews imaginative, informative and persuasive texts
+- Uses well-structured paragraphs with topic sentences and supporting detail
+- Controls complex sentence structures and verb tenses
+- Selects vocabulary for effect and precision
+- Edits for flow, organisation and language choices
+- Word count guide: minimum 250 words; a strong Year 5 writer produces 300-400+ words
+- A strong Year 5 writer sustains quality and voice across a longer piece
+
+YEAR 6 (AC9E6LY06, AC9E6LY08, AC9E6LY09, AC9E6LA05):
+- Plans, creates and reviews texts experimenting with text structures and language features
+- Uses rhetorical devices, imagery and deliberate language choices
+- Creates texts for different audiences with clear sense of purpose
+- Edits for coherence, vocabulary, structure and effect
+- Word count guide: minimum 300 words; a strong Year 6 writer produces 350-500+ words
+- A strong Year 6 writer experiments deliberately with structure and produces individual voice
+
+YEAR 7 (AC9E7LY06, AC9E7LY08, AC9E7LY09, AC9E7LA05):
+- Plans, creates and reviews imaginative, informative and persuasive texts
+- Selects language, visual and audio features purposefully
+- Uses specific rhetorical devices to engage audiences
+- Edits for meaning, impact and control of language features
+- Word count guide: minimum 300 words; a strong Year 7 writer produces 350-500+ words
+- A strong Year 7 writer selects subject matter and language deliberately for purpose and audience
+
+YEAR 8 (AC9E8LY06, AC9E8LY08, AC9E8LY09, AC9E8LA05):
+- Creates texts that raise issues, report events and advance opinions
+- Uses deliberate language and textual choices throughout
+- Selects vocabulary to influence meaning and position the audience
+- Experiments with text structures to refine and clarify ideas
+- Word count guide: minimum 350 words; a strong Year 8 writer produces 400-550+ words
+- A strong Year 8 writer advances opinions through controlled and deliberate language choices
+
+YEAR 9 (AC9E9LY06, AC9E9LE06, AC9E9LY07, AC9E9LA03):
+- Creates imaginative, informative and persuasive texts presenting a point of view
+- Structures sustained arguments with clear line of reasoning
+- Controls complex sentence structures and varied vocabulary
+- Reviews and edits for clarity, cohesion and control
+- Word count guide: minimum 400 words; a strong Year 9 writer produces 450-600+ words
+- A strong Year 9 writer produces sustained, structured arguments with confident language control
+
+YEAR 10 (AC9E10LY06, AC9E10LE06, AC9E10LY07, AC9E10LA03):
+- Creates sustained texts on complex issues with depth and nuance
+- Reflects on and critiques own texts prior to publishing
+- Controls all language features for effect and precision
+- Word count guide: minimum 450 words; a strong Year 10 writer produces 500-700+ words
+- A strong Year 10 writer produces purposeful, refined texts demonstrating sophisticated control
+
+CRITICAL — NT CONTEXT:
+The Northern Territory has a uniquely diverse student population. Many NT students are Aboriginal and/or Torres Strait Islander. Many speak English as an additional language or dialect (EAL/D), with some speaking English as a third or fourth language. This must profoundly shape how you interpret writing samples.
+
+EAL/D ASSESSMENT PRINCIPLES FOR NT:
+- Language transfer features (grammar structures from home language appearing in English) are NOT errors — they are evidence of a multilingual developing writer
+- Code-switching and use of home language features in English writing demonstrates metalinguistic awareness, not deficit
+- Do not penalise for English-specific features (articles, prepositions, verb agreement) that reflect the student's language background
+- Focus on meaning-making, ideas, and narrative/textual control — these often develop ahead of surface English accuracy in EAL/D writers
+- A student who constructs a compelling narrative with developing English syntax may be performing at a higher level than surface features suggest
+- Where EAL/D is flagged, explicitly note this in your assessment and explain how it informs your judgement
+
+ABORIGINAL AND TORRES STRAIT ISLANDER CULTURAL RESPONSIVENESS:
+- Writing may reflect oral storytelling traditions — circular narrative structures, community-centred perspectives, and non-linear time are culturally valid, not structurally deficient
+- References to Country, community, and cultural knowledge are evidence of rich content and voice
+- Celebrate cultural knowledge and perspective as a writing strength` },  NAT: { name: 'Australian Curriculum v9.0', prompt: `Assess against the Australian Curriculum v9.0 as implemented in Australia. The curriculum follows AC v9.0 directly. Reference AC:E v9 content description codes.
+
+CRITICAL — OUTCOME CODES: Only use the specific AC v9.0 codes listed in the achievement standards below. Do not invent or generate codes that are not explicitly listed. If unsure, use the closest matching code from the list provided.
+
+AC v9.0 ACHIEVEMENT STANDARDS FOR ENGLISH (WRITING):
+Use these standards when assessing. Reference AC9 codes.
+
+FOUNDATION (AC9EFLY06, AC9EFLY08, AC9EFLY12, AC9EFLY13):
+- Creates texts using familiar words and beginning writing to communicate ideas
+- Demonstrates understanding that writing carries meaning
+- Uses letter-sound knowledge with some recognisable letters and words
+- Shows left-to-right, top-to-bottom orientation
+- Produces some recognisable letters with developing formation
+- Word count guide: emergent — focus on letters, words and short phrases rather than word count
+- A strong Foundation writer attempts simple sentences with letter-sound awareness
+
+YEAR 1 (AC9E1LY06, AC9E1LY08, AC9E1LY09, AC9E1LA05):
+- Creates short imaginative and informative texts using simple text structures
+- Writes simple sentences with subject-verb-object structure
+- Uses capital letters and full stops with growing consistency
+- Applies phonological knowledge to spell simple words
+- Re-reads and makes simple changes to improve meaning
+- Word count guide: minimum 2-3 readable sentences; a strong Year 1 writer produces 20-40+ words
+- A strong Year 1 writer produces linked sentences on a topic with basic punctuation
+
+YEAR 2 (AC9E2LY06, AC9E2LY08, AC9E2LY09, AC9E2LA05):
+- Creates short imaginative, informative and persuasive texts
+- Uses simple and compound sentences to sequence ideas
+- Applies knowledge of common letter patterns and high-frequency words
+- Uses appropriate punctuation including capital letters, full stops and question marks
+- Re-reads and edits for spelling and punctuation
+- Word count guide: minimum 50 words; a strong Year 2 writer produces 80-120+ words
+- A strong Year 2 writer produces structured texts with sentence variety and appropriate text structure
+
+YEAR 3 (AC9E3LY06, AC9E3LY08, AC9E3LY09, AC9E3LA05):
+- Plans, creates and reviews imaginative, informative and persuasive texts
+- Uses simple, compound and emerging complex sentences
+- Begins to use paragraphs to organise ideas
+- Selects vocabulary for purpose and audience
+- Spells most common words correctly and attempts unknown words using strategies
+- Word count guide: minimum 150 words; a strong Year 3 writer produces 180-250+ words
+- A strong Year 3 writer sequences ideas clearly with growing vocabulary range
+
+YEAR 4 (AC9E4LY06, AC9E4LY08, AC9E4LY09, AC9E4LA05):
+- Plans, creates and reviews texts with key information and supporting details
+- Uses simple, compound and complex sentences with increasing control
+- Uses consistent paragraphing to sequence content
+- Selects vocabulary to suit topic and communication purpose
+- Re-reads and edits for meaning, grammar and spelling accuracy
+- Word count guide: minimum 250 words; a strong Year 4 writer produces 280-350+ words
+- A strong Year 4 writer uses language features effectively with clear editing evidence
+
+YEAR 5 (AC9E5LY06, AC9E5LY08, AC9E5LY09, AC9E5LA05):
+- Plans, creates and reviews imaginative, informative and persuasive texts
+- Uses well-structured paragraphs with topic sentences and supporting detail
+- Controls complex sentence structures and verb tenses
+- Selects vocabulary for effect and precision
+- Edits for flow, organisation and language choices
+- Word count guide: minimum 250 words; a strong Year 5 writer produces 300-400+ words
+- A strong Year 5 writer sustains quality and voice across a longer piece
+
+YEAR 6 (AC9E6LY06, AC9E6LY08, AC9E6LY09, AC9E6LA05):
+- Plans, creates and reviews texts experimenting with text structures and language features
+- Uses rhetorical devices, imagery and deliberate language choices
+- Creates texts for different audiences with clear sense of purpose
+- Edits for coherence, vocabulary, structure and effect
+- Word count guide: minimum 300 words; a strong Year 6 writer produces 350-500+ words
+- A strong Year 6 writer experiments deliberately with structure and produces individual voice
+
+YEAR 7 (AC9E7LY06, AC9E7LY08, AC9E7LY09, AC9E7LA05):
+- Plans, creates and reviews imaginative, informative and persuasive texts
+- Selects language, visual and audio features purposefully
+- Uses specific rhetorical devices to engage audiences
+- Edits for meaning, impact and control of language features
+- Word count guide: minimum 300 words; a strong Year 7 writer produces 350-500+ words
+- A strong Year 7 writer selects subject matter and language deliberately for purpose and audience
+
+YEAR 8 (AC9E8LY06, AC9E8LY08, AC9E8LY09, AC9E8LA05):
+- Creates texts that raise issues, report events and advance opinions
+- Uses deliberate language and textual choices throughout
+- Selects vocabulary to influence meaning and position the audience
+- Experiments with text structures to refine and clarify ideas
+- Word count guide: minimum 350 words; a strong Year 8 writer produces 400-550+ words
+- A strong Year 8 writer advances opinions through controlled and deliberate language choices
+
+YEAR 9 (AC9E9LY06, AC9E9LE06, AC9E9LY07, AC9E9LA03):
+- Creates imaginative, informative and persuasive texts presenting a point of view
+- Structures sustained arguments with clear line of reasoning
+- Controls complex sentence structures and varied vocabulary
+- Reviews and edits for clarity, cohesion and control
+- Word count guide: minimum 400 words; a strong Year 9 writer produces 450-600+ words
+- A strong Year 9 writer produces sustained, structured arguments with confident language control
+
+YEAR 10 (AC9E10LY06, AC9E10LE06, AC9E10LY07, AC9E10LA03):
+- Creates sustained texts on complex issues with depth and nuance
+- Reflects on and critiques own texts prior to publishing
+- Controls all language features for effect and precision
+- Word count guide: minimum 450 words; a strong Year 10 writer produces 500-700+ words
+- A strong Year 10 writer produces purposeful, refined texts demonstrating sophisticated control` }
 };
 
 function updateYearLevels() {
   const key = document.getElementById('curriculum-select').value;
   // Update header badge
-  const badgeNames = { VIC: 'Victorian Curriculum', NSW: 'NSW Curriculum', QLD: 'QLD Curriculum', SA: 'SA Curriculum', WA: 'WA Curriculum', TAS: 'TAS Curriculum', ACT: 'ACT Curriculum', NT: 'NT Curriculum', NAT: 'National Curriculum' };
+  const badgeNames = { VIC: 'Victorian Curriculum', NSW: 'NSW English K-10', QLD: 'AC v9.0 — Queensland', SA: 'AC v9.0 — South Australia', WA: 'AC v9.0 — Western Australia', TAS: 'AC v9.0 — Tasmania', ACT: 'AC v9.0 — ACT', NT: 'AC v9.0 — Northern Territory', NAT: 'Australian Curriculum v9.0' };
   const badge = document.querySelector('.header-badge');
   if (badge) badge.textContent = badgeNames[key] || 'Victorian Curriculum';
   const levels = yearLevelMap[key] || yearLevelMap.default;
