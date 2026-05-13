@@ -2092,14 +2092,14 @@ The feedback card must:
 
 Goals must be tailored to both the student's achievement level AND the next writing type (${nextGenre}).
 
-Respond ONLY with valid JSON, no markdown, no backticks:
+Respond ONLY with valid JSON, no markdown, no backticks. CRITICAL: the "goals" field MUST be a JSON array of exactly 3 separate strings — never combine them into one string:
 {
   "achievementLevel": "natural teacher language showing position and direction e.g. Strong Year 3 — approaching Year 4 standard OR Exceeding Year 1 — performing at a Year 2 level",
   "curriculumStandard": "e.g. Victorian Curriculum Year 4 / NSW Stage 2 / Australian Curriculum Year 4",
   "overall": "2-3 sentence professional teacher assessment using curriculum language only",
   "commendationQuote": "the specific quote from the student's actual writing — their exact words",
   "commendationComment": "1-2 warm genuine sentences on why this is impressive",
-  "goals": ["Goal 1", "Goal 2", "Goal 3"],
+  "goals": ["Goal 1 text here", "Goal 2 text here", "Goal 3 text here"],
   "curriculumAlignment": "2-3 sentences referencing specific strands, outcomes or achievement standards — no commercial level codes",
   "editingObservation": "1-2 sentences describing visible editing evidence in the image (crossings out, insertions, corrections) and what this suggests about the student as a self-monitoring writer. If no editing visible, note briefly. If typed text, note not observable.",
   "transcribedText": "the full text of the writing exactly as you read it — every word the student wrote, transcribed accurately. If submitted as typed text, reproduce it as given.",
@@ -2248,13 +2248,32 @@ function renderResult(r) {
   document.getElementById('overall-text').textContent = res.overall;
   document.getElementById('commendation-quote').textContent = res.commendationQuote;
   document.getElementById('commendation-comment').textContent = res.commendationComment;
-  document.getElementById('next-genre-label').textContent = r.nextGenre;
+  const genreLabels = {
+    'general writing goals not tied to a specific text type': 'writing',
+    'narrative': 'narrative',
+    'information report': 'information report',
+    'persuasive / argumentative': 'persuasive',
+    'recount': 'recount',
+    'descriptive': 'descriptive',
+    'procedural': 'procedural',
+    'the same writing type': r.genre
+  };
+  document.getElementById('next-genre-label').textContent = genreLabels[r.nextGenre] || r.nextGenre;
 
   const goalsList = document.getElementById('goals-list');
   goalsList.innerHTML = '';
-  (res.goals || []).forEach((goal, i) => {
+  // Handle case where model returns goals as a single string instead of array
+  let goals = res.goals || [];
+  if (typeof goals === 'string') {
+    // Try to split on "Goal 1:", "Goal 2:", "Goal 3:" patterns
+    goals = goals.split(/Goal\s*\d+[:.]?\s*/i).filter(g => g.trim().length > 0);
+  }
+  if (!Array.isArray(goals) || goals.length === 0) {
+    goals = [String(res.goals || '')];
+  }
+  goals.forEach((goal, i) => {
     const li = document.createElement('li');
-    li.innerHTML = `<span class="goal-num">${i+1}</span><span class="goal-text">${goal}</span>`;
+    li.innerHTML = `<span class="goal-num">${i+1}</span><span class="goal-text">${goal.trim()}</span>`;
     goalsList.appendChild(li);
   });
 
