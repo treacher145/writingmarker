@@ -5,113 +5,154 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Writing Marker — AI Writing Assessment for Australian Teachers</title>
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Instrument+Serif:ital@0;1&display=swap');
+
+/* ── Reset & base ── */
 * { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f8f7f4; color: #1a1a1a; min-height: 100vh; }
-.page { max-width: 720px; margin: 0 auto; padding: 2rem 1.25rem 4rem; }
-.header { margin-bottom: 2rem; padding-bottom: 1.25rem; border-bottom: 1px solid #e5e3de; }
-.header h1 { font-size: 22px; font-weight: 600; color: #1a1a1a; margin-bottom: 4px; }
-.header p { font-size: 14px; color: #6b6b6b; }
-.card { background: #fff; border: 1px solid #e5e3de; border-radius: 12px; padding: 1.25rem; margin-bottom: 1rem; }
-.card-title { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: #9e9e9e; margin-bottom: 12px; }
+body { font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif; background: #f0f4f9; color: #0f1923; min-height: 100vh; }
+
+/* ── Top bar ── */
+.header { background: #fff; border-bottom: 0.5px solid #dde3eb; padding: 0; margin-bottom: 0; }
+.header-inner { max-width: 720px; margin: 0 auto; padding: 15px 1.25rem; display: flex; justify-content: space-between; align-items: center; }
+.header h1 { font-size: 17px; font-weight: 600; color: #0f1923; letter-spacing: -0.4px; }
+.header h1 span { color: #2563eb; }
+.header p { display: none; }
+.header-badge { font-size: 10px; font-weight: 600; color: #1d4ed8; background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 20px; padding: 4px 12px; letter-spacing: 0.04em; }
+
+/* ── Page wrapper ── */
+.page { max-width: 720px; margin: 0 auto; padding: 1.25rem 1.25rem 4rem; }
+
+/* ── Cards ── */
+.card { background: #fff; border: 0.5px solid #dde3eb; border-radius: 14px; padding: 1.25rem; margin-bottom: 12px; }
+.card-title { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: #94a3b8; margin-bottom: 14px; }
+
+/* ── Selectors ── */
 .selectors { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 10px; margin-bottom: 1rem; }
-.sel-group { display: flex; flex-direction: column; gap: 4px; }
-.sel-group label { font-size: 11px; font-weight: 600; color: #6b6b6b; text-transform: uppercase; letter-spacing: 0.05em; }
-select, input[type="text"] { padding: 8px 10px; font-size: 13px; border: 1px solid #e0ddd8; border-radius: 8px; background: #faf9f7; color: #1a1a1a; width: 100%; font-family: inherit; }
-select:focus, input:focus { outline: none; border-color: #8b7355; background: #fff; }
-.tabs { display: flex; gap: 6px; margin-bottom: 1rem; }
-.tab { padding: 8px 14px; border: 1px solid #e0ddd8; border-radius: 8px; font-size: 13px; cursor: pointer; background: #faf9f7; color: #6b6b6b; font-family: inherit; }
-.tab.active { background: #fff; color: #1a1a1a; border-color: #8b7355; }
-.tab:hover { background: #fff; }
+.sel-group { display: flex; flex-direction: column; gap: 5px; }
+.sel-group label { font-size: 10px; font-weight: 600; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.07em; }
+select, input[type="text"] { padding: 9px 11px; font-size: 13px; border: 1px solid #e2e8f0; border-radius: 9px; background: #f8fafc; color: #0f1923; width: 100%; font-family: inherit; }
+select:focus, input:focus { outline: none; border-color: #93c5fd; background: #fff; }
+
+/* ── Tabs ── */
+.tabs { display: flex; gap: 4px; margin-bottom: 14px; }
+.tab { padding: 7px 14px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 12px; font-weight: 500; cursor: pointer; background: #f8fafc; color: #64748b; font-family: inherit; transition: all 0.15s; }
+.tab.active { background: #eff6ff; color: #1d4ed8; border-color: #bfdbfe; }
+.tab:hover { background: #f1f5f9; }
 .panel { display: none; }
 .panel.active { display: block; }
-.privacy-note { display: flex; gap: 8px; align-items: flex-start; background: #fffbeb; border: 1px solid #f0e68c; border-radius: 8px; padding: 10px 12px; margin-bottom: 10px; }
-.privacy-note span { font-size: 12px; color: #7a6a00; line-height: 1.5; }
-.upload-zone { border: 1.5px dashed #d0cdc7; border-radius: 10px; padding: 2rem 1rem; text-align: center; cursor: pointer; background: #faf9f7; margin-bottom: 10px; transition: border-color 0.15s; }
-.upload-zone:hover { border-color: #8b7355; }
+
+/* ── Privacy note ── */
+.privacy-note { display: flex; gap: 8px; align-items: flex-start; background: #fefce8; border: 1px solid #fde68a; border-radius: 9px; padding: 10px 12px; margin-bottom: 12px; }
+.privacy-note span { font-size: 12px; color: #92400e; line-height: 1.5; }
+
+/* ── Upload zone ── */
+.upload-zone { border: 1.5px dashed #cbd5e1; border-radius: 12px; padding: 2rem 1rem; text-align: center; cursor: pointer; background: #f8fafc; margin-bottom: 12px; transition: border-color 0.15s; }
+.upload-zone:hover { border-color: #2563eb; }
 .upload-zone .icon { font-size: 28px; margin-bottom: 8px; }
-.upload-zone p { font-size: 13px; color: #6b6b6b; margin: 0; }
-.upload-zone p.sub { font-size: 11px; color: #9e9e9e; margin-top: 4px; }
+.upload-zone p { font-size: 13px; color: #475569; margin: 0; }
+.upload-zone p.sub { font-size: 11px; color: #94a3b8; margin-top: 4px; }
 #file-input { display: none; }
 #preview-img { max-width: 100%; max-height: 200px; border-radius: 8px; margin-bottom: 10px; display: none; }
-textarea { width: 100%; font-size: 13px; padding: 10px 12px; border: 1px solid #e0ddd8; border-radius: 8px; background: #faf9f7; color: #1a1a1a; resize: vertical; font-family: inherit; line-height: 1.6; min-height: 150px; }
-textarea:focus { outline: none; border-color: #8b7355; background: #fff; }
+
+/* ── Textarea ── */
+textarea { width: 100%; font-size: 13px; padding: 10px 12px; border: 1px solid #e2e8f0; border-radius: 9px; background: #f8fafc; color: #0f1923; resize: vertical; font-family: inherit; line-height: 1.6; min-height: 150px; }
+textarea:focus { outline: none; border-color: #93c5fd; background: #fff; }
 .teacher-note-wrap { margin-top: 10px; }
-.teacher-note-wrap label { font-size: 11px; font-weight: 600; color: #6b6b6b; text-transform: uppercase; letter-spacing: 0.05em; display: block; margin-bottom: 4px; }
+.teacher-note-wrap label { font-size: 10px; font-weight: 600; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.07em; display: block; margin-bottom: 5px; }
 .teacher-note-wrap textarea { min-height: 60px; }
-.privacy-check { display: flex; gap: 8px; align-items: flex-start; margin: 10px 0; padding: 10px 12px; border: 1px solid #e0ddd8; border-radius: 8px; background: #faf9f7; cursor: pointer; }
+
+/* ── Privacy check ── */
+.privacy-check { display: flex; gap: 8px; align-items: flex-start; margin: 10px 0; padding: 10px 12px; border: 1px solid #e2e8f0; border-radius: 9px; background: #f8fafc; cursor: pointer; }
 .privacy-check input { width: 15px; height: 15px; cursor: pointer; flex-shrink: 0; margin-top: 2px; }
-.privacy-check span { font-size: 13px; color: #1a1a1a; line-height: 1.4; }
-.btn-mark { width: 100%; padding: 13px; font-size: 15px; font-weight: 600; background: #2c2c2c; border: none; border-radius: 10px; cursor: pointer; color: #fff; font-family: inherit; margin-top: 4px; transition: background 0.15s; }
-.btn-mark:hover { background: #1a1a1a; }
-.btn-mark:disabled { background: #c0bdb8; cursor: not-allowed; }
+.privacy-check span { font-size: 13px; color: #334155; line-height: 1.4; }
+
+/* ── Mark button ── */
+.btn-mark { width: 100%; padding: 13px; font-size: 14px; font-weight: 600; background: #2563eb; border: none; border-radius: 11px; cursor: pointer; color: #fff; font-family: inherit; margin-top: 4px; transition: background 0.15s; letter-spacing: -0.1px; }
+.btn-mark:hover { background: #1d4ed8; }
+.btn-mark:disabled { background: #93c5fd; cursor: not-allowed; }
+
+/* ── Loading ── */
 .loading { text-align: center; padding: 2.5rem; display: none; }
-.loading p { font-size: 13px; color: #6b6b6b; margin-top: 12px; }
-.spinner { width: 28px; height: 28px; border: 2.5px solid #e0ddd8; border-top-color: #8b7355; border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto; }
+.loading p { font-size: 13px; color: #64748b; margin-top: 12px; }
+.spinner { width: 28px; height: 28px; border: 2.5px solid #e2e8f0; border-top-color: #2563eb; border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto; }
 @keyframes spin { to { transform: rotate(360deg); } }
-.error-box { background: #fff5f5; border: 1px solid #fca5a5; border-radius: 8px; padding: 12px 16px; margin-top: 10px; display: none; }
+
+/* ── Error box ── */
+.error-box { background: #fff5f5; border: 1px solid #fca5a5; border-radius: 9px; padding: 12px 16px; margin-top: 10px; display: none; }
 .error-box .etitle { font-size: 13px; font-weight: 600; color: #b91c1c; margin-bottom: 4px; }
 .error-box .edetail { font-size: 13px; color: #b91c1c; }
-.cam-wrap { background: #000; border-radius: 8px; overflow: hidden; margin-bottom: 10px; display: none; }
+
+/* ── Camera ── */
+.cam-wrap { background: #000; border-radius: 10px; overflow: hidden; margin-bottom: 10px; display: none; }
 video { width: 100%; display: block; }
 canvas { display: none; }
-#cam-preview { max-width: 100%; max-height: 200px; border-radius: 8px; margin-bottom: 10px; display: none; }
+#cam-preview { max-width: 100%; max-height: 200px; border-radius: 9px; margin-bottom: 10px; display: none; }
 .cam-btn-row { display: flex; gap: 8px; margin-bottom: 10px; }
-.cam-btn { flex: 1; padding: 9px; font-size: 13px; border: 1px solid #e0ddd8; border-radius: 8px; cursor: pointer; background: #faf9f7; color: #1a1a1a; font-family: inherit; }
+.cam-btn { flex: 1; padding: 9px; font-size: 13px; border: 1px solid #e2e8f0; border-radius: 9px; cursor: pointer; background: #f8fafc; color: #334155; font-family: inherit; transition: background 0.15s; }
 .cam-btn:hover { background: #fff; }
 
-/* Result card */
-.result-card { background: #fff; border: 1px solid #e5e3de; border-radius: 12px; padding: 1.5rem; margin-top: 1.25rem; display: none; }
-.result-top { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 10px; margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 1px solid #f0ede8; }
+/* ── Result strip (navy) ── */
+.result-card { background: transparent; border: none; border-radius: 0; padding: 0; margin-top: 1rem; display: none; }
+.result-strip { background: #1e40af; border-radius: 14px; padding: 20px; margin-bottom: 12px; }
+.result-top { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 10px; margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
+.result-level { font-family: 'Instrument Serif', serif; font-size: 22px; color: #fff; margin-bottom: 4px; line-height: 1.3; }
+.result-subtitle { font-size: 11px; color: #93c5fd; letter-spacing: 0.04em; margin-bottom: 12px; }
 .badges { display: flex; gap: 6px; flex-wrap: wrap; }
-.badge { display: inline-block; padding: 4px 12px; border-radius: 6px; font-size: 12px; font-weight: 600; }
-.badge-level { background: #dcfce7; color: #166534; }
-.badge-cur { background: #f3f0eb; color: #5a5a5a; }
-.badge-genre { background: #dbeafe; color: #1e40af; }
+.badge { display: inline-block; padding: 4px 10px; border-radius: 6px; font-size: 11px; font-weight: 500; }
+.badge-level { background: rgba(255,255,255,0.9); color: #1e40af; }
+.badge-cur { background: rgba(255,255,255,0.15); color: #e0f2fe; }
+.badge-genre { background: rgba(255,255,255,0.15); color: #e0f2fe; }
 .result-actions { display: flex; gap: 6px; }
-.btn-action { padding: 6px 12px; font-size: 12px; border: 1px solid #e0ddd8; border-radius: 7px; cursor: pointer; background: #faf9f7; color: #6b6b6b; font-family: inherit; }
-.btn-action:hover { background: #fff; color: #1a1a1a; }
-.student-meta { font-size: 13px; color: #6b6b6b; margin-bottom: 1rem; }
-.section-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: #9e9e9e; margin: 1.25rem 0 6px; }
+.btn-action { padding: 6px 12px; font-size: 12px; border: 1px solid rgba(255,255,255,0.25); border-radius: 7px; cursor: pointer; background: rgba(255,255,255,0.12); color: #e0f2fe; font-family: inherit; transition: background 0.15s; }
+.btn-action:hover { background: rgba(255,255,255,0.22); }
+
+/* ── Result body cards ── */
+.result-body-card { background: #fff; border: 0.5px solid #dde3eb; border-radius: 14px; padding: 18px; margin-bottom: 12px; }
+.student-meta { font-size: 13px; color: #64748b; margin-bottom: 1rem; }
+.section-label { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: #94a3b8; margin: 1.25rem 0 8px; }
 .section-label:first-of-type { margin-top: 0; }
-.feedback-text { font-size: 14px; color: #1a1a1a; line-height: 1.7; }
-.assessment-box { background: #faf9f7; border-radius: 8px; padding: 12px 14px; }
-.assessment-box p { font-size: 14px; color: #1a1a1a; line-height: 1.7; margin: 0; }
+.feedback-text { font-size: 13px; color: #475569; line-height: 1.7; }
+.assessment-box { padding: 0; }
+.assessment-box p { font-size: 13px; color: #475569; line-height: 1.7; margin: 0; }
 
-/* Commendation — the star */
-.commendation { background: #f0fdf4; border-left: 3px solid #22c55e; border-radius: 0 8px 8px 0; padding: 14px 16px; }
-.commendation .quote { font-size: 15px; color: #1a1a1a; line-height: 1.7; font-style: italic; margin-bottom: 8px; }
-.commendation .comment { font-size: 13px; color: #4b7a5a; line-height: 1.6; }
+/* ── Commendation — warm amber with gold border ── */
+.commendation { background: #fffbeb; border: 0.5px solid #fde68a; border-left: 4px solid #d97706; border-radius: 0 12px 12px 0; padding: 16px 20px; margin-bottom: 12px; }
+.commendation-eyebrow { font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: #b45309; margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
+.commendation-star { width: 18px; height: 18px; background: #f59e0b; border-radius: 4px; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 11px; flex-shrink: 0; }
+.commendation .quote { font-family: 'Instrument Serif', serif; font-size: 15px; color: #78350f; line-height: 1.65; font-style: italic; margin-bottom: 10px; }
+.commendation-line { width: 28px; height: 2px; background: #d97706; border-radius: 2px; margin-bottom: 10px; }
+.commendation .comment { font-size: 12.5px; color: #92400e; line-height: 1.6; }
 
-/* Goals */
+/* ── Goals ── */
 .goals-list { list-style: none; padding: 0; }
-.goals-list li { display: flex; gap: 12px; align-items: flex-start; padding: 10px 0; border-bottom: 1px solid #f0ede8; }
+.goals-list li { display: flex; gap: 12px; align-items: flex-start; padding: 10px 0; border-bottom: 0.5px solid #f1f5f9; }
 .goals-list li:last-child { border-bottom: none; padding-bottom: 0; }
-.goal-num { width: 24px; height: 24px; border-radius: 50%; background: #dbeafe; color: #1e40af; font-size: 12px; font-weight: 600; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
-.goal-text { font-size: 14px; color: #1a1a1a; line-height: 1.7; }
+.goal-num { width: 26px; height: 26px; border-radius: 8px; background: #eff6ff; border: 1px solid #bfdbfe; color: #2563eb; font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
+.goal-text { font-size: 13px; color: #475569; line-height: 1.65; }
 
-/* Curriculum section */
-.curriculum-section { margin-top: 1.25rem; padding-top: 1.25rem; border-top: 1px solid #f0ede8; }
-.outcome-pills { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; }
-.outcome-pill { display: inline-block; padding: 4px 10px; border-radius: 99px; font-size: 11px; border: 1px solid #e0ddd8; color: #5a5a5a; background: #faf9f7; line-height: 1.4; }
-.outcome-pill strong { color: #1a1a1a; }
-.teacher-note-display { background: #faf9f7; border-left: 2px solid #d0cdc7; padding: 8px 12px; font-size: 13px; color: #6b6b6b; font-style: italic; margin-top: 6px; border-radius: 0 6px 6px 0; }
-.divider { height: 1px; background: #f0ede8; margin: 1.25rem 0; }
-.bottom-row { display: flex; gap: 8px; margin-top: 1.25rem; flex-wrap: wrap; }
-.btn-outline { flex: 1; padding: 9px; font-size: 13px; border: 1px solid #e0ddd8; border-radius: 8px; cursor: pointer; background: #faf9f7; color: #6b6b6b; font-family: inherit; min-width: 120px; }
-.btn-outline:hover { background: #fff; color: #1a1a1a; }
+/* ── Curriculum section ── */
+.curriculum-section { margin-top: 0; padding-top: 0; border-top: none; }
+.outcome-pills { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 10px; }
+.outcome-pill { display: inline-block; padding: 4px 10px; border-radius: 6px; font-size: 11px; font-weight: 600; border: 1px solid #bfdbfe; color: #1d4ed8; background: #eff6ff; line-height: 1.4; }
+.outcome-pill strong { color: #1d4ed8; }
+.teacher-note-display { background: #f8fafc; border-left: 2px solid #cbd5e1; padding: 8px 12px; font-size: 13px; color: #64748b; font-style: italic; margin-top: 6px; border-radius: 0 6px 6px 0; }
+.divider { height: 1px; background: #f1f5f9; margin: 1rem 0; }
+.bottom-row { display: flex; gap: 8px; margin-top: 1rem; flex-wrap: wrap; }
+.btn-outline { flex: 1; padding: 9px; font-size: 13px; border: 1px solid #e2e8f0; border-radius: 9px; cursor: pointer; background: #fff; color: #64748b; font-family: inherit; min-width: 120px; transition: background 0.15s; }
+.btn-outline:hover { background: #f8fafc; color: #0f1923; }
 
-/* Session list */
-.session-wrap { margin-top: 1.25rem; display: none; }
+/* ── Session list ── */
+.session-wrap { margin-top: 1rem; display: none; }
 .session-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
-.session-header h3 { font-size: 13px; font-weight: 600; color: #1a1a1a; }
-.session-item { border: 1px solid #e5e3de; border-radius: 8px; padding: 10px 14px; margin-bottom: 8px; cursor: pointer; background: #fff; }
-.session-item:hover { background: #faf9f7; }
+.session-header h3 { font-size: 13px; font-weight: 600; color: #0f1923; }
+.session-item { border: 0.5px solid #dde3eb; border-radius: 10px; padding: 10px 14px; margin-bottom: 8px; cursor: pointer; background: #fff; transition: background 0.15s; }
+.session-item:hover { background: #f8fafc; }
 .session-item-top { display: flex; justify-content: space-between; align-items: center; }
-.session-item-name { font-size: 13px; font-weight: 600; color: #1a1a1a; }
-.session-item-time { font-size: 12px; color: #9e9e9e; }
-.session-item-meta { font-size: 12px; color: #6b6b6b; margin-top: 3px; }
-.empty-msg { font-size: 13px; color: #9e9e9e; text-align: center; padding: 1rem; }
-.footer { margin-top: 3rem; text-align: center; font-size: 12px; color: #9e9e9e; }
+.session-item-name { font-size: 13px; font-weight: 600; color: #0f1923; }
+.session-item-time { font-size: 12px; color: #94a3b8; }
+.session-item-meta { font-size: 12px; color: #64748b; margin-top: 3px; }
+.empty-msg { font-size: 13px; color: #94a3b8; text-align: center; padding: 1rem; }
+.footer { margin-top: 3rem; text-align: center; font-size: 12px; color: #94a3b8; }
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <script>
@@ -121,11 +162,13 @@ canvas { display: none; }
 </script>
 </head>
 <body>
-<div class="page">
-  <div class="header" style="text-align:center;">
-    <h1>Writing Marker</h1>
-    <p>Curriculum-aligned writing assessment for Australian teachers. All states and territories supported.</p>
+<div class="header">
+  <div class="header-inner">
+    <h1>Writing<span>Marker</span></h1>
+    <div class="header-badge">Victorian Curriculum</div>
   </div>
+</div>
+<div class="page">
 
   <div class="card">
     <div class="card-title">Assessment settings</div>
@@ -270,15 +313,21 @@ canvas { display: none; }
   </div>
 
   <div class="result-card" id="result-card">
-    <div class="result-top">
-      <div class="badges">
-        <span class="badge badge-level" id="level-badge"></span>
-        <span class="badge badge-cur" id="curriculum-badge"></span>
-        <span class="badge badge-genre" id="genre-badge"></span>
-      </div>
-      <div class="result-actions">
-        <button class="btn-action" onclick="forgetCurrent()">🗑 Forget</button>
-        <button class="btn-action" onclick="printResult()">🖨️ Print</button>
+    <div class="result-strip">
+      <div class="result-top">
+        <div>
+          <div class="result-level" id="level-badge"></div>
+          <div class="result-subtitle" id="result-subtitle"></div>
+          <div class="badges">
+            <span class="badge badge-level" id="confidence-badge" style="display:none;"></span>
+            <span class="badge badge-cur" id="curriculum-badge"></span>
+            <span class="badge badge-genre" id="genre-badge"></span>
+          </div>
+        </div>
+        <div class="result-actions">
+          <button class="btn-action" onclick="forgetCurrent()">🗑 Forget</button>
+          <button class="btn-action" onclick="printResult()">🖨️ Print</button>
+        </div>
       </div>
     </div>
 
@@ -287,50 +336,57 @@ canvas { display: none; }
       ⚠️ <strong>Handwriting was difficult to read.</strong> The transcription may contain errors which could affect the accuracy of this assessment. Please check <em>What the AI read</em> below, correct any mistakes, and click Re-analyse for a more accurate result. For Foundation and Year 1 students, typing the writing directly gives the most reliable assessment.
     </div>
 
-    <div class="section-label">Teacher assessment</div>
-    <div class="assessment-box"><p id="overall-text"></p></div>
+    <div class="result-body-card">
+      <div class="section-label" style="margin-top:0;">Teacher assessment</div>
+      <div class="assessment-box"><p id="overall-text"></p></div>
+    </div>
 
-    <div class="section-label">From their writing</div>
-    <div class="commendation">
+    <div class="commendation" id="commendation-card">
+      <div class="commendation-eyebrow">
+        <div class="commendation-star">★</div>
+        A moment to celebrate
+      </div>
       <div class="quote" id="commendation-quote"></div>
+      <div class="commendation-line"></div>
       <div class="comment" id="commendation-comment"></div>
     </div>
 
-    <div class="section-label">Goals for their next <span id="next-genre-label"></span></div>
-    <ul class="goals-list" id="goals-list"></ul>
+    <div class="result-body-card">
+      <div class="section-label" style="margin-top:0;">Goals for their next <span id="next-genre-label"></span></div>
+      <ul class="goals-list" id="goals-list"></ul>
+    </div>
 
-    <div class="divider"></div>
-    <div id="extracted-text-wrap" style="display:none;">
-      <div class="section-label" style="cursor:pointer;display:flex;justify-content:space-between;align-items:center;" onclick="toggleExtracted()">
+    <div class="result-body-card" id="extracted-text-wrap" style="display:none;">
+      <div class="section-label" style="margin-top:0;cursor:pointer;display:flex;justify-content:space-between;align-items:center;" onclick="toggleExtracted()">
         <span>What the AI read</span>
-        <span id="extracted-toggle" style="font-size:10px;color:#9e9e9e;font-weight:400;text-transform:none;letter-spacing:0;">▼ show</span>
+        <span id="extracted-toggle" style="font-size:10px;color:#94a3b8;font-weight:400;text-transform:none;letter-spacing:0;">▼ show</span>
       </div>
-      <div id="extracted-text-body" style="display:none;margin-top:6px;">
-        <textarea id="extracted-text-box" style="width:100%;min-height:120px;font-size:13px;padding:10px 12px;border:1px solid #e0ddd8;border-radius:8px;background:#faf9f7;color:#6b6b6b;line-height:1.7;font-family:inherit;resize:vertical;"></textarea>
+      <div id="extracted-text-body" style="display:none;margin-top:8px;">
+        <textarea id="extracted-text-box" style="width:100%;min-height:120px;font-size:13px;padding:10px 12px;border:1px solid #e2e8f0;border-radius:9px;background:#f8fafc;color:#64748b;line-height:1.7;font-family:inherit;resize:vertical;"></textarea>
         <div style="display:flex;justify-content:flex-end;margin-top:6px;">
-          <button onclick="reanalyse()" style="padding:7px 14px;font-size:13px;border:1px solid #8b7355;border-radius:8px;background:#fff;color:#8b7355;cursor:pointer;font-family:inherit;">↻ Re-analyse with corrected text</button>
+          <button onclick="reanalyse()" style="padding:7px 14px;font-size:13px;border:1px solid #bfdbfe;border-radius:9px;background:#eff6ff;color:#1d4ed8;cursor:pointer;font-family:inherit;">↻ Re-analyse with corrected text</button>
         </div>
-        <p style="font-size:11px;color:#9e9e9e;margin-top:6px;">You can edit the text above if the AI misread any words, then click Re-analyse to update the assessment.</p>
+        <p style="font-size:11px;color:#94a3b8;margin-top:6px;">Edit the text above if the AI misread any words, then click Re-analyse.</p>
       </div>
     </div>
 
-    <div class="curriculum-section">
-      <div class="section-label" style="cursor:pointer;display:flex;justify-content:space-between;align-items:center;" onclick="toggleCurriculum()">
+    <div class="result-body-card curriculum-section">
+      <div class="section-label" style="margin-top:0;cursor:pointer;display:flex;justify-content:space-between;align-items:center;" onclick="toggleCurriculum()">
         <span id="curriculum-section-label"></span>
-        <span id="curriculum-toggle" style="font-size:10px;color:#9e9e9e;font-weight:400;text-transform:none;letter-spacing:0;">▼ show</span>
+        <span id="curriculum-toggle" style="font-size:10px;color:#94a3b8;font-weight:400;text-transform:none;letter-spacing:0;">▼ show</span>
       </div>
-      <div id="curriculum-body" style="display:none;margin-top:6px;">
+      <div id="curriculum-body" style="display:none;margin-top:8px;">
         <div class="feedback-text" id="curriculum-text"></div>
-        <div id="editing-observation-wrap" style="display:none;margin-top:10px;padding:10px 12px;background:#f0fdf4;border:1px solid #86efac;border-radius:8px;">
-          <div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.06em;color:#166534;margin-bottom:4px;">✏️ Editing &amp; revision</div>
+        <div id="editing-observation-wrap" style="display:none;margin-top:10px;padding:10px 13px;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:10px;">
+          <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:#15803d;margin-bottom:4px;">✏️ Editing &amp; revision</div>
           <div class="feedback-text" id="editing-observation-text" style="color:#166534;font-size:13px;"></div>
         </div>
         <div class="outcome-pills" id="outcome-pills"></div>
       </div>
     </div>
 
-    <div id="teacher-note-display-wrap" style="display:none;">
-      <div class="section-label">Teacher notes</div>
+    <div id="teacher-note-display-wrap" style="display:none;" class="result-body-card">
+      <div class="section-label" style="margin-top:0;">Teacher notes</div>
       <div class="teacher-note-display" id="teacher-note-display"></div>
     </div>
 
@@ -385,6 +441,10 @@ const curriculumMeta = {
 
 function updateYearLevels() {
   const key = document.getElementById('curriculum-select').value;
+  // Update header badge
+  const badgeNames = { VIC: 'Victorian Curriculum', NSW: 'NSW Curriculum', QLD: 'QLD Curriculum', SA: 'SA Curriculum', WA: 'WA Curriculum', TAS: 'TAS Curriculum', ACT: 'ACT Curriculum', NT: 'NT Curriculum', NAT: 'National Curriculum' };
+  const badge = document.querySelector('.header-badge');
+  if (badge) badge.textContent = badgeNames[key] || 'Victorian Curriculum';
   const levels = yearLevelMap[key] || yearLevelMap.default;
   const sel = document.getElementById('year-select');
   sel.innerHTML = '';
@@ -1377,14 +1437,27 @@ function renderResult(r) {
     metaEl.style.display = 'block';
   } else { metaEl.style.display = 'none'; }
 
-  // Show confidence warning for any year level when handwriting is hard to read
-  const confWarning = document.getElementById('confidence-warning');
-  const conf = (r.result.transcriptionConfidence || 'HIGH').toUpperCase();
-  confWarning.style.display = (conf === 'MEDIUM' || conf === 'LOW') ? 'block' : 'none';
-
+  // Populate result strip
   document.getElementById('level-badge').textContent = res.achievementLevel;
-  document.getElementById('curriculum-badge').textContent = res.curriculumStandard;
+  document.getElementById('result-subtitle').textContent = r.curriculum + ' · ' + r.yearLevel + ' · ' + r.genre;
+  document.getElementById('curriculum-badge').textContent = r.curriculum;
   document.getElementById('genre-badge').textContent = r.genre;
+
+  // Confidence badge in strip
+  const conf = (r.result.transcriptionConfidence || 'HIGH').toUpperCase();
+  const confBadge = document.getElementById('confidence-badge');
+  if (conf === 'MEDIUM' || conf === 'LOW') {
+    confBadge.textContent = conf + ' confidence — check transcription';
+    confBadge.style.display = 'inline-block';
+    confBadge.style.background = 'rgba(254,215,170,0.9)';
+    confBadge.style.color = '#c2410c';
+  } else {
+    confBadge.style.display = 'none';
+  }
+
+  // Hide old confidence warning (replaced by badge)
+  const confWarning = document.getElementById('confidence-warning');
+  if (confWarning) confWarning.style.display = 'none';
   document.getElementById('overall-text').textContent = res.overall;
   document.getElementById('commendation-quote').textContent = res.commendationQuote;
   document.getElementById('commendation-comment').textContent = res.commendationComment;
