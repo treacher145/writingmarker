@@ -13,7 +13,7 @@ body { font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans
 
 /* ── Top bar ── */
 .header { background: #fff; border-bottom: 0.5px solid #dde3eb; padding: 0; margin-bottom: 0; }
-.header-inner { max-width: 720px; margin: 0 auto; padding: 15px 1.25rem; display: flex; justify-content: space-between; align-items: center; }
+.header-inner { max-width: 720px; margin: 0 auto; padding: 15px 1.25rem; display: flex; justify-content: center; align-items: center; }
 .header h1 { font-size: 17px; font-weight: 600; color: #0f1923; letter-spacing: -0.4px; }
 .header h1 span { color: #2563eb; }
 .header p { display: none; }
@@ -165,7 +165,6 @@ canvas { display: none; }
 <div class="header">
   <div class="header-inner">
     <h1>Writing<span>Marker</span></h1>
-    <div class="header-badge">Victorian Curriculum</div>
   </div>
 </div>
 <div class="page">
@@ -1229,10 +1228,7 @@ YEAR 10 (AC9E10LY06, AC9E10LE06, AC9E10LY07, AC9E10LA03):
 
 function updateYearLevels() {
   const key = document.getElementById('curriculum-select').value;
-  // Update header badge
-  const badgeNames = { VIC: 'Victorian Curriculum', NSW: 'NSW English K-10', QLD: 'AC v9.0 — Queensland', SA: 'AC v9.0 — South Australia', WA: 'AC v9.0 — Western Australia', TAS: 'AC v9.0 — Tasmania', ACT: 'AC v9.0 — ACT', NT: 'AC v9.0 — Northern Territory', NAT: 'Australian Curriculum v9.0' };
-  const badge = document.querySelector('.header-badge');
-  if (badge) badge.textContent = badgeNames[key] || 'Victorian Curriculum';
+
   const levels = yearLevelMap[key] || yearLevelMap.default;
   const sel = document.getElementById('year-select');
   sel.innerHTML = '';
