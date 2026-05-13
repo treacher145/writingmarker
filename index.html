@@ -1351,6 +1351,11 @@ function handleFile(input) {
   currentFileType = files[0].type;
   currentFileName = files[0].name;
   multiImageData = [];
+  // Reset transcription state for new upload
+  transcriptionReady = false;
+  document.getElementById('mark-btn').disabled = true;
+  document.getElementById('mark-btn').textContent = '✦ Mark this writing';
+  document.getElementById('transcription-preview-card').style.display = 'none';
 
   const img = document.getElementById('preview-img');
   const pdfNotice = document.getElementById('pdf-notice');
@@ -1727,6 +1732,10 @@ function capturePhoto() {
   canvas.width = video.videoWidth; canvas.height = video.videoHeight;
   canvas.getContext('2d').drawImage(video, 0, 0);
   const dataUrl = canvas.toDataURL('image/jpeg', 0.92);
+  // Reset transcription state for new capture
+  transcriptionReady = false;
+  document.getElementById('mark-btn').disabled = true;
+  document.getElementById('mark-btn').textContent = '✦ Mark this writing';
   // Compress to stay under size limits
   resizeImageToJpeg(dataUrl, (compressed) => {
     capturedImageBase64 = compressed.split(',')[1];
