@@ -1622,6 +1622,26 @@ function renderMultiImagePanel() {
     label.textContent = 'Page ' + (idx + 1) + ' — ' + imgData.name;
     label.style.cssText = 'font-size:13px;color:#1a1a1a;flex:1;';
 
+    const deleteBtn = document.createElement('button');
+    deleteBtn.textContent = '✕';
+    deleteBtn.title = 'Remove this page';
+    deleteBtn.style.cssText = 'padding:5px 9px;font-size:12px;border:1px solid #fca5a5;border-radius:6px;background:#fff5f5;color:#b91c1c;cursor:pointer;flex-shrink:0;font-family:inherit;';
+    deleteBtn.onclick = (e) => {
+      e.stopPropagation();
+      multiImageData.splice(idx, 1);
+      imageRotations.splice(idx, 1);
+      if (multiImageData.length === 0) {
+        document.getElementById('multi-image-panel').style.display = 'none';
+        document.getElementById('read-handwriting-btn-single').style.display = 'none';
+        document.getElementById('transcription-preview-card').style.display = 'none';
+        transcriptionReady = false;
+        document.getElementById('mark-btn').disabled = true;
+        document.getElementById('mark-btn').textContent = '✦ Mark this writing';
+      } else {
+        renderMultiImagePanel();
+      }
+    };
+
     const rotateBtn = document.createElement('button');
     rotateBtn.textContent = '↻ Rotate';
     rotateBtn.style.cssText = 'padding:5px 10px;font-size:12px;border:1px solid #e0ddd8;border-radius:6px;background:#faf9f7;color:#6b6b6b;cursor:pointer;flex-shrink:0;font-family:inherit;';
@@ -1654,6 +1674,7 @@ function renderMultiImagePanel() {
     item.appendChild(thumb);
     item.appendChild(label);
     item.appendChild(rotateBtn);
+    item.appendChild(deleteBtn);
 
     // Drag events on handle only
     dragHandle.addEventListener('mousedown', () => { item.draggable = true; });
