@@ -19,6 +19,8 @@
 /* ── Reset & base ── */
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body { font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif; background: #f0f4f9; color: #0f1923; min-height: 100vh; }
+.page { animation: fadeIn 0.3s ease; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
 
 /* ── Top bar ── */
 .header { background: #fff; border-bottom: 0.5px solid #dde3eb; padding: 0; margin-bottom: 0; }
@@ -32,11 +34,11 @@ body { font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans
 .page { max-width: 720px; margin: 0 auto; padding: 1.25rem 1.25rem 4rem; }
 
 /* ── Cards ── */
-.card { background: #fff; border: 0.5px solid #dde3eb; border-radius: 14px; padding: 1.25rem; margin-bottom: 12px; }
+.card { background: #fff; border: 0.5px solid #dde3eb; border-radius: 16px; padding: 1.5rem; margin-bottom: 14px; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
 .card-title { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: #94a3b8; margin-bottom: 14px; }
 
 /* ── Selectors ── */
-.selectors { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 10px; margin-bottom: 1rem; }
+.selectors { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin-bottom: 1.25rem; }
 .sel-group { display: flex; flex-direction: column; gap: 5px; }
 .sel-group label { font-size: 10px; font-weight: 600; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.07em; }
 select, input[type="text"] { padding: 9px 11px; font-size: 13px; border: 1px solid #e2e8f0; border-radius: 9px; background: #f8fafc; color: #0f1923; width: 100%; font-family: inherit; }
@@ -45,7 +47,7 @@ select:focus, input:focus { outline: none; border-color: #93c5fd; background: #f
 /* ── Tabs ── */
 .tabs { display: flex; gap: 4px; margin-bottom: 14px; }
 .tab { padding: 7px 14px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 12px; font-weight: 500; cursor: pointer; background: #f8fafc; color: #64748b; font-family: inherit; transition: all 0.15s; }
-.tab.active { background: #eff6ff; color: #1d4ed8; border-color: #bfdbfe; }
+.tab.active { background: #eff6ff; color: #1d4ed8; border-color: #93c5fd; font-weight: 600; box-shadow: 0 1px 4px rgba(37,99,235,0.1); }
 .tab:hover { background: #f1f5f9; }
 .panel { display: none; }
 .panel.active { display: block; }
@@ -76,9 +78,9 @@ textarea:focus { outline: none; border-color: #93c5fd; background: #fff; }
 .privacy-check span { font-size: 13px; color: #334155; line-height: 1.4; }
 
 /* ── Mark button ── */
-.btn-mark { width: 100%; padding: 13px; font-size: 14px; font-weight: 600; background: #2563eb; border: none; border-radius: 11px; cursor: pointer; color: #fff; font-family: inherit; margin-top: 4px; transition: background 0.15s; letter-spacing: -0.1px; }
-.btn-mark:hover { background: #1d4ed8; }
-.btn-mark:disabled { background: #93c5fd; cursor: not-allowed; }
+.btn-mark { width: 100%; padding: 14px; font-size: 14px; font-weight: 600; background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%); border: none; border-radius: 12px; cursor: pointer; color: #fff; font-family: inherit; margin-top: 8px; transition: all 0.2s; letter-spacing: -0.1px; box-shadow: 0 4px 12px rgba(37,99,235,0.35); }
+.btn-mark:hover { background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%); box-shadow: 0 6px 16px rgba(37,99,235,0.45); transform: translateY(-1px); }
+.btn-mark:disabled { background: #93c5fd; cursor: not-allowed; box-shadow: none; transform: none; }
 
 /* ── Loading ── */
 .loading { text-align: center; padding: 2.5rem; display: none; }
@@ -116,7 +118,7 @@ canvas { display: none; }
 .btn-action:hover { background: rgba(255,255,255,0.22); }
 
 /* ── Result body cards ── */
-.result-body-card { background: #fff; border: 0.5px solid #dde3eb; border-radius: 14px; padding: 18px; margin-bottom: 12px; }
+.result-body-card { background: #fff; border: 0.5px solid #dde3eb; border-radius: 16px; padding: 20px; margin-bottom: 14px; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
 .student-meta { font-size: 13px; color: #64748b; margin-bottom: 1rem; }
 .section-label { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: #94a3b8; margin: 1.25rem 0 8px; }
 .section-label:first-of-type { margin-top: 0; }
@@ -173,7 +175,10 @@ canvas { display: none; }
 <body>
 <div class="header">
   <div class="header-inner">
-    <h1 style="gap:6px;"><svg width="42" height="42" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style="flex-shrink:0;display:block;"><circle cx="14" cy="14" r="10" stroke="#1e40af" stroke-width="2"/><line x1="8" y1="10" x2="20" y2="10" stroke="#93c5fd" stroke-width="1.5" stroke-linecap="round"/><line x1="8" y1="14" x2="20" y2="14" stroke="#93c5fd" stroke-width="1.5" stroke-linecap="round"/><line x1="8" y1="18" x2="14" y2="18" stroke="#93c5fd" stroke-width="1.5" stroke-linecap="round"/><line x1="22" y1="22" x2="29" y2="29" stroke="#1e40af" stroke-width="2.5" stroke-linecap="round"/></svg><span style="color:#0f1923;letter-spacing:-0.5px;">Discern<span style="color:#2563eb;">a</span></span></h1>
+    <div style="display:flex;flex-direction:column;align-items:center;gap:4px;">
+      <h1 style="gap:6px;"><svg width="42" height="42" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style="flex-shrink:0;display:block;"><circle cx="14" cy="14" r="10" stroke="#1e40af" stroke-width="2"/><line x1="8" y1="10" x2="20" y2="10" stroke="#93c5fd" stroke-width="1.5" stroke-linecap="round"/><line x1="8" y1="14" x2="20" y2="14" stroke="#93c5fd" stroke-width="1.5" stroke-linecap="round"/><line x1="8" y1="18" x2="14" y2="18" stroke="#93c5fd" stroke-width="1.5" stroke-linecap="round"/><line x1="22" y1="22" x2="29" y2="29" stroke="#1e40af" stroke-width="2.5" stroke-linecap="round"/></svg><span style="color:#0f1923;letter-spacing:-0.5px;">Discern<span style="color:#2563eb;">a</span></span></h1>
+      <p style="display:block;font-size:12px;font-weight:500;color:#94a3b8;letter-spacing:0.04em;margin:0;">Know your writers</p>
+    </div>
   </div>
 </div>
 <div class="page">
@@ -252,7 +257,17 @@ canvas { display: none; }
       <div id="early-years-tip" style="display:none;background:#eff6ff;border:1px solid #bfdbfe;border-radius:8px;padding:10px 12px;margin-bottom:10px;font-size:12px;color:#1d4ed8;">💡 <strong>Tip:</strong> For Foundation, Grade 1 and 2 students, the Type / paste tab gives the most accurate results. For clearest image recognition, photograph writing straight-on in good lighting.</div>
       <div class="upload-zone" id="upload-zone" onclick="document.getElementById('file-input').click()" style="position:relative;padding:0;overflow:hidden;min-height:80px;">
         <div id="upload-zone-placeholder" style="padding:2rem 1rem;text-align:center;">
-          <div class="icon">🖼️</div>
+          <div style="margin-bottom:12px;display:flex;justify-content:center;">
+            <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="6" y="8" width="28" height="36" rx="3" fill="#eff6ff" stroke="#bfdbfe" stroke-width="1.5"/>
+              <line x1="12" y1="18" x2="28" y2="18" stroke="#93c5fd" stroke-width="1.5" stroke-linecap="round"/>
+              <line x1="12" y1="23" x2="28" y2="23" stroke="#93c5fd" stroke-width="1.5" stroke-linecap="round"/>
+              <line x1="12" y1="28" x2="22" y2="28" stroke="#93c5fd" stroke-width="1.5" stroke-linecap="round"/>
+              <circle cx="36" cy="36" r="10" fill="#2563eb"/>
+              <line x1="36" y1="31" x2="36" y2="41" stroke="white" stroke-width="2" stroke-linecap="round"/>
+              <line x1="31" y1="36" x2="41" y2="36" stroke="white" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </div>
           <p>Click to upload a photo, scan, or PDF of student writing</p>
           <p class="sub">JPG, PNG, PDF accepted · Select multiple images for multi-page work</p>
         </div>
@@ -428,7 +443,7 @@ canvas { display: none; }
     <p class="empty-msg" id="session-empty" style="display:none;">No results saved yet. Mark a piece of writing and click Save.</p>
   </div>
 
-  <div class="footer">Discerna · Student data is not stored or retained · Built for Australian teachers</div>
+  <div class="footer">Discerna © 2025 · Student data is not stored or retained · Built for Australian teachers</div>
 </div>
 
 <div id="img-lightbox" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);z-index:9999;cursor:pointer;align-items:center;justify-content:center;" onclick="closeLightbox()">
