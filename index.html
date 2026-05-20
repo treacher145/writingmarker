@@ -1453,6 +1453,7 @@ function handleFile(input) {
                 pdfNotice.style.display = 'none';
                 pdfFilename.textContent = '';
                 img.style.display = 'none';
+                document.getElementById('upload-zone').style.display = 'none';
                 renderMultiImagePanel();
                 multiPanel.style.display = 'block';
                 document.getElementById('read-handwriting-btn-single').style.display = 'block';
@@ -1511,6 +1512,7 @@ function handleFile(input) {
         loaded++;
         if (loaded === files.length) {
           multiImageData = tempData;
+          document.getElementById('upload-zone').style.display = 'none';
           renderMultiImagePanel();
         }
       }, 150000);
@@ -1653,6 +1655,9 @@ function renderMultiImagePanel() {
       imageRotations.splice(idx, 1);
       if (multiImageData.length === 0) {
         document.getElementById('multi-image-panel').style.display = 'none';
+        document.getElementById('upload-zone').style.display = 'block';
+        document.getElementById('upload-zone-placeholder').style.display = 'block';
+        document.getElementById('upload-zone-preview').style.display = 'none';
         document.getElementById('read-handwriting-btn-single').style.display = 'none';
         document.getElementById('transcription-preview-card').style.display = 'none';
         transcriptionReady = false;
@@ -2498,6 +2503,7 @@ function printResult() {
 function resetTool() {
   capturedImageBase64 = null;
   document.getElementById('preview-img').style.display = 'none';
+  document.getElementById('upload-zone').style.display = 'block';
   document.getElementById('upload-zone-placeholder').style.display = 'block';
   document.getElementById('upload-zone-preview').style.display = 'none';
   document.getElementById('cam-preview').style.display = 'none';
