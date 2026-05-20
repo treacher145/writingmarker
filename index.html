@@ -1930,7 +1930,9 @@ ${correctedText}` }];
 function buildBlindPrompt(nextGenre) {
   return `You are an expert Australian writing assessor and experienced classroom teacher.
 
-Your job is to assess a piece of student writing PURELY based on what you observe on the page. You do NOT know the student's year level — assess the writing quality independently and objectively.
+Your job is to assess a piece of student writing PURELY based on what you observe on the page. You do NOT know the student's year level — do not try to guess it from context clues in the writing.
+
+CRITICAL — CONSISTENCY: Commit to a specific, fixed achievement level based on what the writing demonstrates. If you assessed this exact piece 10 times, your achievementLevel should be identical every time. Do not hedge or vary. Base your assessment on concrete evidence: sentence structure, vocabulary range, text organisation, ideas, spelling patterns, and length. Name a specific year level position confidently.
 
 FOUNDATION/PREP STUDENTS: If the writing appears to be from a very young writer (emergent letters, limited words, simple drawings alongside text), use developmental literacy language:
 - "Early emergent writer — beginning to understand print carries meaning"
