@@ -257,6 +257,9 @@ canvas { display: none; }
       </div>
       <input type="file" id="file-input" accept="image/*,application/pdf" multiple onchange="handleFile(this)">
       <img id="preview-img" alt="Uploaded writing preview" style="max-width:100%;max-height:200px;border-radius:8px;margin-bottom:10px;display:none;">
+      <div id="single-image-delete" style="display:none;margin-bottom:8px;">
+        <button onclick="deleteSingleImage()" style="padding:5px 12px;font-size:12px;border:1px solid #fca5a5;border-radius:6px;background:#fff5f5;color:#b91c1c;cursor:pointer;font-family:inherit;">✕ Remove image</button>
+      </div>
       <div id="pdf-notice" style="display:none;background:#f0fdf4;border:1px solid #86efac;border-radius:8px;padding:10px 14px;margin-bottom:10px;font-size:13px;color:#166534;"><span id="pdf-filename"></span></div>
       <div id="read-handwriting-btn-single" style="display:none;margin-bottom:10px;">
         <button onclick="triggerTranscription()" style="width:100%;padding:10px;font-size:13px;font-weight:500;border:1px solid #8b7355;border-radius:8px;background:#fff;color:#8b7355;cursor:pointer;font-family:inherit;">📖 Read handwriting</button>
@@ -1382,6 +1385,7 @@ function handleFile(input) {
     img.style.display = 'none';
     multiPanel.style.display = 'none';
     document.getElementById('read-handwriting-btn-single').style.display = 'none';
+  document.getElementById('single-image-delete').style.display = 'none';
     document.getElementById('transcription-preview-card').style.display = 'none';
 
     if (typeof pdfjsLib === 'undefined') {
@@ -1415,6 +1419,7 @@ function handleFile(input) {
             img.onclick = () => openLightbox(img.src);
             pdfNotice.style.display = 'none';
             pdfFilename.textContent = '';
+            document.getElementById('single-image-delete').style.display = 'block';
             document.getElementById('read-handwriting-btn-single').style.display = 'block';
           }, 200000);
         } else {
@@ -1473,6 +1478,7 @@ function handleFile(input) {
         img.onclick = () => openLightbox(img.src);
         pdfNotice.style.display = 'none';
         multiPanel.style.display = 'none';
+        document.getElementById('single-image-delete').style.display = 'block';
         document.getElementById('read-handwriting-btn-single').style.display = 'block';
         document.getElementById('transcription-preview-card').style.display = 'none';
       });
@@ -2135,6 +2141,8 @@ The feedback card must:
 
 Goals must be tailored to both the student's achievement level AND the next writing type (${nextGenre}).
 
+GOALS — LANGUAGE BY YEAR LEVEL: For Foundation, Year 1, Year 2, and Year 3 students, write goals in simple, warm, direct language that a young student could understand if read to them. Avoid curriculum jargon. Use short sentences. For example instead of "Experiment with complex sentence structures to enhance narrative cohesion" write "Try starting a sentence in a different way — instead of 'I went', try 'Suddenly' or 'After that'." For Year 4 and above, teacher-facing language is appropriate.
+
 GOALS — IMPORTANT: Colons and semicolons should be a rare goal — only suggest them if the student has already demonstrated strong control of sentence structure and vocabulary, and these punctuation marks are a genuine and logical next step for this specific writer. In most cases, a far more valuable goal will be found in ideas and content development, text structure, sentence variety, vocabulary choices, voice, or audience awareness. A good goal names a specific writerly move, not a punctuation mark.
 
 Respond ONLY with valid JSON, no markdown, no backticks. CRITICAL: the "goals" field MUST be a JSON array of exactly 3 separate strings — never combine them into one string:
@@ -2511,6 +2519,24 @@ function resetTool() {
   currentResult = null;
   extractedText = '';
   multiImageData = [];
+}
+
+function deleteSingleImage() {
+  capturedImageBase64 = null;
+  const img = document.getElementById('preview-img');
+  img.src = '';
+  img.style.display = 'none';
+  img.onclick = null;
+  img.style.cursor = 'default';
+  document.getElementById('single-image-delete').style.display = 'none';
+  document.getElementById('read-handwriting-btn-single').style.display = 'none';
+  document.getElementById('transcription-preview-card').style.display = 'none';
+  document.getElementById('transcription-loading').style.display = 'none';
+  document.getElementById('file-input').value = '';
+  transcriptionReady = false;
+  document.getElementById('mark-btn').disabled = true;
+  document.getElementById('mark-btn').textContent = '✦ Mark this writing';
+  hideError();
 }
 
 updateYearLevels();
