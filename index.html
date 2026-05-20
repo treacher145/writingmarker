@@ -1884,7 +1884,7 @@ ${correctedText}` }];
     const blindResp = await fetch('/api/assess', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ system: buildBlindPrompt(nextGenre), messages })
+      body: JSON.stringify({ system: buildBlindPrompt(nextGenre), messages: blindMessages })
     });
     if (!blindResp.ok) { const e = await blindResp.json().catch(()=>({})); showError('API error', e.error ? e.error.message : 'Please try again.'); return; }
     const blindData = await blindResp.json();
@@ -2325,6 +2325,28 @@ async function markWriting() {
     showError('No writing provided', 'Please upload an image, use the camera, or type/paste writing first.');
     return;
   }
+
+  // Build blind messages — strip year level and genre from the text prompt so Step 1 is truly blind
+  // For image/multi messages, replace the text block; for text, just send the text
+  let blindMessages = messages.map(msg => {
+    if (typeof msg.content === 'string') {
+      // Text tab — strip the preamble, just send the writing
+      const textOnly = msg.content.replace(/^Assess this .+?\n\n/s, '');
+      return { role: msg.role, content: textOnly };
+    } else if (Array.isArray(msg.content)) {
+      // Image/multi — replace text blocks that mention year level
+      return {
+        role: msg.role,
+        content: msg.content.map(block => {
+          if (block.type === 'text') {
+            return { type: 'text', text: 'Please assess this student writing sample.' };
+          }
+          return block;
+        })
+      };
+    }
+    return msg;
+  });
 
   document.getElementById('mark-btn').disabled = true;
   document.getElementById('loading').style.display = 'block';
