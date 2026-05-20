@@ -1951,7 +1951,7 @@ TRANSCRIPTION: Always transcribe the full text exactly as the student wrote it i
 - If a word is genuinely illegible, write [illegible]
 - Rate confidence: HIGH, MEDIUM, or LOW
 
-EDITING AND REVISION: Examine the image for visible evidence of self-editing (crossings out, insertions, rewrites). Note what you observe. If no editing is visible, say so briefly. For typed text, note it is not observable.
+EDITING AND REVISION: You are receiving transcribed text, not an image. Note in editingObservation that editing evidence is assessed separately from the image and is not visible in the text. Keep this note brief.
 
 GOALS — write exactly 3 goals that come directly from what THIS piece of writing shows. Goals should be the most valuable next steps for THIS specific writer based on what you actually read.
 - For writers at an early primary level (approximately Year 1-3), use simple warm language a young student could understand: e.g. "Try starting a sentence in a different way — instead of 'I went', try 'Suddenly' or 'After that'."
@@ -1988,10 +1988,13 @@ YOUR TASK:
 
 ${meta.prompt}
 
+Also examine the writing image carefully for visible evidence of self-editing (crossings out, words inserted above lines, rewrites, punctuation corrections). Note what you observe in editingObservation. Only reference editing/revision curriculum strands if there is visible evidence of editing.
+
 Respond ONLY with valid JSON, no markdown, no backticks:
 {
   "curriculumStandard": "e.g. Victorian Curriculum Year 4 / NSW Stage 2 / Australian Curriculum Year 4",
   "curriculumAlignment": "2-3 sentences referencing specific strands, outcomes or achievement standards",
+  "editingObservation": "what you observe about visible editing evidence in the image",
   "outcomeCodes": [{"code": "VCELY301", "label": "Short label"}]
 }`;
 }
@@ -2326,27 +2329,35 @@ async function markWriting() {
     return;
   }
 
-  // Build blind messages — strip year level and genre from the text prompt so Step 1 is truly blind
-  // For image/multi messages, replace the text block; for text, just send the text
-  let blindMessages = messages.map(msg => {
-    if (typeof msg.content === 'string') {
-      // Text tab — strip the preamble, just send the writing
-      const textOnly = msg.content.replace(/^Assess this .+?\n\n/s, '');
-      return { role: msg.role, content: textOnly };
-    } else if (Array.isArray(msg.content)) {
-      // Image/multi — replace text blocks that mention year level
-      return {
-        role: msg.role,
-        content: msg.content.map(block => {
-          if (block.type === 'text') {
-            return { type: 'text', text: 'Please assess this student writing sample.' };
-          }
-          return block;
-        })
-      };
-    }
-    return msg;
-  });
+  // Build blind messages for Step 1 — use transcribed text instead of images
+  // This removes visual age/handwriting cues so assessment is based purely on writing quality
+  let blindMessages;
+  const transcribedText = document.getElementById('pre-mark-transcription') ? document.getElementById('pre-mark-transcription').value.trim() : '';
+
+  if (currentTab === 'text') {
+    // Text tab — strip the preamble, just send the raw writing
+    const txt = document.getElementById('text-input').value.trim();
+    blindMessages = [{ role: 'user', content: txt }];
+  } else if (transcribedText) {
+    // Image/camera — use the transcription text so Step 1 sees words not handwriting
+    blindMessages = [{ role: 'user', content: transcribedText }];
+  } else {
+    // Fallback: no transcription available, send images with neutral prompt
+    blindMessages = messages.map(msg => {
+      if (Array.isArray(msg.content)) {
+        return {
+          role: msg.role,
+          content: msg.content.map(block => {
+            if (block.type === 'text') {
+              return { type: 'text', text: 'Please assess this student writing sample.' };
+            }
+            return block;
+          })
+        };
+      }
+      return msg;
+    });
+  }
 
   document.getElementById('mark-btn').disabled = true;
   document.getElementById('loading').style.display = 'block';
@@ -2394,7 +2405,17 @@ async function markWriting() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         system: buildCurriculumPrompt(meta, nextGenre, blindResult),
-        messages: [{ role: 'user', content: `The student is in ${yearLevel}. Map the writing assessment to the ${meta.name} curriculum standards.` }]
+        messages: (() => {
+          const step2Text = { type: 'text', text: `The student is in ${yearLevel}. Map the writing assessment to the ${meta.name} curriculum standards. Also examine the writing for visible editing evidence.` };
+          // Include original images if available so editing can be observed
+          if (Array.isArray(messages[0]?.content)) {
+            const imageBlocks = messages[0].content.filter(b => b.type === 'image' || b.type === 'document');
+            if (imageBlocks.length > 0) {
+              return [{ role: 'user', content: [...imageBlocks, step2Text] }];
+            }
+          }
+          return [{ role: 'user', content: step2Text.text }];
+        })()
       })
     });
 
