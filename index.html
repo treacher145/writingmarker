@@ -309,7 +309,7 @@ canvas { display: none; }
 
   <div class="teacher-note-wrap">
       <label>Teacher notes (optional — stays local, not sent for analysis)</label>
-      <textarea id="teacher-note" placeholder="e.g. Written under timed conditions, EAL/D student, first draft..."></textarea>
+      <textarea id="teacher-note" placeholder="e.g. Written under timed conditions, first draft, interrupted writing..."></textarea>
     </div>
 
     <label class="privacy-check">
@@ -1719,6 +1719,7 @@ function renderMultiImagePanel() {
   list.appendChild(readBtn);
 
   panel.style.display = 'block';
+  document.getElementById('read-handwriting-btn-single').style.display = 'none';
   document.getElementById('transcription-preview-card').style.display = 'none';
 }
 
