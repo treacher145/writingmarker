@@ -2334,14 +2334,17 @@ async function markWriting() {
   let blindMessages;
   const transcribedText = document.getElementById('pre-mark-transcription') ? document.getElementById('pre-mark-transcription').value.trim() : '';
 
+  console.log('Blind step — transcribedText length:', transcribedText.length, 'currentTab:', currentTab);
   if (currentTab === 'text') {
     // Text tab — strip the preamble, just send the raw writing
     const txt = document.getElementById('text-input').value.trim();
     blindMessages = [{ role: 'user', content: txt }];
   } else if (transcribedText) {
     // Image/camera — use the transcription text so Step 1 sees words not handwriting
+    console.log('Using transcription text for blind step, first 100 chars:', transcribedText.substring(0, 100));
     blindMessages = [{ role: 'user', content: transcribedText }];
   } else {
+    console.log('WARNING: No transcription text found, falling back to images');
     // Fallback: no transcription available, send images with neutral prompt
     blindMessages = messages.map(msg => {
       if (Array.isArray(msg.content)) {
