@@ -1879,15 +1879,30 @@ ${correctedText}` }];
   document.getElementById('mark-btn').disabled = true;
 
   try {
-    const response = await fetch('/api/assess', {
+    // Step 1: blind assessment
+    document.getElementById('loading-msg').textContent = 'Step 1 of 2: Reading the writing...';
+    const blindResp = await fetch('/api/assess', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ system: buildSystemPrompt(meta, nextGenre), messages })
+      body: JSON.stringify({ system: buildBlindPrompt(nextGenre), messages })
     });
-    if (!response.ok) { const e = await response.json().catch(()=>({})); showError('API error', e.error ? e.error.message : 'Please try again.'); return; }
-    const data = await response.json();
-    const raw = (data.content || []).map(i => i.text || '').join('').replace(/```json|```/g,'').trim();
-    const result = JSON.parse(raw);
+    if (!blindResp.ok) { const e = await blindResp.json().catch(()=>({})); showError('API error', e.error ? e.error.message : 'Please try again.'); return; }
+    const blindData = await blindResp.json();
+    const blindRaw = (blindData.content || []).map(i => i.text || '').join('').replace(/```json|```/g,'').trim();
+    const blindResult = JSON.parse(blindRaw.match(/\{[\s\S]*\}/)[0]);
+
+    // Step 2: curriculum mapping
+    document.getElementById('loading-msg').textContent = 'Step 2 of 2: Mapping to curriculum...';
+    const curResp = await fetch('/api/assess', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ system: buildCurriculumPrompt(meta, nextGenre, blindResult), messages: [{ role: 'user', content: `The student is in ${currentResult.yearLevel}. Map the writing assessment to the ${meta.name} curriculum standards.` }] })
+    });
+    const curData = await curResp.json();
+    const curRaw = (curData.content || []).map(i => i.text || '').join('').replace(/```json|```/g,'').trim();
+    let curResult;
+    try { curResult = JSON.parse(curRaw.match(/\{[\s\S]*\}/)[0]); } catch(e) { curResult = { curriculumStandard: meta.name, curriculumAlignment: '', outcomeCodes: [] }; }
+    const result = { ...blindResult, ...curResult };
 
     // Update current result with new analysis but keep corrected text
     currentResult.result = result;
@@ -1910,6 +1925,73 @@ ${correctedText}` }];
     document.getElementById('loading').style.display = 'none';
     document.getElementById('mark-btn').disabled = false;
   }
+}
+
+function buildBlindPrompt(nextGenre) {
+  return `You are an expert Australian writing assessor and experienced classroom teacher.
+
+Your job is to assess a piece of student writing PURELY based on what you observe on the page. You do NOT know the student's year level — assess the writing quality independently and objectively.
+
+FOUNDATION/PREP STUDENTS: If the writing appears to be from a very young writer (emergent letters, limited words, simple drawings alongside text), use developmental literacy language:
+- "Early emergent writer — beginning to understand print carries meaning"
+- "Developing emergent writer — forming recognisable letters and words"
+- "Confident emergent writer — composing simple sentences independently"
+
+For all other writers, describe achievement using natural teacher language that gives a sense of WHERE the student sits on the learning continuum. Always give a position and direction:
+- "Writing at a strong Year 2 level — approaching Year 3"
+- "Performing at a solid Year 5 level"
+- "Writing with Year 7 sophistication"
+- "Early Year 4 writer — working towards mid Year 4"
+
+TRANSCRIPTION: Always transcribe the full text exactly as the student wrote it into the transcribedText field.
+- Include a title if present
+- Reproduce spelling errors exactly — do NOT correct them
+- If a word is genuinely illegible, write [illegible]
+- Rate confidence: HIGH, MEDIUM, or LOW
+
+EDITING AND REVISION: Examine the image for visible evidence of self-editing (crossings out, insertions, rewrites). Note what you observe. If no editing is visible, say so briefly. For typed text, note it is not observable.
+
+GOALS — write exactly 3 goals that come directly from what THIS piece of writing shows. Goals should be the most valuable next steps for THIS specific writer based on what you actually read.
+- For writers at an early primary level (approximately Year 1-3), use simple warm language a young student could understand: e.g. "Try starting a sentence in a different way — instead of 'I went', try 'Suddenly' or 'After that'."
+- For writers at upper primary and secondary level, teacher-facing language is appropriate.
+- Goals must be about ideas, structure, vocabulary, voice, sentence variety, or audience — not punctuation marks like colons or semicolons unless the writer is already sophisticated and these are a genuine logical next step.
+
+COMMENDATION: Pull one specific quote directly from the student's actual writing that genuinely stands out. Celebrate it warmly and specifically. Explain in 1-2 sentences WHY it is impressive — what it reveals about this writer.
+
+Respond ONLY with valid JSON, no markdown, no backticks:
+{
+  "achievementLevel": "description of what the writing actually demonstrates e.g. Strong Year 3 writer — approaching Year 4 standard",
+  "overall": "2-3 sentence professional assessment of the writing quality based purely on what you observe",
+  "commendationQuote": "exact quote from the student's writing",
+  "commendationComment": "1-2 warm sentences on why this is impressive",
+  "goals": ["Goal 1", "Goal 2", "Goal 3"],
+  "editingObservation": "what you observe about editing evidence in the image",
+  "transcribedText": "full text exactly as written",
+  "transcriptionConfidence": "HIGH, MEDIUM, or LOW"
+}`;
+}
+
+function buildCurriculumPrompt(meta, nextGenre, blindResult) {
+  return `You are an expert Australian writing assessor. You have already received a quality assessment of a piece of student writing. Your job now is to map that assessment onto the ${meta.name} curriculum standards for the nominated year level, and generate curriculum alignment details.
+
+THE WRITING QUALITY ASSESSMENT (already determined independently):
+Achievement level: ${blindResult.achievementLevel}
+Overall: ${blindResult.overall}
+
+YOUR TASK:
+1. Reference the specific curriculum strands, outcomes and achievement standards that are evidenced by this writing
+2. Only reference the editing/revision strand if there is visible evidence of editing: "${blindResult.editingObservation}"
+3. Generate outcome codes appropriate to the nominated year level and curriculum
+4. Note how the writing sits relative to the nominated year level — above, at, or below expectations
+
+${meta.prompt}
+
+Respond ONLY with valid JSON, no markdown, no backticks:
+{
+  "curriculumStandard": "e.g. Victorian Curriculum Year 4 / NSW Stage 2 / Australian Curriculum Year 4",
+  "curriculumAlignment": "2-3 sentences referencing specific strands, outcomes or achievement standards",
+  "outcomeCodes": [{"code": "VCELY301", "label": "Short label"}]
+}`;
 }
 
 function buildSystemPrompt(meta, nextGenre) {
@@ -2244,46 +2326,82 @@ async function markWriting() {
 
   document.getElementById('mark-btn').disabled = true;
   document.getElementById('loading').style.display = 'block';
-  document.getElementById('loading-msg').textContent = `Analysing against ${meta.name}...`;
+  document.getElementById('loading-msg').textContent = 'Step 1 of 2: Reading the writing...';
   document.getElementById('result-card').style.display = 'none';
   document.getElementById('session-wrap').style.display = 'none';
 
   try {
-    const response = await fetch('/api/assess', {
+    // STEP 1: Blind assessment — no year level, pure writing quality
+    const blindResponse = await fetch('/api/assess', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        system: buildSystemPrompt(meta, nextGenre),
+        system: buildBlindPrompt(nextGenre),
         messages: messages
       })
     });
 
-    if (!response.ok) {
-      const errData = await response.json().catch(() => ({}));
-      showError('API error ' + response.status, errData.error ? errData.error.message : 'Please try again.');
+    if (!blindResponse.ok) {
+      const errData = await blindResponse.json().catch(() => ({}));
+      showError('API error ' + blindResponse.status, errData.error ? errData.error.message : 'Please try again.');
       return;
     }
 
-    const data = await response.json();
-    if (data.error) { showError('Error', data.error.message || JSON.stringify(data.error)); return; }
+    const blindData = await blindResponse.json();
+    if (blindData.error) { showError('Error', blindData.error.message || JSON.stringify(blindData.error)); return; }
 
-    const raw = (data.content || []).map(i => i.text || '').join('').replace(/```json|```/g, '').trim();
-    if (!raw) { showError('Empty response', 'No response received. Please try again.'); return; }
+    const blindRaw = (blindData.content || []).map(i => i.text || '').join('').replace(/```json|```/g, '').trim();
+    if (!blindRaw) { showError('Empty response', 'No response from step 1. Please try again.'); return; }
 
-    let result;
+    let blindResult;
     try {
-      // Try to extract JSON even if there's surrounding text
-      const jsonMatch = raw.match(/\{[\s\S]*\}/);
-      const jsonStr = jsonMatch ? jsonMatch[0] : raw;
-      result = JSON.parse(jsonStr);
+      const jsonMatch = blindRaw.match(/\{[\s\S]*\}/);
+      blindResult = JSON.parse(jsonMatch ? jsonMatch[0] : blindRaw);
     } catch(e) {
-      showError('Could not read response', 'Parse error: ' + e.message + '. Raw (first 300 chars): ' + raw.substring(0, 300));
+      showError('Could not read response', 'Step 1 parse error: ' + e.message);
       return;
     }
+
+    // STEP 2: Curriculum mapping — takes blind result and maps to nominated year level
+    document.getElementById('loading-msg').textContent = `Step 2 of 2: Mapping to ${meta.name}...`;
+
+    const curriculumResponse = await fetch('/api/assess', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        system: buildCurriculumPrompt(meta, nextGenre, blindResult),
+        messages: [{ role: 'user', content: `The student is in ${yearLevel}. Map the writing assessment to the ${meta.name} curriculum standards.` }]
+      })
+    });
+
+    if (!curriculumResponse.ok) {
+      const errData = await curriculumResponse.json().catch(() => ({}));
+      showError('API error ' + curriculumResponse.status, errData.error ? errData.error.message : 'Please try again.');
+      return;
+    }
+
+    const curriculumData = await curriculumResponse.json();
+    if (curriculumData.error) { showError('Error', curriculumData.error.message || JSON.stringify(curriculumData.error)); return; }
+
+    const curriculumRaw = (curriculumData.content || []).map(i => i.text || '').join('').replace(/```json|```/g, '').trim();
+
+    let curriculumResult;
+    try {
+      const jsonMatch2 = curriculumRaw.match(/\{[\s\S]*\}/);
+      curriculumResult = JSON.parse(jsonMatch2 ? jsonMatch2[0] : curriculumRaw);
+    } catch(e) {
+      // If curriculum step fails, still show blind result with no curriculum codes
+      curriculumResult = { curriculumStandard: meta.name, curriculumAlignment: 'Curriculum mapping unavailable.', outcomeCodes: [] };
+    }
+
+    // Merge both results
+    const result = {
+      ...blindResult,
+      ...curriculumResult
+    };
 
     extractedText = extractedText || (currentTab !== 'text' ? '[Image/PDF uploaded]' : '');
     currentResult = { studentLabel, yearLevel, curriculum: meta.name, genre, nextGenre, teacherNote, eald, result, extractedText, timestamp: new Date().toLocaleTimeString() };
-    // Auto-save to session
     sessionResults.push({...currentResult});
     document.getElementById('session-count').textContent = sessionResults.length;
     renderResult(currentResult);
