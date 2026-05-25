@@ -4,23 +4,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg width='32' height='32' viewBox='0 0 32 32' fill='none' xmlns='http://www.w3.org/2000/svg'><rect width='32' height='32' rx='7' fill='%231e40af'/><circle cx='14' cy='14' r='8' stroke='white' stroke-width='1.8'/><line x1='9' y1='11' x2='19' y2='11' stroke='%2393c5fd' stroke-width='1.3' stroke-linecap='round'/><line x1='9' y1='14' x2='19' y2='14' stroke='%2393c5fd' stroke-width='1.3' stroke-linecap='round'/><line x1='9' y1='17' x2='14' y2='17' stroke='%2393c5fd' stroke-width='1.3' stroke-linecap='round'/><line x1='20' y1='20' x2='27' y2='27' stroke='white' stroke-width='2' stroke-linecap='round'/></svg>">
-<meta name="description" content="Discerna — AI writing assessment for Australian teachers. Aligned to VIC, NSW, QLD, SA, WA, TAS, ACT and NT curricula.">
-<meta property="og:title" content="Discerna — Know Your Writers">
-<meta property="og:description" content="AI writing assessment for Australian teachers. Aligned to all state and territory curricula.">
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://discerna.com.au">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Discerna — Know Your Writers">
-<meta name="twitter:description" content="AI writing assessment for Australian teachers. Aligned to all state and territory curricula.">
-<title>Discerna — Know Your Writers</title>
+<title>Discerna — AI Writing Assessment for Australian Teachers</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Instrument+Serif:ital@0;1&display=swap');
 
 /* ── Reset & base ── */
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body { font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif; background: #f0f4f9; color: #0f1923; min-height: 100vh; }
-.page { animation: fadeIn 0.3s ease; }
-@keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
 
 /* ── Top bar ── */
 .header { background: #fff; border-bottom: 0.5px solid #dde3eb; padding: 0; margin-bottom: 0; }
@@ -34,11 +24,11 @@ body { font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans
 .page { max-width: 720px; margin: 0 auto; padding: 1.25rem 1.25rem 4rem; }
 
 /* ── Cards ── */
-.card { background: #fff; border: 0.5px solid #dde3eb; border-radius: 16px; padding: 1.5rem; margin-bottom: 14px; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
+.card { background: #fff; border: 0.5px solid #dde3eb; border-radius: 14px; padding: 1.25rem; margin-bottom: 12px; }
 .card-title { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: #94a3b8; margin-bottom: 14px; }
 
 /* ── Selectors ── */
-.selectors { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin-bottom: 1.25rem; }
+.selectors { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 10px; margin-bottom: 1rem; }
 .sel-group { display: flex; flex-direction: column; gap: 5px; }
 .sel-group label { font-size: 10px; font-weight: 600; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.07em; }
 select, input[type="text"] { padding: 9px 11px; font-size: 13px; border: 1px solid #e2e8f0; border-radius: 9px; background: #f8fafc; color: #0f1923; width: 100%; font-family: inherit; }
@@ -47,7 +37,7 @@ select:focus, input:focus { outline: none; border-color: #93c5fd; background: #f
 /* ── Tabs ── */
 .tabs { display: flex; gap: 4px; margin-bottom: 14px; }
 .tab { padding: 7px 14px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 12px; font-weight: 500; cursor: pointer; background: #f8fafc; color: #64748b; font-family: inherit; transition: all 0.15s; }
-.tab.active { background: #eff6ff; color: #1d4ed8; border-color: #93c5fd; font-weight: 600; box-shadow: 0 1px 4px rgba(37,99,235,0.1); }
+.tab.active { background: #eff6ff; color: #1d4ed8; border-color: #bfdbfe; }
 .tab:hover { background: #f1f5f9; }
 .panel { display: none; }
 .panel.active { display: block; }
@@ -78,9 +68,9 @@ textarea:focus { outline: none; border-color: #93c5fd; background: #fff; }
 .privacy-check span { font-size: 13px; color: #334155; line-height: 1.4; }
 
 /* ── Mark button ── */
-.btn-mark { width: 100%; padding: 14px; font-size: 14px; font-weight: 600; background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%); border: none; border-radius: 12px; cursor: pointer; color: #fff; font-family: inherit; margin-top: 8px; transition: all 0.2s; letter-spacing: -0.1px; box-shadow: 0 4px 12px rgba(37,99,235,0.35); }
-.btn-mark:hover { background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%); box-shadow: 0 6px 16px rgba(37,99,235,0.45); transform: translateY(-1px); }
-.btn-mark:disabled { background: #93c5fd; cursor: not-allowed; box-shadow: none; transform: none; }
+.btn-mark { width: 100%; padding: 13px; font-size: 14px; font-weight: 600; background: #2563eb; border: none; border-radius: 11px; cursor: pointer; color: #fff; font-family: inherit; margin-top: 4px; transition: background 0.15s; letter-spacing: -0.1px; }
+.btn-mark:hover { background: #1d4ed8; }
+.btn-mark:disabled { background: #93c5fd; cursor: not-allowed; }
 
 /* ── Loading ── */
 .loading { text-align: center; padding: 2.5rem; display: none; }
@@ -118,7 +108,7 @@ canvas { display: none; }
 .btn-action:hover { background: rgba(255,255,255,0.22); }
 
 /* ── Result body cards ── */
-.result-body-card { background: #fff; border: 0.5px solid #dde3eb; border-radius: 16px; padding: 20px; margin-bottom: 14px; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
+.result-body-card { background: #fff; border: 0.5px solid #dde3eb; border-radius: 14px; padding: 18px; margin-bottom: 12px; }
 .student-meta { font-size: 13px; color: #64748b; margin-bottom: 1rem; }
 .section-label { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: #94a3b8; margin: 1.25rem 0 8px; }
 .section-label:first-of-type { margin-top: 0; }
@@ -175,10 +165,7 @@ canvas { display: none; }
 <body>
 <div class="header">
   <div class="header-inner">
-    <div style="display:flex;flex-direction:column;align-items:center;gap:4px;">
-      <h1 style="gap:6px;"><svg width="42" height="42" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style="flex-shrink:0;display:block;"><circle cx="14" cy="14" r="10" stroke="#1e40af" stroke-width="2"/><line x1="8" y1="10" x2="20" y2="10" stroke="#93c5fd" stroke-width="1.5" stroke-linecap="round"/><line x1="8" y1="14" x2="20" y2="14" stroke="#93c5fd" stroke-width="1.5" stroke-linecap="round"/><line x1="8" y1="18" x2="14" y2="18" stroke="#93c5fd" stroke-width="1.5" stroke-linecap="round"/><line x1="22" y1="22" x2="29" y2="29" stroke="#1e40af" stroke-width="2.5" stroke-linecap="round"/></svg><span style="color:#0f1923;letter-spacing:-0.5px;">Discern<span style="color:#2563eb;">a</span></span></h1>
-      <p style="display:block;font-size:12px;font-weight:500;color:#94a3b8;letter-spacing:0.04em;margin:0;">Know your writers</p>
-    </div>
+    <h1 style="gap:6px;"><svg width="42" height="42" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style="flex-shrink:0;display:block;"><circle cx="14" cy="14" r="10" stroke="#1e40af" stroke-width="2"/><line x1="8" y1="10" x2="20" y2="10" stroke="#93c5fd" stroke-width="1.5" stroke-linecap="round"/><line x1="8" y1="14" x2="20" y2="14" stroke="#93c5fd" stroke-width="1.5" stroke-linecap="round"/><line x1="8" y1="18" x2="14" y2="18" stroke="#93c5fd" stroke-width="1.5" stroke-linecap="round"/><line x1="22" y1="22" x2="29" y2="29" stroke="#1e40af" stroke-width="2.5" stroke-linecap="round"/></svg><span style="color:#0f1923;letter-spacing:-0.5px;">Discern<span style="color:#2563eb;">a</span></span></h1>
   </div>
 </div>
 <div class="page">
@@ -255,28 +242,13 @@ canvas { display: none; }
         <span>⚠️ Before uploading, ensure all student names, school names, and identifying information are covered or cropped from the image.</span>
       </div>
       <div id="early-years-tip" style="display:none;background:#eff6ff;border:1px solid #bfdbfe;border-radius:8px;padding:10px 12px;margin-bottom:10px;font-size:12px;color:#1d4ed8;">💡 <strong>Tip:</strong> For Foundation, Grade 1 and 2 students, the Type / paste tab gives the most accurate results. For clearest image recognition, photograph writing straight-on in good lighting.</div>
-      <div class="upload-zone" id="upload-zone" onclick="document.getElementById('file-input').click()" style="position:relative;padding:0;overflow:hidden;min-height:80px;">
-        <div id="upload-zone-placeholder" style="padding:2rem 1rem;text-align:center;">
-          <div style="margin-bottom:12px;display:flex;justify-content:center;">
-            <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <rect x="6" y="8" width="28" height="36" rx="3" fill="#eff6ff" stroke="#bfdbfe" stroke-width="1.5"/>
-              <line x1="12" y1="18" x2="28" y2="18" stroke="#93c5fd" stroke-width="1.5" stroke-linecap="round"/>
-              <line x1="12" y1="23" x2="28" y2="23" stroke="#93c5fd" stroke-width="1.5" stroke-linecap="round"/>
-              <line x1="12" y1="28" x2="22" y2="28" stroke="#93c5fd" stroke-width="1.5" stroke-linecap="round"/>
-              <circle cx="36" cy="36" r="10" fill="#2563eb"/>
-              <line x1="36" y1="31" x2="36" y2="41" stroke="white" stroke-width="2" stroke-linecap="round"/>
-              <line x1="31" y1="36" x2="41" y2="36" stroke="white" stroke-width="2" stroke-linecap="round"/>
-            </svg>
-          </div>
-          <p>Click to upload a photo, scan, or PDF of student writing</p>
-          <p class="sub">JPG, PNG, PDF accepted · Select multiple images for multi-page work</p>
-        </div>
-        <div id="upload-zone-preview" style="display:none;position:relative;">
-          <img id="preview-img" alt="Uploaded writing preview" style="width:100%;max-height:260px;object-fit:contain;border-radius:12px;display:block;cursor:zoom-in;">
-          <button onclick="event.stopPropagation();deleteSingleImage()" id="single-image-delete" style="display:none;position:absolute;top:8px;right:8px;padding:4px 10px;font-size:12px;border:1px solid #fca5a5;border-radius:6px;background:rgba(255,245,245,0.95);color:#b91c1c;cursor:pointer;font-family:inherit;">✕ Remove</button>
-        </div>
+      <div class="upload-zone" onclick="document.getElementById('file-input').click()">
+        <div class="icon">🖼️</div>
+        <p>Click to upload a photo, scan, or PDF of student writing</p>
+        <p class="sub">JPG, PNG, PDF accepted · Select multiple images for multi-page work</p>
       </div>
       <input type="file" id="file-input" accept="image/*,application/pdf" multiple onchange="handleFile(this)">
+      <img id="preview-img" alt="Uploaded writing preview" style="max-width:100%;max-height:200px;border-radius:8px;margin-bottom:10px;display:none;">
       <div id="pdf-notice" style="display:none;background:#f0fdf4;border:1px solid #86efac;border-radius:8px;padding:10px 14px;margin-bottom:10px;font-size:13px;color:#166534;"><span id="pdf-filename"></span></div>
       <div id="read-handwriting-btn-single" style="display:none;margin-bottom:10px;">
         <button onclick="triggerTranscription()" style="width:100%;padding:10px;font-size:13px;font-weight:500;border:1px solid #8b7355;border-radius:8px;background:#fff;color:#8b7355;cursor:pointer;font-family:inherit;">📖 Read handwriting</button>
@@ -329,7 +301,7 @@ canvas { display: none; }
 
   <div class="teacher-note-wrap">
       <label>Teacher notes (optional — stays local, not sent for analysis)</label>
-      <textarea id="teacher-note" placeholder="e.g. Written under timed conditions, first draft, interrupted writing..."></textarea>
+      <textarea id="teacher-note" placeholder="e.g. Written under timed conditions, EAL/D student, first draft..."></textarea>
     </div>
 
     <label class="privacy-check">
@@ -443,7 +415,7 @@ canvas { display: none; }
     <p class="empty-msg" id="session-empty" style="display:none;">No results saved yet. Mark a piece of writing and click Save.</p>
   </div>
 
-  <div class="footer">Discerna © 2026 · Student data is not stored or retained · Built for Australian teachers</div>
+  <div class="footer">Discerna · Student data is not stored or retained · Built for Australian teachers</div>
 </div>
 
 <div id="img-lightbox" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);z-index:9999;cursor:pointer;align-items:center;justify-content:center;" onclick="closeLightbox()">
@@ -466,7 +438,99 @@ const yearLevelMap = {
 };
 
 const curriculumMeta = {
-  VIC: { name: 'Victorian Curriculum (F-10)', prompt: 'Assess against the Victorian Curriculum F-10 English. Reference Language, Literature, and Literacy strands and Victorian achievement standards by year level. Use Victorian Curriculum content description codes (format: VCELYxxx).' },
+  VIC: { name: 'Victorian Curriculum (F-10)', prompt: `Assess against the Victorian Curriculum F-10 English Version 2.0 (VC2.0), mandatory in Victorian government and Catholic schools from 2025. Reference the Language, Literature, and Literacy strands and Victorian achievement standards by year level. Use Victorian Curriculum Version 2.0 content description codes (format: VC2ExLYxx or VC2ExLAxx).
+
+CRITICAL — OUTCOME CODES: Only use the specific VC2.0 codes listed in the achievement standards below. Do not use old V1.0 VCELY codes. Do not invent codes. If unsure, use the closest matching code from the list provided.
+
+VICTORIAN CURRICULUM V2.0 ACHIEVEMENT STANDARDS FOR ENGLISH (WRITING):
+
+FOUNDATION (VC2EFLY13, VC2EFLY14, VC2EFLY15, VC2EFLA03):
+- Creates short texts to explore, record and report ideas and events using familiar words and beginning writing knowledge
+- Participates in shared editing for meaning, spelling, capital letters and full stops
+- Forms most lower-case and upper-case letters using learnt letter formations
+- Understands that texts can take many forms
+- Word count guide: emergent — focus on letters, words and short phrases rather than word count
+- A strong Foundation writer attempts simple sentences independently with letter-sound awareness
+
+YEAR 1 (VC2E1LY13, VC2E1LY14, VC2E1LY15, VC2E1LA03):
+- Creates short narrative and informative texts on personal and learnt topics, including a structure with an opening, middle and conclusion
+- Re-reads own texts and discusses possible changes to improve meaning, spelling and punctuation
+- Writes words using unjoined lower-case and upper-case letters
+- Explores how types of texts are organised according to their purpose
+- Word count guide: minimum 2-3 readable sentences; a strong Year 1 writer produces 20-40+ words
+- A strong Year 1 writer produces linked sentences on a topic with basic punctuation
+
+YEAR 2 (VC2E2LY11, VC2E2LY12, VC2E2LY13, VC2E2LA03):
+- Creates short narrative, informative and persuasive texts for familiar audiences using simple text structures and topic-specific vocabulary
+- Re-reads and edits texts for spelling, sentence boundary punctuation and text structure
+- Writes words legibly and with growing fluency using unjoined lower-case and upper-case letters
+- Identifies how different types of texts are organised differently for purpose
+- Word count guide: minimum 50 words; a strong Year 2 writer produces 80-120+ words
+- A strong Year 2 writer produces structured texts with sentence variety and appropriate text structure
+
+YEAR 3 (VC2E3LY11, VC2E3LY12, VC2E3LY13, VC2E3LA03):
+- Creates narrative, informative and persuasive texts with ideas grouped in simple paragraphs, using topic-specific and precise vocabulary
+- Re-reads and edits texts for meaning, appropriate structure, grammatical choices and punctuation
+- Writes words using joined letters that are clearly formed and consistent in size
+- Describes how different types of texts have different language features and structures depending on purposes
+- Word count guide: minimum 150 words; a strong Year 3 writer produces 180-250+ words
+- A strong Year 3 writer sequences ideas clearly with growing vocabulary range
+
+YEAR 4 (VC2E4LY10, VC2E4LY11, VC2E4LY12, VC2E4LA03):
+- Creates narrative, informative and persuasive texts with relevant, linked ideas for a range of audiences
+- Re-reads and edits texts for meaning by adding, deleting or moving words or word groups to improve content and structure
+- Writes words using clearly formed joined letters, with developing fluency and automaticity
+- Describes how different types of texts have different language features and characteristic stages depending on purposes
+- Word count guide: minimum 250 words; a strong Year 4 writer produces 280-350+ words
+- A strong Year 4 writer uses language features effectively with clear editing evidence
+
+YEAR 5 (VC2E5LY10, VC2E5LY11, VC2E5LY12, VC2E5LA03):
+- Creates different types of texts with relevant, elaborated and sequenced ideas, using text structure appropriate for topic, purpose and audience
+- Re-reads and edits own texts and texts of others using agreed criteria for text structures and language features
+- Writes legibly, fluently and automatically
+- Describes how different types of texts use language features and characteristic stages and phases depending on purposes
+- Word count guide: minimum 250 words; a strong Year 5 writer produces 300-400+ words
+- A strong Year 5 writer sustains quality and voice across a longer piece
+
+YEAR 6 (VC2E6LY09, VC2E6LY10, VC2E6LY11, VC2E6LA03):
+- Creates different types of texts with developed and organised ideas for purpose and audience
+- Re-reads and edits own texts and texts of others using agreed criteria and exploring editing choices
+- Writes legibly, fluently and automatically for sustained periods
+- Explains how different types of texts are typically organised into characteristic stages and phases, recognising how authors often adapt text structures
+- Word count guide: minimum 300 words; a strong Year 6 writer produces 350-500+ words
+- A strong Year 6 writer experiments deliberately with structure and produces distinctly individual writing
+
+YEAR 7 (VC2E7LY08, VC2E7LY09, VC2E7LY03, VC2E7LA03):
+- Creates different types of texts selecting aspects of subject matter and particular language and multimodal elements to convey information and ideas to a specific audience
+- Reviews and edits own texts and texts of others by removing repetition, refining ideas, reordering sentences and adding or substituting words for impact and coherence
+- Uses spelling rules, base words, suffixes, prefixes and word origins to learn new words and spell them
+- Identifies and describes how texts are structured differently depending on their purpose
+- Word count guide: minimum 300 words; a strong Year 7 writer produces 350-500+ words
+- A strong Year 7 writer selects subject matter and language deliberately for purpose and audience
+
+YEAR 8 (VC2E8LY08, VC2E8LY09, VC2E8LY03, VC2E8LA03):
+- Creates different types of texts that raise issues, report events and advance opinions, using deliberate language and textual choices
+- Reviews and edits to refine and clarify ideas to improve the effectiveness and coherence of own texts and texts of others
+- Explores and uses learnt knowledge to spell technical and academic words consistently and accurately
+- Explains how texts are structured depending on their purpose and how language features vary, recognising that some texts are hybrids
+- Word count guide: minimum 350 words; a strong Year 8 writer produces 400-550+ words
+- A strong Year 8 writer advances opinions through deliberate and controlled language choices
+
+YEAR 9 (VC2E9LY08, VC2E9LY09, VC2E9LY03, VC2E9LA03):
+- Creates different types of texts that present a point of view and advance, illustrate or expand ideas, in deliberate consideration of an audience
+- Reviews and edits own texts and texts of others to improve clarity, coherence and control over content, organisation, paragraphing, sentence structure and vocabulary
+- Uses learnt knowledge to spell accurately and consistently
+- Explores the ways that text structures and language features can be adapted and altered according to purpose
+- Word count guide: minimum 400 words; a strong Year 9 writer produces 450-600+ words
+- A strong Year 9 writer produces sustained, structured arguments with confident language control
+
+YEAR 10 (VC2E10LY08, VC2E10LY09, VC2E10LY03, VC2E10LA03):
+- Creates different types of texts that reflect on challenging and complex issues, combining print, multimodal and digital elements for a range of purposes in deliberate consideration of an audience
+- Reviews, edits and refines own texts and texts of others for control and coherence of content, organisation, sentence structure and vocabulary to achieve particular purposes and effects
+- Uses learnt knowledge of the spelling system to spell words accurately and manipulate standard and non-standard spelling for particular effects
+- Analyses text structures and language features and evaluates their effectiveness in achieving their purpose
+- Word count guide: minimum 450 words; a strong Year 10 writer produces 500-700+ words
+- A strong Year 10 writer produces purposeful, refined texts demonstrating sophisticated control of all language features` },
   NSW: { name: 'NSW English K-10 Syllabus', prompt: `Assess against the NSW English K-10 Syllabus as published by NESA (NSW Education Standards Authority). NSW uses a Stage-based structure, not year levels. Reference NSW outcome codes using the 2022 NESA syllabus format (e.g. ENE-CWT-01, EN1-CWT-01, EN2-CWT-01, EN3-CWT-01, EN4-ECA-01, EN5-ECA-01).
 
 CRITICAL — OUTCOME CODES: Only use the specific NSW NESA outcome codes listed in the achievement standards below. Do not invent or generate codes that are not explicitly listed. If unsure, use the closest matching code from the list provided.
@@ -1402,7 +1466,6 @@ function handleFile(input) {
     img.style.display = 'none';
     multiPanel.style.display = 'none';
     document.getElementById('read-handwriting-btn-single').style.display = 'none';
-  document.getElementById('single-image-delete').style.display = 'none';
     document.getElementById('transcription-preview-card').style.display = 'none';
 
     if (typeof pdfjsLib === 'undefined') {
@@ -1436,9 +1499,6 @@ function handleFile(input) {
             img.onclick = () => openLightbox(img.src);
             pdfNotice.style.display = 'none';
             pdfFilename.textContent = '';
-            document.getElementById('upload-zone-placeholder').style.display = 'none';
-            document.getElementById('upload-zone-preview').style.display = 'block';
-            document.getElementById('single-image-delete').style.display = 'block';
             document.getElementById('read-handwriting-btn-single').style.display = 'block';
           }, 200000);
         } else {
@@ -1468,7 +1528,6 @@ function handleFile(input) {
                 pdfNotice.style.display = 'none';
                 pdfFilename.textContent = '';
                 img.style.display = 'none';
-                document.getElementById('upload-zone').style.display = 'none';
                 renderMultiImagePanel();
                 multiPanel.style.display = 'block';
                 document.getElementById('read-handwriting-btn-single').style.display = 'block';
@@ -1496,9 +1555,6 @@ function handleFile(input) {
         img.style.display = 'block';
         img.style.cursor = 'zoom-in';
         img.onclick = () => openLightbox(img.src);
-        document.getElementById('upload-zone-placeholder').style.display = 'none';
-        document.getElementById('upload-zone-preview').style.display = 'block';
-        document.getElementById('single-image-delete').style.display = 'block';
         pdfNotice.style.display = 'none';
         multiPanel.style.display = 'none';
         document.getElementById('read-handwriting-btn-single').style.display = 'block';
@@ -1527,7 +1583,6 @@ function handleFile(input) {
         loaded++;
         if (loaded === files.length) {
           multiImageData = tempData;
-          document.getElementById('upload-zone').style.display = 'none';
           renderMultiImagePanel();
         }
       }, 150000);
@@ -1670,9 +1725,6 @@ function renderMultiImagePanel() {
       imageRotations.splice(idx, 1);
       if (multiImageData.length === 0) {
         document.getElementById('multi-image-panel').style.display = 'none';
-        document.getElementById('upload-zone').style.display = 'block';
-        document.getElementById('upload-zone-placeholder').style.display = 'block';
-        document.getElementById('upload-zone-preview').style.display = 'none';
         document.getElementById('read-handwriting-btn-single').style.display = 'none';
         document.getElementById('transcription-preview-card').style.display = 'none';
         transcriptionReady = false;
@@ -1751,7 +1803,6 @@ function renderMultiImagePanel() {
   list.appendChild(readBtn);
 
   panel.style.display = 'block';
-  document.getElementById('read-handwriting-btn-single').style.display = 'none';
   document.getElementById('transcription-preview-card').style.display = 'none';
 }
 
@@ -1894,30 +1945,15 @@ ${correctedText}` }];
   document.getElementById('mark-btn').disabled = true;
 
   try {
-    // Step 1: blind assessment
-    document.getElementById('loading-msg').textContent = 'Step 1 of 2: Reading the writing...';
-    const blindResp = await fetch('/api/assess', {
+    const response = await fetch('/api/assess', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ system: buildBlindPrompt(nextGenre), messages: blindMessages })
+      body: JSON.stringify({ system: buildSystemPrompt(meta, nextGenre), messages })
     });
-    if (!blindResp.ok) { const e = await blindResp.json().catch(()=>({})); showError('API error', e.error ? e.error.message : 'Please try again.'); return; }
-    const blindData = await blindResp.json();
-    const blindRaw = (blindData.content || []).map(i => i.text || '').join('').replace(/```json|```/g,'').trim();
-    const blindResult = JSON.parse(blindRaw.match(/\{[\s\S]*\}/)[0]);
-
-    // Step 2: curriculum mapping
-    document.getElementById('loading-msg').textContent = 'Step 2 of 2: Mapping to curriculum...';
-    const curResp = await fetch('/api/assess', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ system: buildCurriculumPrompt(meta, nextGenre, blindResult), messages: [{ role: 'user', content: `The student is in ${currentResult.yearLevel}. Map the writing assessment to the ${meta.name} curriculum standards.` }] })
-    });
-    const curData = await curResp.json();
-    const curRaw = (curData.content || []).map(i => i.text || '').join('').replace(/```json|```/g,'').trim();
-    let curResult;
-    try { curResult = JSON.parse(curRaw.match(/\{[\s\S]*\}/)[0]); } catch(e) { curResult = { curriculumStandard: meta.name, curriculumAlignment: '', outcomeCodes: [] }; }
-    const result = { ...blindResult, ...curResult };
+    if (!response.ok) { const e = await response.json().catch(()=>({})); showError('API error', e.error ? e.error.message : 'Please try again.'); return; }
+    const data = await response.json();
+    const raw = (data.content || []).map(i => i.text || '').join('').replace(/```json|```/g,'').trim();
+    const result = JSON.parse(raw);
 
     // Update current result with new analysis but keep corrected text
     currentResult.result = result;
@@ -1942,82 +1978,8 @@ ${correctedText}` }];
   }
 }
 
-function buildBlindPrompt(nextGenre) {
-  return `You are an expert Australian writing assessor and experienced classroom teacher.
-
-Your job is to assess a piece of student writing PURELY based on what you observe on the page. You do NOT know the student's year level — do not try to guess it from context clues in the writing.
-
-CRITICAL — CONSISTENCY: Commit to a specific, fixed achievement level based on what the writing demonstrates. If you assessed this exact piece 10 times, your achievementLevel should be identical every time. Do not hedge or vary. Base your assessment on concrete evidence: sentence structure, vocabulary range, text organisation, ideas, spelling patterns, and length. Name a specific year level position confidently.
-
-FOUNDATION/PREP STUDENTS: If the writing appears to be from a very young writer (emergent letters, limited words, simple drawings alongside text), use developmental literacy language:
-- "Early emergent writer — beginning to understand print carries meaning"
-- "Developing emergent writer — forming recognisable letters and words"
-- "Confident emergent writer — composing simple sentences independently"
-
-For all other writers, describe achievement using natural teacher language that gives a sense of WHERE the student sits on the learning continuum. Always give a position and direction:
-- "Writing at a strong Year 2 level — approaching Year 3"
-- "Performing at a solid Year 5 level"
-- "Writing with Year 7 sophistication"
-- "Early Year 4 writer — working towards mid Year 4"
-
-TRANSCRIPTION: Always transcribe the full text exactly as the student wrote it into the transcribedText field.
-- Include a title if present
-- Reproduce spelling errors exactly — do NOT correct them
-- If a word is genuinely illegible, write [illegible]
-- Rate confidence: HIGH, MEDIUM, or LOW
-
-EDITING AND REVISION: You are receiving transcribed text, not an image. Note in editingObservation that editing evidence is assessed separately from the image and is not visible in the text. Keep this note brief.
-
-GOALS — write exactly 3 goals that come directly from what THIS piece of writing shows. Goals should be the most valuable next steps for THIS specific writer based on what you actually read.
-- For writers at an early primary level (approximately Year 1-3), use simple warm language a young student could understand: e.g. "Try starting a sentence in a different way — instead of 'I went', try 'Suddenly' or 'After that'."
-- For writers at upper primary and secondary level, teacher-facing language is appropriate.
-- Goals must be about ideas, structure, vocabulary, voice, sentence variety, or audience — not punctuation marks like colons or semicolons unless the writer is already sophisticated and these are a genuine logical next step.
-
-COMMENDATION: Pull one specific quote directly from the student's actual writing that genuinely stands out. Celebrate it warmly and specifically. Explain in 1-2 sentences WHY it is impressive — what it reveals about this writer.
-
-Respond ONLY with valid JSON, no markdown, no backticks:
-{
-  "achievementLevel": "description of what the writing actually demonstrates e.g. Strong Year 3 writer — approaching Year 4 standard",
-  "overall": "2-3 sentence professional assessment of the writing quality based purely on what you observe",
-  "commendationQuote": "exact quote from the student's writing",
-  "commendationComment": "1-2 warm sentences on why this is impressive",
-  "goals": ["Goal 1", "Goal 2", "Goal 3"],
-  "editingObservation": "what you observe about editing evidence in the image",
-  "transcribedText": "full text exactly as written",
-  "transcriptionConfidence": "HIGH, MEDIUM, or LOW"
-}`;
-}
-
-function buildCurriculumPrompt(meta, nextGenre, blindResult) {
-  return `You are an expert Australian writing assessor. You have already received a quality assessment of a piece of student writing. Your job now is to map that assessment onto the ${meta.name} curriculum standards for the nominated year level, and generate curriculum alignment details.
-
-THE WRITING QUALITY ASSESSMENT (already determined independently):
-Achievement level: ${blindResult.achievementLevel}
-Overall: ${blindResult.overall}
-
-YOUR TASK:
-1. Reference the specific curriculum strands, outcomes and achievement standards that are evidenced by this writing
-2. Only reference the editing/revision strand if there is visible evidence of editing: "${blindResult.editingObservation}"
-3. Generate outcome codes appropriate to the nominated year level and curriculum
-4. Note how the writing sits relative to the nominated year level — above, at, or below expectations
-
-${meta.prompt}
-
-Also examine the writing image carefully for visible evidence of self-editing (crossings out, words inserted above lines, rewrites, punctuation corrections). Note what you observe in editingObservation. Only reference editing/revision curriculum strands if there is visible evidence of editing.
-
-Respond ONLY with valid JSON, no markdown, no backticks:
-{
-  "curriculumStandard": "e.g. Victorian Curriculum Year 4 / NSW Stage 2 / Australian Curriculum Year 4",
-  "curriculumAlignment": "2-3 sentences referencing specific strands, outcomes or achievement standards",
-  "editingObservation": "what you observe about visible editing evidence in the image",
-  "outcomeCodes": [{"code": "VCELY301", "label": "Short label"}]
-}`;
-}
-
 function buildSystemPrompt(meta, nextGenre) {
   return `You are an expert Australian writing assessor and experienced classroom teacher. ${meta.prompt}
-
-CRITICAL — YEAR LEVEL INDEPENDENCE: Assess the writing quality first, based solely on what you observe on the page. Then compare that quality to the nominated year level. Your achievement level must reflect what the writing actually demonstrates — not what the teacher nominated. If a Year 5 student writes at a Year 3 level, say so clearly. If a Year 3 student writes at a Year 5 level, say so clearly. Never adjust or anchor your assessment to flatter the nominated year level. The nominated year level is context only — your job is to describe what the writing actually shows.
 
 CRITICAL RULE: Never use commercial writing program level notation such as "3B", "4A", "2C" or any similar sub-level codes. These belong to commercial assessment products and must not appear anywhere in your response.
 
@@ -2083,9 +2045,7 @@ Carefully examine the image for visible evidence of self-editing. Look for:
 - Changes to punctuation or capitalisation
 - Any other visible corrections or improvements
 
-Note what you observe in the editingObservation field. If no visible editing is present, say so briefly. For typed/pasted text, note that editing is not observable.
-
-CRITICAL — EDITING AND CURRICULUM ALIGNMENT: Only reference editing, revising or proofreading achievement standards in your curriculumAlignment field if there is VISIBLE EVIDENCE of editing in the writing. If no editing is observed, do not mention editing strands or outcomes in curriculum alignment at all — focus only on the strands that are evidenced by the writing itself. The editingObservation field should note the absence of visible editing, but this should not be held against the student in curriculum alignment.
+This is important curriculum evidence — re-reading and editing is an explicit Victorian Curriculum achievement standard from Year 1 onwards. Note what you observe in the editingObservation field. If no visible editing is present, say so briefly. For typed/pasted text, note that editing is not observable.
 
 WEIGHT STRUCTURAL AND NARRATIVE FEATURES HEAVILY FOR HANDWRITTEN WORK:
 These features are visible even through imperfect transcription and should anchor your level assessment:
@@ -2110,11 +2070,11 @@ Very young writers often have irregular letter formation, inconsistent sizing, a
 - Look for evidence of letters, words, sentences and meaning even if imperfectly formed
 - If the handwriting is so unclear that reliable assessment is impossible, say so honestly and recommend the teacher types the text directly
 
-VICTORIAN CURRICULUM ACHIEVEMENT PARAMETERS
-(Informed by the Australian Curriculum © ACARA, licensed CC BY 4.0, and the ACARA Literacy Learning Continuum)
+VICTORIAN CURRICULUM V2.0 ACHIEVEMENT PARAMETERS
+(Victorian Curriculum F-10 Version 2.0 © VCAA. Used for alignment and reference purposes.)
 Use these specific criteria when assessing writing:
 
-FOUNDATION / PREP (ACELY1651, ACELY1653):
+FOUNDATION / PREP (VC2EFLY13, VC2EFLY14, VC2EFLY15):
 - Uses image-making and beginning writing to represent characters and events
 - Creates short observations, recounts or descriptions using familiar words
 - Uses beginning concepts about print — sound-letter knowledge, some word knowledge, beginning punctuation
@@ -2125,7 +2085,7 @@ FOUNDATION / PREP (ACELY1651, ACELY1653):
 - Compose spoken, written and multimodal texts with support to record and report ideas
 - A strong Foundation writer attempts simple sentences independently with letter-sound awareness
 
-YEAR 1 (end of year expectations — ACELY1661, ACELY1662, ACELY1663):
+YEAR 1 (end of year expectations — VC2E1LY13, VC2E1LY14, VC2E1LY15):
 - Creates short imaginative and informative texts showing emerging use of appropriate text structure
 - Minimum 2-3 simple statements of 3+ words, readable by others without assistance
 - Can link at minimum 3 sentences together using pronouns
@@ -2137,7 +2097,7 @@ YEAR 1 (end of year expectations — ACELY1661, ACELY1662, ACELY1663):
 - Spelling: 80% of simple words correct (2-letter words, single syllable, high frequency words), phonetically plausible attempts at unknown words
 - A strong Year 1 writer produces a series of on-topic sentences with some basic punctuation
 
-YEAR 2 (end of year expectations — ACELY1671, ACELY1672, ACELY1673):
+YEAR 2 (end of year expectations — VC2E2LY11, VC2E2LY12, VC2E2LY13):
 - Creates short imaginative, informative and persuasive texts using growing knowledge of text structures
 - Minimum 50 words, clear links between all sentences
 - Sequences content according to text structure, plans so readers can follow sequence of ideas
@@ -2149,7 +2109,7 @@ YEAR 2 (end of year expectations — ACELY1671, ACELY1672, ACELY1673):
 - Spelling: 80% of simple words correct, 50% of common words correct (blends/digraphs, three consonant blends, multi-syllabic with even stress, homophones, silent letters, suffixes that don't change base word)
 - A strong Year 2 writer makes writing lively with some sentence variety and appropriate text structure
 
-YEAR 3 (end of year expectations — ACELY1682, ACELY1683, ACELY1684):
+YEAR 3 (end of year expectations — VC2E3LY11, VC2E3LY12, VC2E3LY13):
 - Plans, drafts and publishes imaginative, informative and persuasive texts
 - Minimum 150 words, demonstrates increasing control over text structures and language features
 - Selects appropriate text structure for purpose, sequences content for clarity and audience impact
@@ -2162,7 +2122,7 @@ YEAR 3 (end of year expectations — ACELY1682, ACELY1683, ACELY1684):
 - Spelling: 80% of simple AND common words correct (blends, digraphs, multi-syllabic with even stress, homophones, silent letters, suffixes that don't change base word), phonetically plausible attempts at difficult words
 - A strong Year 3 writer selects appropriate text structure and sequences content with clarity
 
-YEAR 4 (end of year expectations — ACELY1694, ACELY1695, ACELY1696):
+YEAR 4 (end of year expectations — VC2E4LY10, VC2E4LY11, VC2E4LY12):
 - Plans, drafts and publishes imaginative, informative and persuasive texts with key information and supporting details
 - Minimum 250 words, consistent paragraphing to sequence content
 - Uses appropriate simple, compound and complex sentences with increasing control
@@ -2174,7 +2134,7 @@ YEAR 4 (end of year expectations — ACELY1694, ACELY1695, ACELY1696):
 - Spelling: 90%+ of simple and common words correct, beginning difficult words (uneven stress in multi-syllabic, uncommon vowel patterns, subject-specific words, suffixes where base word changes, consonant alternation, 3-4 syllable words, -tion/-sion endings)
 - A strong Year 4 writer uses language features effectively for descriptions and demonstrates clear editing
 
-YEAR 5 (end of year expectations — ACELY1704, ACELY1705):
+YEAR 5 (end of year expectations — VC2E5LY10, VC2E5LY11, VC2E5LY12):
 - Plans, drafts and publishes imaginative, informative and persuasive print and multimodal texts
 - Minimum 250 words, selects appropriate text structure and sequences with well-structured paragraphs with concluding statement
 - Uses vocabulary including technical vocabulary appropriate to purpose and context
@@ -2185,7 +2145,7 @@ YEAR 5 (end of year expectations — ACELY1704, ACELY1705):
 - Spelling: 90%+ of simple and common words correct, difficult words used with growing accuracy (uneven stress, uncommon vowel patterns, subject-specific, suffixes where base word changes, -tion/-sion endings)
 - A strong Year 5 writer sustains quality and voice across a longer piece with confident grammar control
 
-YEAR 6 (end of year expectations — ACELY1714, ACELY1715, ACELY1716):
+YEAR 6 (end of year expectations — VC2E6LY09, VC2E6LY10, VC2E6LY11):
 - Plans, drafts and publishes imaginative, informative and persuasive texts, choosing and experimenting with text structures
 - Minimum 300 words, demonstrates control over complex text structures and language features
 - Uses rhetorical devices, images, surprise techniques and juxtaposition to enhance persuasive texts
@@ -2197,7 +2157,7 @@ YEAR 6 (end of year expectations — ACELY1714, ACELY1715, ACELY1716):
 - Spelling: 90%+ of simple and common words correct, difficult words used consistently and accurately
 - A strong Year 6 writer experiments with text structures deliberately and produces distinctly individual writing
 
-YEAR 7 (end of year expectations — ACELY1725, ACELY1726, ACELY1727):
+YEAR 7 (end of year expectations — VC2E7LY08, VC2E7LY09, VC2E7LY03):
 - Plans, drafts and publishes imaginative, informative and persuasive texts selecting aspects of subject matter deliberately
 - Chooses particular language, visual and audio features to convey information and ideas
 - Creates scripts for interviews, presentations and advertisements using appropriate textual conventions
@@ -2208,7 +2168,7 @@ YEAR 7 (end of year expectations — ACELY1725, ACELY1726, ACELY1727):
 - Spelling: 90%+ accuracy, uses knowledge of word origins, base words, prefixes, suffixes and unusual letter combinations
 - A strong Year 7 writer selects subject matter and language features deliberately for purpose and audience
 
-YEAR 8 (end of year expectations — ACELY1736, ACELY1810):
+YEAR 8 (end of year expectations — VC2E8LY08, VC2E8LY09, VC2E8LY03):
 - Creates imaginative, informative and persuasive texts that raise issues, report events and advance opinions
 - Uses deliberate language and textual choices throughout
 - Selects vocabulary to influence meaning and to position and persuade the audience
@@ -2219,7 +2179,7 @@ YEAR 8 (end of year expectations — ACELY1736, ACELY1810):
 - Spelling: consistent accuracy with specialist vocabulary, uses word origins and morphology confidently
 - A strong Year 8 writer raises issues and advances opinions through deliberate and controlled language choices
 
-YEAR 9 (end of year expectations — ACELY1746, ACELY1747):
+YEAR 9 (end of year expectations — VC2E9LY08, VC2E9LY09, VC2E9LY03):
 - Creates imaginative, informative and persuasive texts that present a point of view and advance arguments
 - Presents arguments that advance opinions, justify positions and make judgements to persuade
 - Creates imaginative texts with main ideas developed through interconnections of plot, settings, characters
@@ -2232,7 +2192,7 @@ YEAR 9 (end of year expectations — ACELY1746, ACELY1747):
 - Spelling: high accuracy with complex vocabulary, uses spelling conventions for unusual and technical words
 - A strong Year 9 writer structures sustained arguments with clear line of reasoning and controlled language
 
-YEAR 10 (end of year expectations — ACELY1756, ACELY1757):
+YEAR 10 (end of year expectations — VC2E10LY08, VC2E10LY09, VC2E10LY03):
 - Creates sustained texts combining specific digital or media content for imaginative, informative or persuasive purposes
 - Reflects upon challenging and complex issues with depth and nuance
 - Presents structured arguments: major perspectives, preview of structure, major points with succinct elaboration, concluding summary
@@ -2257,8 +2217,6 @@ The feedback card must:
 - Provide exactly 3 specific, practical, actionable goals for their NEXT piece of writing (a ${nextGenre}), pitched precisely at their current level. Each goal should read like a teacher talking directly and encouragingly to a student, with a concrete example where helpful.
 
 Goals must be tailored to both the student's achievement level AND the next writing type (${nextGenre}).
-
-GOALS — LANGUAGE BY YEAR LEVEL: For Foundation, Year 1, Year 2, and Year 3 students, write goals in simple, warm, direct language that a young student could understand if read to them. Avoid curriculum jargon. Use short sentences. For example instead of "Experiment with complex sentence structures to enhance narrative cohesion" write "Try starting a sentence in a different way — instead of 'I went', try 'Suddenly' or 'After that'." For Year 4 and above, teacher-facing language is appropriate.
 
 GOALS — IMPORTANT: Colons and semicolons should be a rare goal — only suggest them if the student has already demonstrated strong control of sentence structure and vocabulary, and these punctuation marks are a genuine and logical next step for this specific writer. In most cases, a far more valuable goal will be found in ideas and content development, text structure, sentence variety, vocabulary choices, voice, or audience awareness. A good goal names a specific writerly move, not a punctuation mark.
 
@@ -2344,124 +2302,48 @@ async function markWriting() {
     return;
   }
 
-  // Build blind messages for Step 1 — use transcribed text instead of images
-  // This removes visual age/handwriting cues so assessment is based purely on writing quality
-  let blindMessages;
-  const transcribedText = document.getElementById('pre-mark-transcription') ? document.getElementById('pre-mark-transcription').value.trim() : '';
-
-  if (currentTab === 'text') {
-    // Text tab — strip the preamble, just send the raw writing
-    const txt = document.getElementById('text-input').value.trim();
-    blindMessages = [{ role: 'user', content: txt }];
-  } else if (transcribedText) {
-    // Image/camera — use transcription text so Step 1 sees words not handwriting style
-    blindMessages = [{ role: 'user', content: transcribedText }];
-  } else {
-    // Fallback: no transcription available, send images with neutral prompt
-    blindMessages = messages.map(msg => {
-      if (Array.isArray(msg.content)) {
-        return {
-          role: msg.role,
-          content: msg.content.map(block => {
-            if (block.type === 'text') {
-              return { type: 'text', text: 'Please assess this student writing sample.' };
-            }
-            return block;
-          })
-        };
-      }
-      return msg;
-    });
-  }
-
   document.getElementById('mark-btn').disabled = true;
   document.getElementById('loading').style.display = 'block';
-  document.getElementById('loading-msg').textContent = 'Step 1 of 2: Reading the writing...';
+  document.getElementById('loading-msg').textContent = `Analysing against ${meta.name}...`;
   document.getElementById('result-card').style.display = 'none';
   document.getElementById('session-wrap').style.display = 'none';
 
   try {
-    // STEP 1: Blind assessment — no year level, pure writing quality
-    const blindResponse = await fetch('/api/assess', {
+    const response = await fetch('/api/assess', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        system: buildBlindPrompt(nextGenre),
+        system: buildSystemPrompt(meta, nextGenre),
         messages: messages
       })
     });
 
-    if (!blindResponse.ok) {
-      const errData = await blindResponse.json().catch(() => ({}));
-      showError('API error ' + blindResponse.status, errData.error ? errData.error.message : 'Please try again.');
+    if (!response.ok) {
+      const errData = await response.json().catch(() => ({}));
+      showError('API error ' + response.status, errData.error ? errData.error.message : 'Please try again.');
       return;
     }
 
-    const blindData = await blindResponse.json();
-    if (blindData.error) { showError('Error', blindData.error.message || JSON.stringify(blindData.error)); return; }
+    const data = await response.json();
+    if (data.error) { showError('Error', data.error.message || JSON.stringify(data.error)); return; }
 
-    const blindRaw = (blindData.content || []).map(i => i.text || '').join('').replace(/```json|```/g, '').trim();
-    if (!blindRaw) { showError('Empty response', 'No response from step 1. Please try again.'); return; }
+    const raw = (data.content || []).map(i => i.text || '').join('').replace(/```json|```/g, '').trim();
+    if (!raw) { showError('Empty response', 'No response received. Please try again.'); return; }
 
-    let blindResult;
+    let result;
     try {
-      const jsonMatch = blindRaw.match(/\{[\s\S]*\}/);
-      blindResult = JSON.parse(jsonMatch ? jsonMatch[0] : blindRaw);
+      // Try to extract JSON even if there's surrounding text
+      const jsonMatch = raw.match(/\{[\s\S]*\}/);
+      const jsonStr = jsonMatch ? jsonMatch[0] : raw;
+      result = JSON.parse(jsonStr);
     } catch(e) {
-      showError('Could not read response', 'Step 1 parse error: ' + e.message);
+      showError('Could not read response', 'Parse error: ' + e.message + '. Raw (first 300 chars): ' + raw.substring(0, 300));
       return;
     }
-
-    // STEP 2: Curriculum mapping — takes blind result and maps to nominated year level
-    document.getElementById('loading-msg').textContent = `Step 2 of 2: Mapping to ${meta.name}...`;
-
-    const curriculumResponse = await fetch('/api/assess', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        system: buildCurriculumPrompt(meta, nextGenre, blindResult),
-        messages: (() => {
-          const step2Text = { type: 'text', text: `The student is in ${yearLevel}. Map the writing assessment to the ${meta.name} curriculum standards. Also examine the writing for visible editing evidence.` };
-          // Include original images if available so editing can be observed
-          if (Array.isArray(messages[0]?.content)) {
-            const imageBlocks = messages[0].content.filter(b => b.type === 'image' || b.type === 'document');
-            if (imageBlocks.length > 0) {
-              return [{ role: 'user', content: [...imageBlocks, step2Text] }];
-            }
-          }
-          return [{ role: 'user', content: step2Text.text }];
-        })()
-      })
-    });
-
-    if (!curriculumResponse.ok) {
-      const errData = await curriculumResponse.json().catch(() => ({}));
-      showError('API error ' + curriculumResponse.status, errData.error ? errData.error.message : 'Please try again.');
-      return;
-    }
-
-    const curriculumData = await curriculumResponse.json();
-    if (curriculumData.error) { showError('Error', curriculumData.error.message || JSON.stringify(curriculumData.error)); return; }
-
-    const curriculumRaw = (curriculumData.content || []).map(i => i.text || '').join('').replace(/```json|```/g, '').trim();
-
-    let curriculumResult;
-    try {
-      const jsonMatch2 = curriculumRaw.match(/\{[\s\S]*\}/);
-      curriculumResult = JSON.parse(jsonMatch2 ? jsonMatch2[0] : curriculumRaw);
-    } catch(e) {
-      // If curriculum step fails, still show blind result with no curriculum codes
-      curriculumResult = { curriculumStandard: meta.name, curriculumAlignment: 'Curriculum mapping unavailable.', outcomeCodes: [] };
-    }
-
-    // Merge both results
-    const result = {
-      ...blindResult,
-      ...curriculumResult
-    };
 
     extractedText = extractedText || (currentTab !== 'text' ? '[Image/PDF uploaded]' : '');
     currentResult = { studentLabel, yearLevel, curriculum: meta.name, genre, nextGenre, teacherNote, eald, result, extractedText, timestamp: new Date().toLocaleTimeString() };
+    // Auto-save to session
     sessionResults.push({...currentResult});
     document.getElementById('session-count').textContent = sessionResults.length;
     renderResult(currentResult);
@@ -2681,9 +2563,6 @@ function printResult() {
 function resetTool() {
   capturedImageBase64 = null;
   document.getElementById('preview-img').style.display = 'none';
-  document.getElementById('upload-zone').style.display = 'block';
-  document.getElementById('upload-zone-placeholder').style.display = 'block';
-  document.getElementById('upload-zone-preview').style.display = 'none';
   document.getElementById('cam-preview').style.display = 'none';
   document.getElementById('text-input').value = '';
   document.getElementById('teacher-note').value = '';
@@ -2715,26 +2594,6 @@ function resetTool() {
   currentResult = null;
   extractedText = '';
   multiImageData = [];
-}
-
-function deleteSingleImage() {
-  capturedImageBase64 = null;
-  const img = document.getElementById('preview-img');
-  img.src = '';
-  img.style.display = 'none';
-  img.onclick = null;
-  img.style.cursor = 'default';
-  document.getElementById('single-image-delete').style.display = 'none';
-  document.getElementById('upload-zone-preview').style.display = 'none';
-  document.getElementById('upload-zone-placeholder').style.display = 'block';
-  document.getElementById('read-handwriting-btn-single').style.display = 'none';
-  document.getElementById('transcription-preview-card').style.display = 'none';
-  document.getElementById('transcription-loading').style.display = 'none';
-  document.getElementById('file-input').value = '';
-  transcriptionReady = false;
-  document.getElementById('mark-btn').disabled = true;
-  document.getElementById('mark-btn').textContent = '✦ Mark this writing';
-  hideError();
 }
 
 updateYearLevels();
