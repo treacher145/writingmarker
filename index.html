@@ -92,6 +92,26 @@ canvas { display: none; }
 .cam-btn { flex: 1; padding: 9px; font-size: 13px; border: 1px solid #e2e8f0; border-radius: 9px; cursor: pointer; background: #f8fafc; color: #334155; font-family: inherit; transition: background 0.15s; }
 .cam-btn:hover { background: #fff; }
 
+/* ── Wellbeing flag ── */
+.wellbeing-card { border-radius: 14px; padding: 20px 24px; margin-bottom: 12px; }
+.wellbeing-card.concern { background: #fffbeb; border: 1.5px solid #f59e0b; }
+.wellbeing-card.urgent { background: #fff1f2; border: 1.5px solid #f43f5e; }
+.wellbeing-eyebrow { font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+.wellbeing-card.concern .wellbeing-eyebrow { color: #b45309; }
+.wellbeing-card.urgent .wellbeing-eyebrow { color: #be123c; }
+.wellbeing-icon { width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; flex-shrink: 0; }
+.wellbeing-card.concern .wellbeing-icon { background: #f59e0b; color: #fff; }
+.wellbeing-card.urgent .wellbeing-icon { background: #f43f5e; color: #fff; }
+.wellbeing-title { font-size: 16px; font-weight: 600; margin-bottom: 8px; }
+.wellbeing-card.concern .wellbeing-title { color: #92400e; }
+.wellbeing-card.urgent .wellbeing-title { color: #9f1239; }
+.wellbeing-note { font-size: 13px; line-height: 1.65; }
+.wellbeing-card.concern .wellbeing-note { color: #92400e; }
+.wellbeing-card.urgent .wellbeing-note { color: #9f1239; }
+.wellbeing-advice { margin-top: 12px; padding-top: 12px; border-top: 1px solid rgba(0,0,0,0.08); font-size: 12px; line-height: 1.6; }
+.wellbeing-card.concern .wellbeing-advice { color: #b45309; }
+.wellbeing-card.urgent .wellbeing-advice { color: #be123c; }
+
 /* ── Result strip (navy) ── */
 .result-card { background: transparent; border: none; border-radius: 0; padding: 0; margin-top: 1rem; display: none; }
 .result-strip { background: #1e40af; border-radius: 14px; padding: 20px; margin-bottom: 12px; }
@@ -323,6 +343,16 @@ canvas { display: none; }
   </div>
 
   <div class="result-card" id="result-card">
+    <div id="wellbeing-card" style="display:none;" class="wellbeing-card">
+      <div class="wellbeing-eyebrow">
+        <div class="wellbeing-icon" id="wellbeing-icon">⚠</div>
+        <span id="wellbeing-eyebrow-text">Wellbeing concern</span>
+      </div>
+      <div class="wellbeing-title" id="wellbeing-title"></div>
+      <div class="wellbeing-note" id="wellbeing-note"></div>
+      <div class="wellbeing-advice" id="wellbeing-advice"></div>
+    </div>
+
     <div class="result-strip">
       <div class="result-top">
         <div>
@@ -584,7 +614,7 @@ STAGE 2 / YEARS 3-4 (EN2-CWT-01, EN2-CWT-02, EN2-CWT-03, EN2-SPELL-01, EN2-HANDW
 - Word count guide: Year 3 minimum 150 words; Year 4 minimum 250 words; a strong Stage 2 writer produces 280-350+ words by end of Year 4
 - A strong Stage 2 writer uses varied sentence structures and organises ideas in paragraphs with purpose
 
-STAGE 3 / YEARS 5-6 (EN3-CWT-01, EN3-CWT-02, EN3-CWT-03, EN3-SPELL-01, EN3-HANDW-01):
+STAGE 3 / YEARS 5-6 (EN3-CWT-01, EN3-SPELL-01, EN3-HANDW-01):
 - Plans, composes and reviews sustained imaginative, informative and persuasive texts
 - Uses complex sentences, varied vocabulary and deliberate language choices
 - Structures texts with well-developed paragraphs, topic sentences and cohesive devices
@@ -594,7 +624,7 @@ STAGE 3 / YEARS 5-6 (EN3-CWT-01, EN3-CWT-02, EN3-CWT-03, EN3-SPELL-01, EN3-HANDW
 - Word count guide: Year 5 minimum 250 words; Year 6 minimum 300 words; a strong Stage 3 writer produces 350-500+ words by end of Year 6
 - A strong Stage 3 writer produces sustained texts with controlled language and clear authorial voice
 
-STAGE 4 / YEARS 7-8 (EN4-ECA-01, EN4-ECB-01, EN4-RVL-01):
+STAGE 4 / YEARS 7-8 (EN4-ECA-01, EN4-ECB-01):
 - Composes sustained imaginative, informative and persuasive texts
 - Uses deliberate language choices to position and engage audiences
 - Selects and sequences ideas to develop a sustained argument or narrative
@@ -603,7 +633,7 @@ STAGE 4 / YEARS 7-8 (EN4-ECA-01, EN4-ECB-01, EN4-RVL-01):
 - Word count guide: Year 7 minimum 300 words; Year 8 minimum 350 words; a strong Stage 4 writer produces 400-550+ words by end of Year 8
 - A strong Stage 4 writer produces sustained texts demonstrating deliberate and controlled language choices
 
-STAGE 5 / YEARS 9-10 (EN5-ECA-01, EN5-ECB-01, EN5-RVL-01):
+STAGE 5 / YEARS 9-10 (EN5-ECA-01, EN5-ECB-01):
 - Composes sustained, complex texts on challenging issues with depth and nuance
 - Selects and manipulates language features for deliberate effect
 - Structures sustained arguments or narratives with sophisticated control
@@ -2218,6 +2248,27 @@ The feedback card must:
 
 Goals must be tailored to both the student's achievement level AND the next writing type (${nextGenre}).
 
+WELLBEING FLAG — CRITICAL:
+Before assessing writing quality, read the content carefully for any signs that the student may be experiencing significant distress, harm or risk. This includes but is not limited to:
+- Themes of suicide, self-harm, or not wanting to be alive (even in fictional or metaphorical framing)
+- Descriptions of abuse, neglect, or violence directed at the student
+- Expressions of profound hopelessness, worthlessness, or being unloved/unwanted
+- References to being harmed by a named or implied person
+- Descriptions of dangerous situations the student appears to be in
+
+If you observe any such content, set wellbeingFlag to an object with:
+- "level": "concern" for content that warrants attention but may be fictional or exploratory
+- "level": "urgent" for content that suggests immediate risk or direct disclosure
+- "note": a calm, factual 1-2 sentence description of what you observed — written for the teacher, not diagnostic, not alarmist. Describe the specific content that prompted the flag.
+
+Important guidance:
+- Dark themes in clearly fictional narratives (monsters, villains, death in adventure stories) do NOT warrant a flag
+- Flag when the language feels personal, direct, or emotionally raw in a way that goes beyond typical fictional exploration
+- When in doubt, flag at "concern" level — it is far better to flag unnecessarily than to miss something
+- If nothing concerning is present, set wellbeingFlag to null
+
+This check must happen before everything else. A child's safety is more important than their writing assessment.
+
 GOALS — IMPORTANT: Colons and semicolons should be a rare goal — only suggest them if the student has already demonstrated strong control of sentence structure and vocabulary, and these punctuation marks are a genuine and logical next step for this specific writer. In most cases, a far more valuable goal will be found in ideas and content development, text structure, sentence variety, vocabulary choices, voice, or audience awareness. A good goal names a specific writerly move, not a punctuation mark.
 
 Respond ONLY with valid JSON, no markdown, no backticks. CRITICAL: the "goals" field MUST be a JSON array of exactly 3 separate strings — never combine them into one string:
@@ -2232,7 +2283,8 @@ Respond ONLY with valid JSON, no markdown, no backticks. CRITICAL: the "goals" f
   "editingObservation": "1-2 sentences describing visible editing evidence in the image (crossings out, insertions, corrections) and what this suggests about the student as a self-monitoring writer. If no editing visible, note briefly. If typed text, note not observable.",
   "transcribedText": "the full text of the writing exactly as you read it — every word the student wrote, transcribed accurately. If submitted as typed text, reproduce it as given.",
   "transcriptionConfidence": "HIGH, MEDIUM, or LOW based on how clearly you could read the handwriting",
-  "outcomeCodes": [{"code": "VCELY301", "label": "Short label"}]
+  "outcomeCodes": [{"code": "VCELY301", "label": "Short label"}],
+  "wellbeingFlag": null or {"level": "concern" or "urgent", "note": "1-2 sentence observation for the teacher — factual, calm, non-alarmist. Describe what you observed in the writing that prompted this flag. Do not diagnose."}
 }`;
 }
 
@@ -2363,6 +2415,26 @@ function renderResult(r) {
     metaEl.textContent = r.studentLabel + ' · ' + r.yearLevel + ' · ' + r.genre + ' · ' + r.curriculum + (r.eald ? ' · EAL/D' : '');
     metaEl.style.display = 'block';
   } else { metaEl.style.display = 'none'; }
+
+  // Wellbeing flag — render first, above everything
+  const wb = res.wellbeingFlag;
+  const wbCard = document.getElementById('wellbeing-card');
+  if (wb && wb.level) {
+    const isUrgent = wb.level === 'urgent';
+    wbCard.className = 'wellbeing-card ' + (isUrgent ? 'urgent' : 'concern');
+    document.getElementById('wellbeing-icon').textContent = isUrgent ? '!' : '⚠';
+    document.getElementById('wellbeing-eyebrow-text').textContent = isUrgent ? 'Urgent wellbeing concern' : 'Wellbeing concern';
+    document.getElementById('wellbeing-title').textContent = isUrgent
+      ? 'This writing may indicate the student is at risk'
+      : 'This writing contains content that may warrant a wellbeing check';
+    document.getElementById('wellbeing-note').textContent = wb.note || '';
+    document.getElementById('wellbeing-advice').textContent = isUrgent
+      ? 'Consider speaking with this student today and following your school\'s wellbeing referral process. Do not wait for further evidence. Your instinct as the teacher who knows this student matters.'
+      : 'Read this piece with your knowledge of this student in mind. If the content feels personal or concerning, consider a gentle check-in conversation or a referral to your school\'s wellbeing team.';
+    wbCard.style.display = 'block';
+  } else {
+    wbCard.style.display = 'none';
+  }
 
   // Populate result strip
   document.getElementById('level-badge').textContent = res.achievementLevel;
@@ -2569,6 +2641,7 @@ function resetTool() {
   document.getElementById('student-label').value = '';
   document.getElementById('privacy-check').checked = false;
   document.getElementById('result-card').style.display = 'none';
+  document.getElementById('wellbeing-card').style.display = 'none';
   document.getElementById('file-input').value = '';
   document.getElementById('pdf-notice').style.display = 'none';
   document.getElementById('session-wrap').style.display = 'none';
