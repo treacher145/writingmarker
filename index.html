@@ -658,6 +658,7 @@ function handleFile(input) {
             img.onclick = () => openLightbox(img.src);
             pdfNotice.style.display = 'none';
             pdfFilename.textContent = '';
+            document.querySelector('.upload-zone').style.display = 'none';
             document.getElementById('read-handwriting-btn-single').style.display = 'block';
           }, 200000);
         } else {
@@ -716,6 +717,7 @@ function handleFile(input) {
         img.onclick = () => openLightbox(img.src);
         pdfNotice.style.display = 'none';
         multiPanel.style.display = 'none';
+        document.querySelector('.upload-zone').style.display = 'none';
         document.getElementById('read-handwriting-btn-single').style.display = 'block';
         document.getElementById('transcription-preview-card').style.display = 'none';
       });
@@ -729,6 +731,7 @@ function handleFile(input) {
   img.style.display = 'none';
   pdfNotice.style.display = 'none';
   multiPanel.style.display = 'none';
+  document.querySelector('.upload-zone').style.display = 'none';
 
   let loaded = 0;
   const tempData = new Array(files.length);
@@ -1506,6 +1509,7 @@ function resetTool() {
   document.getElementById('pdf-notice').style.display = 'none';
   document.getElementById('session-wrap').style.display = 'none';
   document.getElementById('multi-image-panel').style.display = 'none';
+  document.querySelector('.upload-zone').style.display = 'block';
   document.getElementById('confidence-warning').style.display = 'none';
   document.getElementById('transcription-preview-card').style.display = 'none';
   document.getElementById('transcription-loading').style.display = 'none';
