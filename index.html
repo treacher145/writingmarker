@@ -269,6 +269,7 @@ canvas { display: none; }
         <p class="sub">JPG, PNG, PDF accepted · Select multiple images for multi-page work</p>
       </div>
       <input type="file" id="file-input" accept="image/*,application/pdf" multiple onchange="handleFile(this)">
+      <input type="file" id="add-page-input" accept="image/*" multiple style="display:none" onchange="handleAddPage(this)">
       <img id="preview-img" alt="Uploaded writing preview" style="max-width:100%;max-height:200px;border-radius:8px;margin-bottom:8px;display:none;">
       <div id="remove-image-btn" style="display:none;margin-bottom:10px;">
         <button onclick="removeUploadedImage()" style="font-size:12px;padding:5px 12px;border:1px solid #e0ddd8;border-radius:6px;background:#faf9f7;color:#6b6b6b;cursor:pointer;font-family:inherit;">✕ Remove image</button>
@@ -966,6 +967,13 @@ function renderMultiImagePanel() {
     list.appendChild(item);
   });
 
+  // Add page button
+  const addBtn = document.createElement('button');
+  addBtn.textContent = '＋ Add page';
+  addBtn.style.cssText = 'width:100%;padding:9px;font-size:13px;font-weight:500;border:1px solid #bfdbfe;border-radius:8px;background:#eff6ff;color:#1d4ed8;cursor:pointer;font-family:inherit;margin-top:8px;';
+  addBtn.onclick = () => { document.getElementById('add-page-input').value = ''; document.getElementById('add-page-input').click(); };
+  list.appendChild(addBtn);
+
   // Add Read handwriting button at bottom of panel
   const readBtn = document.createElement('button');
   readBtn.textContent = '📖 Read handwriting';
@@ -1515,6 +1523,7 @@ function resetTool() {
   document.getElementById('result-card').style.display = 'none';
   document.getElementById('wellbeing-card').style.display = 'none';
   document.getElementById('file-input').value = '';
+  document.getElementById('add-page-input').value = '';
   document.getElementById('pdf-notice').style.display = 'none';
   document.getElementById('session-wrap').style.display = 'none';
   document.getElementById('multi-image-panel').style.display = 'none';
@@ -1556,6 +1565,7 @@ function removeUploadedImage() {
   img.onclick = null;
   img.style.cursor = 'default';
   document.getElementById('file-input').value = '';
+  document.getElementById('add-page-input').value = '';
   document.getElementById('pdf-notice').style.display = 'none';
   document.getElementById('multi-image-panel').style.display = 'none';
   document.getElementById('remove-image-btn').style.display = 'none';
@@ -1568,6 +1578,56 @@ function removeUploadedImage() {
   const preBox = document.getElementById('pre-mark-transcription');
   if (preBox) preBox.value = '';
   hideError();
+}
+
+function handleAddPage(input) {
+  const files = Array.from(input.files);
+  if (!files.length) return;
+  hideError();
+
+  // If currently showing a single image, convert it to multiImageData first
+  if (capturedImageBase64 && multiImageData.length === 0) {
+    const existingName = document.getElementById('file-input').value.split('\\').pop().split('/').pop() || 'Page 1';
+    multiImageData = [{
+      name: existingName || 'Page 1',
+      base64: capturedImageBase64,
+      dataUrl: document.getElementById('preview-img').src,
+      mediaType: 'image/jpeg'
+    }];
+    imageRotations = [0];
+    capturedImageBase64 = null;
+    document.getElementById('preview-img').style.display = 'none';
+    document.getElementById('remove-image-btn').style.display = 'none';
+    document.getElementById('read-handwriting-btn-single').style.display = 'none';
+  }
+
+  // Reset transcription since pages have changed
+  transcriptionReady = false;
+  document.getElementById('mark-btn').disabled = true;
+  document.getElementById('mark-btn').textContent = '✦ Mark this writing';
+  document.getElementById('transcription-preview-card').style.display = 'none';
+
+  let loaded = 0;
+  const newPages = new Array(files.length);
+
+  files.forEach((file, idx) => {
+    const reader = new FileReader();
+    reader.onload = e => {
+      resizeImageToJpeg(e.target.result, (jpegDataUrl) => {
+        newPages[idx] = { name: file.name, base64: jpegDataUrl.split(',')[1], dataUrl: jpegDataUrl, mediaType: 'image/jpeg' };
+        loaded++;
+        if (loaded === files.length) {
+          multiImageData = multiImageData.concat(newPages);
+          imageRotations = imageRotations.concat(new Array(files.length).fill(0));
+          document.querySelector('.upload-zone').style.display = 'none';
+          document.getElementById('multi-image-panel').style.display = 'block';
+          renderMultiImagePanel();
+        }
+      }, 150000);
+    };
+    reader.onerror = () => showError('File error', 'Could not read the image.');
+    reader.readAsDataURL(file);
+  });
 }
 
 updateYearLevels();
