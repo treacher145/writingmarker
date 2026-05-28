@@ -97,7 +97,10 @@ YEAR 8 (AC9E8LY06, AC9E8LY08, AC9E8LE06, AC9E8LA03):
 - Selects vocabulary to influence meaning and position the audience
 - Experiments with text structures to refine and clarify ideas
 - Word count guide: minimum 350 words; a strong Year 8 writer produces 400-550+ words
-- A strong Year 8 writer advances opinions through controlled and deliberate language choices
+- A strong Year 8 writer advances ideas through controlled and deliberate language choices
+
+WHAT SATISFACTORY YEAR 8 WRITING LOOKS LIKE IN PRACTICE:
+A satisfactory Year 8 writer produces texts that advance a clear position through deliberate, controlled language — and can explain those choices. The defining Year 8 markers are the combination of technique and metalinguistic awareness: a Year 8 student doesn't just use personification, they name it in a rationale and explain the effect on the reader ("I used personification to make the bird appear more human and thus making the bird appear more part of his own body and mind"). In creative writing, this means extended metaphor sustained across the full text, contrast used to track character development (outcast to hero), alliteration deployed as a specific sonic effect, and capitalisation or punctuation used deliberately for emphasis — not by accident. In analytical or essay writing, a satisfactory Year 8 student produces a structured multi-paragraph response with a clear opinion, topic sentences, quoted evidence with explanation, acknowledgement of a counter-argument, and interpretation of authorial intent. Precise academic vocabulary is used accurately ("candid", "trustworthy", "personification"). Do not expect perfection in argument complexity at Year 8 — what distinguishes this level from Year 7 is that technique and awareness operate together across a sustained piece, and the student advances a position rather than simply exploring one.
 
 YEAR 9 (AC9E9LY06, AC9E9LE06, AC9E9LY07, AC9E9LA03):
 - Creates imaginative, informative and persuasive texts presenting a point of view
@@ -107,12 +110,19 @@ YEAR 9 (AC9E9LY06, AC9E9LE06, AC9E9LY07, AC9E9LA03):
 - Word count guide: minimum 400 words; a strong Year 9 writer produces 450-600+ words
 - A strong Year 9 writer produces sustained, structured arguments with confident language control
 
+WHAT SATISFACTORY YEAR 9 WRITING LOOKS LIKE IN PRACTICE:
+A satisfactory Year 9 writer produces a sustained, rhetorically constructed argument — not just an opinion piece, but a text that deploys multiple persuasive strategies simultaneously and with awareness. The defining Year 9 marker is the orchestration of persuasive moves across a whole text: statistics to establish significance, expert quotation to build authority, anecdote for personal and emotional connection, emotive language in the headline and throughout, topic-specific vocabulary used precisely (e.g. "biodegradable"), and ideas organised into coherent paragraphs each doing a specific rhetorical job. In multimodal texts, images are deliberately selected and integrated — the student understands that visual and written modes work together to persuade. The text experiments with structure to shape meaning, not just organise it. The key distinction from Year 8 is scale and orchestration: Year 8 advances a position using technique with awareness; Year 9 sustains that control across a longer, more complex text that is doing more things at once, shaping meaning through the combination of strategies rather than through any single one. Paragraphing is functional and purposeful. The argument has direction — it builds rather than repeats.
+
 YEAR 10 (AC9E10LY06, AC9E10LE08, AC9E10LY07, AC9E10LA03):
 - Creates sustained texts on complex issues with depth and nuance
 - Reflects on and critiques own texts prior to publishing
 - Controls all language features for effect and precision
+- Creates and edits literary texts with a sustained voice, selecting and adapting text structures, literary devices, and language and visual features for purposes and audiences
 - Word count guide: minimum 450 words; a strong Year 10 writer produces 500-700+ words
-- A strong Year 10 writer produces purposeful, refined texts demonstrating sophisticated control`;
+- A strong Year 10 writer produces purposeful, refined texts demonstrating sophisticated control across multiple simultaneous layers
+
+WHAT SATISFACTORY YEAR 10 WRITING LOOKS LIKE IN PRACTICE:
+A satisfactory Year 10 writer demonstrates control across multiple simultaneous layers — form, register, argument, literary analysis, visual-verbal integration, and structural design — and none of these feel accidental. The defining Year 10 markers are sustained voice and the deliberate interplay of layers: the student is doing several hard things at once and managing all of them with intention. In a multimodal analytical text, this means images chosen for symbolic resonance rather than illustration (a flower to symbolise nature as a Romantic ideal), register varied deliberately within the one text (authoritative analytical voice alongside informal register to suit the magazine form), two or more texts compared with specific analysis of literary devices and their effects, quotations selected and embedded to develop an argument rather than decorate it, and a conclusion that earns its ending — a structural callback, a crafted final line, or a device that echoes the opening and reinforces the content ("Deep inside your mind, deep inside nature's bind"). Repetition and rhetorical devices are used as deliberate structural and persuasive tools. The student understands that form and content are not separate — how the text is shaped is part of what the text is saying. The key distinction from Year 9 is sophistication of control: Year 9 orchestrates persuasive strategies; Year 10 works simultaneously across analytical, creative and multimodal registers, sustaining a distinctive voice throughout, and making choices that operate at multiple levels at once.`;
 }
 
 module.exports = { buildAcPrompt };
