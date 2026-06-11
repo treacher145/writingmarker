@@ -366,7 +366,6 @@ canvas { display: none; }
     <div class="result-strip">
       <div class="result-top">
         <div>
-          <div class="result-level" id="level-badge"></div>
           <div class="result-subtitle" id="result-subtitle"></div>
           <div class="badges">
             <span class="badge badge-level" id="confidence-badge" style="display:none;"></span>
@@ -1062,7 +1061,7 @@ function renderResult(r) {
     wbCard.style.display = 'block';
   } else { wbCard.style.display = 'none'; }
 
-  document.getElementById('level-badge').textContent = res.achievementLevel;
+
   document.getElementById('result-subtitle').textContent = r.curriculum + ' · ' + r.genre;
   document.getElementById('curriculum-badge').textContent = r.curriculum;
   document.getElementById('genre-badge').textContent = r.genre;
@@ -1162,7 +1161,7 @@ function renderSessionList() {
     const div = document.createElement('div');
     div.className = 'session-item';
     const scorePillHtml = (r.result && r.result.gradeScore !== undefined && r.result.gradeScore !== null && r.result.gradeScore !== '') ? `<span class="session-score-pill">${r.result.gradeScore}</span>` : '';
-    div.innerHTML = `<div class="session-item-top"><span class="session-item-name">${r.studentLabel}</span><div style="display:flex;gap:6px;align-items:center;">${scorePillHtml}<span class="session-item-time">${r.timestamp}</span><button onclick="event.stopPropagation();forgetFromSession(${i})" style="font-size:11px;padding:2px 7px;border:1px solid #fca5a5;border-radius:5px;background:#fff5f5;color:#b91c1c;cursor:pointer;">🗑 Forget</button></div></div><div class="session-item-meta">${r.result.achievementLevel} · ${r.genre}</div>`;
+    div.innerHTML = `<div class="session-item-top"><span class="session-item-name">${r.studentLabel}</span><div style="display:flex;gap:6px;align-items:center;">${scorePillHtml}<span class="session-item-time">${r.timestamp}</span><button onclick="event.stopPropagation();forgetFromSession(${i})" style="font-size:11px;padding:2px 7px;border:1px solid #fca5a5;border-radius:5px;background:#fff5f5;color:#b91c1c;cursor:pointer;">🗑 Forget</button></div></div><div class="session-item-meta">${r.genre} · ${r.curriculum}</div>`;
     div.onclick = () => { renderResult(r); currentResult = r; document.getElementById('session-wrap').style.display = 'none'; };
     items.appendChild(div);
   });
@@ -1220,8 +1219,8 @@ function printResult() {
   <h1>Writing Feedback</h1>
   <div class="meta">${r.studentLabel} · ${r.genre} → ${r.nextGenre} · ${new Date().toLocaleDateString('en-AU')}</div>
   <div class="badges">
-    <span class="badge b1">${r.result.achievementLevel}</span>
-    <span class="badge b2">${r.result.curriculumStandard}</span>
+    <span class="badge b1">${r.result.gradeScore !== undefined && r.result.gradeScore !== null ? r.result.gradeScore : ''}</span>
+    <span class="badge b2">${r.curriculum}</span>
     <span class="badge b3">${r.genre}</span>
   </div>
   ${gradeHtml}
