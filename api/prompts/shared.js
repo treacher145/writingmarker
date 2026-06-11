@@ -55,9 +55,12 @@ IMPORTANT NOTES ON GRADE SCORE:
 - "F.5" is a special string value for mid-Year-1-level writers. Return it as the string "F.5" not a number.
 - For all other levels, return a number (e.g. 1, 1.5, 2, 2.5 ... 10)
 - The gradeScore must be consistent with the achievementLevel description
-- A student described as "strong Year 4 approaching Year 5" should receive a gradeScore of 4 (end of Year 4 standard)
-- A student described as "solidly mid Year 4" should receive 3.5 (mid Year 4)
+- A student described as "approaching Year 5 standard" should receive 4.5 — they are nearly at Year 5, not solidly Year 4
+- A student described as "strong Year 4 — approaching Year 5 standard" should receive 4.5
+- A student described as "solidly Year 4" or "strong Year 4" (not yet approaching Year 5) should receive 4
+- A student described as "solidly mid Year 4" should receive 3.5
 - A student described as "early Year 4" should receive 3 (start of Year 4, i.e. end of Year 3 standard)
+- "Approaching" the next year level always means 0.5 below that year level's whole number
 - NOTE: Foundation/Prep scoring below "F" is not yet defined — if a student is clearly below the end-of-Foundation benchmark, return "F" and note their position in the achievementLevel description
 
 You produce two things:
@@ -164,7 +167,7 @@ GOALS — IMPORTANT: Colons and semicolons should be a rare goal — only sugges
 Respond ONLY with valid JSON, no markdown, no backticks. CRITICAL: the "goals" field MUST be a JSON array of exactly 3 separate strings — never combine them into one string:
 {
   "achievementLevel": "natural teacher language showing position and direction e.g. Strong Year 3 — approaching Year 4 standard OR Exceeding Year 1 — performing at a Year 2 level",
-  "gradeScore": "F, F.5, or a number from 1 to 10 in 0.5 increments — e.g. 3.5 for mid Year 4, 4 for end of Year 4 / approaching Year 5. NOTE: scores below F are not yet defined — use F as the minimum.",
+  "gradeScore": "F, F.5, or a number from 1 to 10 in 0.5 increments. Examples: 3.5 = mid Year 4, 4 = solidly Year 4, 4.5 = strong Year 4 approaching Year 5, 5 = solidly Year 5. Approaching the next year level always scores 0.5 below that year whole number. Use F as the minimum.",
   "curriculumStandard": "e.g. Victorian Curriculum Year 4 / NSW Stage 2 / Australian Curriculum Year 4",
   "overall": "2-3 sentence professional teacher assessment using curriculum language only",
   "commendationQuote": "the specific quote from the student's actual writing — their exact words",
