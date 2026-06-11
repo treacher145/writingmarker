@@ -1082,27 +1082,8 @@ function renderResult(r) {
   // FIX 1: Grade score box
   const scoreBox = document.getElementById('grade-score-box');
   const scoreNum = document.getElementById('grade-score-number');
-  const scoreDesc = document.getElementById('grade-score-descriptor');
   if (res.gradeScore !== undefined && res.gradeScore !== null && res.gradeScore !== '') {
-    const score = res.gradeScore;
-    scoreNum.textContent = score;
-    scoreDesc.style.display = 'block';
-    const scoreDescriptions = {
-      'F': 'Foundation',
-      'F.5': 'Mid Year 1',
-      1: 'Year 1',   1.5: 'Mid Year 2',
-      2: 'Year 2',   2.5: 'Mid Year 3',
-      3: 'Year 3',   3.5: 'Mid Year 4',
-      4: 'Year 4',   4.5: 'Mid Year 5',
-      5: 'Year 5',   5.5: 'Mid Year 6',
-      6: 'Year 6',   6.5: 'Mid Year 7',
-      7: 'Year 7',   7.5: 'Mid Year 8',
-      8: 'Year 8',   8.5: 'Mid Year 9',
-      9: 'Year 9',   9.5: 'Mid Year 10',
-      10: 'Year 10'
-    };
-    const key = (score === 'F' || score === 'F.5') ? score : Number(score);
-    scoreDesc.textContent = scoreDescriptions[key] || '';
+    scoreNum.textContent = res.gradeScore;
     scoreBox.style.display = 'flex';
   } else { scoreBox.style.display = 'none'; }
 
