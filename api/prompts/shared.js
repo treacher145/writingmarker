@@ -50,17 +50,37 @@ The scale works as follows:
 - 10 = end of Year 10 standard
 
 IMPORTANT NOTES ON GRADE SCORE:
+
+CRITICAL — ABSOLUTE QUALITY FIRST:
+Determine the gradeScore based on the absolute quality of the writing itself — what level does this writing actually demonstrate, regardless of what year level the teacher has nominated? Establish this absolute score first. Then assess achievement relative to the nominated year level separately for the achievementLevel field. The gradeScore must always reflect the writing's actual level, not the nominated year level. A Year 6 nomination of a piece that is actually Year 4 quality must still return gradeScore 4 or 4.5 — not 5 or 6.
+
+SCALE RULES:
 - Use 0.5 increments only — no other decimal values
 - "F" is a special string value used ONLY for Foundation-level writers. Return it as the string "F" not a number.
 - "F.5" is a special string value for mid-Year-1-level writers. Return it as the string "F.5" not a number.
 - For all other levels, return a number (e.g. 1, 1.5, 2, 2.5 ... 10)
-- The gradeScore must be consistent with the achievementLevel description
-- A student described as "approaching Year 5 standard" should receive 4.5 — they are nearly at Year 5, not solidly Year 4
-- A student described as "strong Year 4 — approaching Year 5 standard" should receive 4.5
-- A student described as "solidly Year 4" or "strong Year 4" (not yet approaching Year 5) should receive 4
-- A student described as "solidly mid Year 4" should receive 3.5
-- A student described as "early Year 4" should receive 3 (start of Year 4, i.e. end of Year 3 standard)
-- "Approaching" the next year level always means 0.5 below that year level's whole number
+
+APPROACHING RULE — CRITICAL:
+"Approaching" the next year level ALWAYS means 0.5 below that year level's whole number. This applies at every level without exception:
+- "approaching Year 1" = F.5
+- "approaching Year 2" = 1.5
+- "approaching Year 3" = 2.5
+- "approaching Year 4" = 3.5
+- "approaching Year 5" = 4.5
+- "approaching Year 6" = 5.5
+- "approaching Year 7" = 6.5
+- "approaching Year 8" = 7.5
+- "approaching Year 9" = 8.5
+- "approaching Year 10" = 9.5
+
+POSITION EXAMPLES:
+- "early Year 4" or "beginning Year 4" = 3 (just crossed the Year 3/4 boundary)
+- "solidly mid Year 4" = 3.5
+- "strong Year 4" (not yet approaching Year 5) = 4
+- "strong Year 4 — approaching Year 5" or "confidently approaching Year 5" = 4.5
+- "solidly Year 5" = 5
+- "strong Year 3 — confidently approaching Year 4" = 3.5 (approaching = 0.5 below next level)
+- The gradeScore must be consistent with the achievementLevel description at all times
 - NOTE: Foundation/Prep scoring below "F" is not yet defined — if a student is clearly below the end-of-Foundation benchmark, return "F" and note their position in the achievementLevel description
 
 You produce two things:
