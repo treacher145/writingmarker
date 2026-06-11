@@ -402,6 +402,15 @@ canvas { display: none; }
     <div class="result-body-card">
       <div class="section-label" style="margin-top:0;">Teacher assessment</div>
       <div class="assessment-box"><p id="overall-text"></p></div>
+      <div id="curriculum-inline-wrap" style="margin-top:14px;padding-top:14px;border-top:0.5px solid #f1f5f9;">
+        <div class="section-label" style="margin-top:0;" id="curriculum-section-label"></div>
+        <div class="feedback-text" id="curriculum-text"></div>
+        <div id="editing-observation-wrap" style="display:none;margin-top:10px;padding:10px 13px;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:10px;">
+          <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:#15803d;margin-bottom:4px;">✏️ Editing &amp; revision</div>
+          <div class="feedback-text" id="editing-observation-text" style="color:#166534;font-size:13px;"></div>
+        </div>
+        <div class="outcome-pills" id="outcome-pills"></div>
+      </div>
     </div>
 
     <div class="commendation" id="commendation-card">
@@ -433,20 +442,7 @@ canvas { display: none; }
       </div>
     </div>
 
-    <div class="result-body-card curriculum-section">
-      <div class="section-label" style="margin-top:0;cursor:pointer;display:flex;justify-content:space-between;align-items:center;" onclick="toggleCurriculum()">
-        <span id="curriculum-section-label"></span>
-        <span id="curriculum-toggle" style="font-size:10px;color:#94a3b8;font-weight:400;text-transform:none;letter-spacing:0;">▼ show</span>
-      </div>
-      <div id="curriculum-body" style="display:none;margin-top:8px;">
-        <div class="feedback-text" id="curriculum-text"></div>
-        <div id="editing-observation-wrap" style="display:none;margin-top:10px;padding:10px 13px;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:10px;">
-          <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:#15803d;margin-bottom:4px;">✏️ Editing &amp; revision</div>
-          <div class="feedback-text" id="editing-observation-text" style="color:#166534;font-size:13px;"></div>
-        </div>
-        <div class="outcome-pills" id="outcome-pills"></div>
-      </div>
-    </div>
+
 
     <div id="teacher-note-display-wrap" style="display:none;" class="result-body-card">
       <div class="section-label" style="margin-top:0;">Teacher notes</div>
@@ -973,13 +969,7 @@ function toggleExtracted() {
   toggle.textContent = showing ? '▼ show' : '▲ hide';
 }
 
-function toggleCurriculum() {
-  const body = document.getElementById('curriculum-body');
-  const toggle = document.getElementById('curriculum-toggle');
-  const showing = body.style.display !== 'none';
-  body.style.display = showing ? 'none' : 'block';
-  toggle.textContent = showing ? '▼ show' : '▲ hide';
-}
+
 
 async function reanalyse() {
   if (!currentResult) return;
@@ -1187,6 +1177,7 @@ function renderResult(r) {
 
   document.getElementById('curriculum-section-label').textContent = r.curriculum + ' alignment';
   document.getElementById('curriculum-text').textContent = res.curriculumAlignment;
+  document.getElementById('curriculum-inline-wrap').style.display = res.curriculumAlignment ? 'block' : 'none';
 
   const pills = document.getElementById('outcome-pills');
   pills.innerHTML = '';
