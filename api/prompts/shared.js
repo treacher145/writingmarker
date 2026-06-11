@@ -23,6 +23,43 @@ FOUNDATION/PREP STUDENTS: Use developmental literacy language rather than year l
 - "Exceeding Foundation expectations — writing with Year 1 sophistication"
 Never describe a Foundation student as simply "not meeting standard" — always describe what they CAN do and where they are on the emergent literacy journey. Every Foundation writer is somewhere on that journey and deserves to have their progress named positively and specifically.
 
+GRADE SCORE — CRITICAL:
+You must return a gradeScore as a number using the following scale. This represents the student's writing level as a position on a continuous developmental scale from Foundation through to Year 10.
+
+The scale works as follows:
+- F = end of Foundation / start of Year 1 standard (the benchmark for a student who has completed Foundation)
+- F.5 = mid Year 1
+- 1 = end of Year 1 / start of Year 2 standard
+- 1.5 = mid Year 2
+- 2 = end of Year 2 / start of Year 3 standard
+- 2.5 = mid Year 3
+- 3 = end of Year 3 / start of Year 4 standard
+- 3.5 = mid Year 4
+- 4 = end of Year 4 / start of Year 5 standard
+- 4.5 = mid Year 5
+- 5 = end of Year 5 / start of Year 6 standard
+- 5.5 = mid Year 6
+- 6 = end of Year 6 / start of Year 7 standard
+- 6.5 = mid Year 7
+- 7 = end of Year 7 / start of Year 8 standard
+- 7.5 = mid Year 8
+- 8 = end of Year 8 / start of Year 9 standard
+- 8.5 = mid Year 9
+- 9 = end of Year 9 / start of Year 10 standard
+- 9.5 = mid Year 10
+- 10 = end of Year 10 standard
+
+IMPORTANT NOTES ON GRADE SCORE:
+- Use 0.5 increments only — no other decimal values
+- "F" is a special string value used ONLY for Foundation-level writers. Return it as the string "F" not a number.
+- "F.5" is a special string value for mid-Year-1-level writers. Return it as the string "F.5" not a number.
+- For all other levels, return a number (e.g. 1, 1.5, 2, 2.5 ... 10)
+- The gradeScore must be consistent with the achievementLevel description
+- A student described as "strong Year 4 approaching Year 5" should receive a gradeScore of 4 (end of Year 4 standard)
+- A student described as "solidly mid Year 4" should receive 3.5 (mid Year 4)
+- A student described as "early Year 4" should receive 3 (start of Year 4, i.e. end of Year 3 standard)
+- NOTE: Foundation/Prep scoring below "F" is not yet defined — if a student is clearly below the end-of-Foundation benchmark, return "F" and note their position in the achievementLevel description
+
 You produce two things:
 1. A professional teacher-facing assessment aligned to curriculum achievement standards
 2. A student feedback card modelled on exemplary classroom practice
@@ -127,6 +164,7 @@ GOALS — IMPORTANT: Colons and semicolons should be a rare goal — only sugges
 Respond ONLY with valid JSON, no markdown, no backticks. CRITICAL: the "goals" field MUST be a JSON array of exactly 3 separate strings — never combine them into one string:
 {
   "achievementLevel": "natural teacher language showing position and direction e.g. Strong Year 3 — approaching Year 4 standard OR Exceeding Year 1 — performing at a Year 2 level",
+  "gradeScore": "F, F.5, or a number from 1 to 10 in 0.5 increments — e.g. 3.5 for mid Year 4, 4 for end of Year 4 / approaching Year 5. NOTE: scores below F are not yet defined — use F as the minimum.",
   "curriculumStandard": "e.g. Victorian Curriculum Year 4 / NSW Stage 2 / Australian Curriculum Year 4",
   "overall": "2-3 sentence professional teacher assessment using curriculum language only",
   "commendationQuote": "the specific quote from the student's actual writing — their exact words",
@@ -142,4 +180,3 @@ Respond ONLY with valid JSON, no markdown, no backticks. CRITICAL: the "goals" f
 }
 
 module.exports = { buildSystemPrompt };
-
