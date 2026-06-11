@@ -127,6 +127,13 @@ canvas { display: none; }
 .btn-action { padding: 6px 12px; font-size: 12px; border: 1px solid rgba(255,255,255,0.25); border-radius: 7px; cursor: pointer; background: rgba(255,255,255,0.12); color: #e0f2fe; font-family: inherit; transition: background 0.15s; }
 .btn-action:hover { background: rgba(255,255,255,0.22); }
 
+/* ── Grade score box ── */
+.grade-score-box { display: flex; align-items: center; gap: 12px; background: rgba(255,255,255,0.10); border: 1px solid rgba(255,255,255,0.18); border-radius: 10px; padding: 10px 16px; margin-top: 12px; }
+.grade-score-number { font-family: 'Instrument Serif', serif; font-size: 40px; color: #fff; line-height: 1; min-width: 52px; text-align: center; }
+.grade-score-divider { width: 1px; height: 36px; background: rgba(255,255,255,0.2); flex-shrink: 0; }
+.grade-score-label { font-size: 11px; color: #93c5fd; line-height: 1.6; }
+.grade-score-label strong { display: block; font-size: 12px; color: #e0f2fe; font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 600; margin-bottom: 1px; }
+
 /* ── Result body cards ── */
 .result-body-card { background: #fff; border: 0.5px solid #dde3eb; border-radius: 14px; padding: 18px; margin-bottom: 12px; }
 .student-meta { font-size: 13px; color: #64748b; margin-bottom: 1rem; }
@@ -136,7 +143,7 @@ canvas { display: none; }
 .assessment-box { padding: 0; }
 .assessment-box p { font-size: 13px; color: #475569; line-height: 1.7; margin: 0; }
 
-/* ── Commendation — warm amber with gold border ── */
+/* ── Commendation ── */
 .commendation { background: #fffbeb; border: 0.5px solid #fde68a; border-left: 4px solid #d97706; border-radius: 0 12px 12px 0; padding: 16px 20px; margin-bottom: 12px; }
 .commendation-eyebrow { font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: #b45309; margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
 .commendation-star { width: 18px; height: 18px; background: #f59e0b; border-radius: 4px; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 11px; flex-shrink: 0; }
@@ -206,7 +213,6 @@ canvas { display: none; }
           <option value="TAS">TAS</option>
           <option value="ACT">ACT</option>
           <option value="NT">NT</option>
-
         </select>
       </div>
       <div class="sel-group">
@@ -277,8 +283,8 @@ canvas { display: none; }
       </div>
       <div id="pdf-notice" style="display:none;background:#f0fdf4;border:1px solid #86efac;border-radius:8px;padding:10px 14px;margin-bottom:10px;font-size:13px;color:#166534;"><span id="pdf-filename"></span></div>
       <div id="read-handwriting-btn-single" style="display:none;margin-bottom:10px;">
-        <button onclick="triggerTranscription()" style="width:100%;padding:10px;font-size:13px;font-weight:500;border:1px solid #8b7355;border-radius:8px;background:#fff;color:#8b7355;cursor:pointer;font-family:inherit;">📖 Read handwriting</button>
-      <p style="font-size:11px;color:#9e9e9e;margin-top:6px;">The Mark button will activate once handwriting has been read.</p>
+        <button id="read-hw-btn-single" onclick="triggerTranscription()" style="width:100%;padding:10px;font-size:13px;font-weight:500;border:1px solid #8b7355;border-radius:8px;background:#fff;color:#8b7355;cursor:pointer;font-family:inherit;">📖 Read handwriting</button>
+        <p style="font-size:11px;color:#9e9e9e;margin-top:6px;">The Mark button will activate once handwriting has been read.</p>
       </div>
       <div id="transcription-loading" style="display:none;background:#f0fdf4;border:1px solid #86efac;border-radius:8px;padding:10px 14px;margin-bottom:10px;font-size:13px;color:#166534;">
         <span id="transcription-loading-text">📖 Reading handwriting...</span>
@@ -300,7 +306,7 @@ canvas { display: none; }
         <button class="cam-btn" onclick="rotateCameraPhoto()" style="color:#8b7355;border-color:#8b7355;">↻ Rotate photo</button>
       </div>
       <div id="cam-read-btn" style="display:none;margin-bottom:10px;">
-        <button onclick="triggerTranscription()" style="width:100%;padding:10px;font-size:13px;font-weight:500;border:1px solid #2563eb;border-radius:9px;background:#eff6ff;color:#2563eb;cursor:pointer;font-family:inherit;">📖 Read handwriting</button>
+        <button id="read-hw-btn-cam" onclick="triggerTranscription()" style="width:100%;padding:10px;font-size:13px;font-weight:500;border:1px solid #2563eb;border-radius:9px;background:#eff6ff;color:#2563eb;cursor:pointer;font-family:inherit;">📖 Read handwriting</button>
         <p style="font-size:11px;color:#94a3b8;margin-top:6px;">The Mark button will activate once handwriting has been read.</p>
       </div>
       <div class="cam-btn-row">
@@ -317,15 +323,15 @@ canvas { display: none; }
     </div>
 
     <div id="transcription-preview-card" style="display:none;background:#fff;border:1px solid #e5e3de;border-radius:12px;padding:1.25rem;margin-bottom:1rem;">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
-      <div style="font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:0.06em;color:#9e9e9e;">What the AI read</div>
-      <span style="font-size:11px;color:#9e9e9e;">Edit below if anything is wrong before marking</span>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+        <div style="font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:0.06em;color:#9e9e9e;">What the AI read</div>
+        <span style="font-size:11px;color:#9e9e9e;">Edit below if anything is wrong before marking</span>
+      </div>
+      <textarea id="pre-mark-transcription" style="width:100%;min-height:120px;font-size:13px;padding:10px 12px;border:1px solid #e0ddd8;border-radius:8px;background:#faf9f7;color:#1a1a1a;line-height:1.7;font-family:inherit;resize:vertical;"></textarea>
+      <p style="font-size:11px;color:#9e9e9e;margin-top:6px;">The AI will assess based on this text. Correct any misread words before clicking Mark.</p>
     </div>
-    <textarea id="pre-mark-transcription" style="width:100%;min-height:120px;font-size:13px;padding:10px 12px;border:1px solid #e0ddd8;border-radius:8px;background:#faf9f7;color:#1a1a1a;line-height:1.7;font-family:inherit;resize:vertical;"></textarea>
-    <p style="font-size:11px;color:#9e9e9e;margin-top:6px;">The AI will assess based on this text. Correct any misread words before clicking Mark.</p>
-  </div>
 
-  <div class="teacher-note-wrap">
+    <div class="teacher-note-wrap">
       <label>Teacher notes (optional — stays local, not sent for analysis)</label>
       <textarea id="teacher-note" placeholder="e.g. Written under timed conditions, EAL/D student, first draft..."></textarea>
     </div>
@@ -373,6 +379,15 @@ canvas { display: none; }
         <div class="result-actions">
           <button class="btn-action" onclick="forgetCurrent()">🗑 Forget</button>
           <button class="btn-action" onclick="printResult()">🖨️ Print</button>
+        </div>
+      </div>
+      <!-- Grade score box -->
+      <div class="grade-score-box" id="grade-score-box" style="display:none;">
+        <div class="grade-score-number" id="grade-score-number"></div>
+        <div class="grade-score-divider"></div>
+        <div class="grade-score-label">
+          <strong id="grade-score-descriptor"></strong>
+          Writing level score · <em style="font-style:normal;opacity:0.75;font-size:10px;">Prep scoring below F not yet defined</em>
         </div>
       </div>
     </div>
@@ -501,30 +516,21 @@ function updateYearLevels() {
   updateEarlyYearsTip();
 }
 
-// Resize and compress image — enforces a max byte size per image
-// For multi-page submissions each image must be well under limit
 function resizeImageToJpeg(dataUrl, callback, targetBytes) {
-  targetBytes = targetBytes || 200000; // 200KB per image default
+  targetBytes = targetBytes || 200000;
   const img = new Image();
   img.onload = () => {
-    // Always scale to MAX — never skip resizing
     const MAX = 900;
-    let w = img.width;
-    let h = img.height;
+    let w = img.width, h = img.height;
     if (w > h) { h = Math.round(h * MAX / w); w = MAX; }
     else { w = Math.round(w * MAX / h); h = MAX; }
-
     const canvas = document.createElement('canvas');
-    canvas.width = w;
-    canvas.height = h;
+    canvas.width = w; canvas.height = h;
     canvas.getContext('2d').drawImage(img, 0, 0, w, h);
-
-    // Try progressively lower quality until under targetBytes
     const qualities = [0.80, 0.65, 0.50, 0.38, 0.25];
     let result = canvas.toDataURL('image/jpeg', 0.80);
     for (let i = 0; i < qualities.length; i++) {
       result = canvas.toDataURL('image/jpeg', qualities[i]);
-      // base64 is ~4/3 of binary size
       if ((result.length * 0.75) <= targetBytes) break;
     }
     callback(result);
@@ -536,7 +542,6 @@ const TRANSCRIPTION_PROMPT = "You are a careful and expert reader of handwritten
 
 async function runTranscription(imageData, mediaType, isMultiPage) {
   let userContent;
-  
   if (isMultiPage) {
     const imageBlocks = imageData.map(img => ({
       type: 'image',
@@ -545,36 +550,25 @@ async function runTranscription(imageData, mediaType, isMultiPage) {
     imageBlocks.push({ type: 'text', text: 'These are multiple pages of the same student writing, in order. Transcribe all pages in sequence.' });
     userContent = imageBlocks;
   } else {
-    // PDFs are converted to images before this point, so always send as image
     userContent = [
       { type: 'image', source: { type: 'base64', media_type: 'image/jpeg', data: imageData } },
       { type: 'text', text: 'Please transcribe this handwritten text.' }
     ];
   }
-
   const response = await fetch('/api/assess', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      system: TRANSCRIPTION_PROMPT,
-      messages: [{ role: 'user', content: userContent }],
-      transcription: true
-    })
+    body: JSON.stringify({ system: TRANSCRIPTION_PROMPT, messages: [{ role: 'user', content: userContent }], transcription: true })
   });
-
   if (!response.ok) {
     const err = await response.json().catch(() => ({}));
     throw new Error(err.error ? err.error.message : 'Transcription failed');
   }
-
   const data = await response.json();
   const text = (data.content || []).map(i => i.text || '').join('').trim();
-  
-  // Extract confidence rating
   const confMatch = text.match(/CONFIDENCE:[\s]*(HIGH|MEDIUM|LOW)/i);
   const confidence = confMatch ? confMatch[1].toUpperCase() : 'HIGH';
   const cleanText = text.replace(/CONFIDENCE:[\s]*(HIGH|MEDIUM|LOW)/i, '').trim();
-  
   return { text: cleanText, confidence };
 }
 
@@ -604,8 +598,7 @@ function switchTab(tab) {
   }
 }
 
-// Store multiple image data for multi-page support
-let multiImageData = []; // [{name, base64, dataUrl}]
+let multiImageData = [];
 
 function handleFile(input) {
   const files = Array.from(input.files);
@@ -615,7 +608,6 @@ function handleFile(input) {
   currentFileType = files[0].type;
   currentFileName = files[0].name;
   multiImageData = [];
-  // Reset transcription state for new upload
   transcriptionReady = false;
   document.getElementById('mark-btn').disabled = true;
   document.getElementById('mark-btn').textContent = '✦ Mark this writing';
@@ -626,66 +618,48 @@ function handleFile(input) {
   const pdfFilename = document.getElementById('pdf-filename');
   const multiPanel = document.getElementById('multi-image-panel');
 
-  // Single PDF
   if (files.length === 1 && files[0].type === 'application/pdf') {
-    // Convert PDF pages to compressed images using PDF.js
     pdfFilename.textContent = '📄 ' + files[0].name + ' — converting...';
     pdfNotice.style.display = 'block';
     img.style.display = 'none';
     multiPanel.style.display = 'none';
     document.getElementById('read-handwriting-btn-single').style.display = 'none';
     document.getElementById('transcription-preview-card').style.display = 'none';
-
-    if (typeof pdfjsLib === 'undefined') {
-      showError('PDF error', 'PDF library not loaded. Please refresh and try again.');
-      return;
-    }
-
+    if (typeof pdfjsLib === 'undefined') { showError('PDF error', 'PDF library not loaded. Please refresh and try again.'); return; }
     const reader = new FileReader();
     reader.onload = async e => {
       try {
         const typedArray = new Uint8Array(e.target.result);
         const pdf = await pdfjsLib.getDocument({ data: typedArray }).promise;
         const pageCount = pdf.numPages;
-
         if (pageCount === 1) {
-          // Single page PDF — convert to single compressed image
           const page = await pdf.getPage(1);
           const viewport = page.getViewport({ scale: 1.5 });
           const canvas = document.createElement('canvas');
-          canvas.width = viewport.width;
-          canvas.height = viewport.height;
+          canvas.width = viewport.width; canvas.height = viewport.height;
           await page.render({ canvasContext: canvas.getContext('2d'), viewport }).promise;
           const dataUrl = canvas.toDataURL('image/jpeg', 0.80);
-          // Apply size compression
           resizeImageToJpeg(dataUrl, (compressed) => {
             capturedImageBase64 = compressed.split(',')[1];
             currentFileType = 'image/jpeg';
-            img.src = compressed;
-            img.style.display = 'block';
-            img.style.cursor = 'zoom-in';
+            img.src = compressed; img.style.display = 'block'; img.style.cursor = 'zoom-in';
             img.onclick = () => openLightbox(img.src);
-            pdfNotice.style.display = 'none';
-            pdfFilename.textContent = '';
+            pdfNotice.style.display = 'none'; pdfFilename.textContent = '';
             document.querySelector('.upload-zone').style.display = 'none';
             document.getElementById('remove-image-btn').style.display = 'block';
             document.getElementById('read-handwriting-btn-single').style.display = 'block';
           }, 200000);
         } else {
-          // Multi-page PDF — convert each page, treat as multi-image
           const pages = [];
           for (let i = 1; i <= pageCount; i++) {
             pdfFilename.textContent = '📄 Converting page ' + i + ' of ' + pageCount + '...';
             const page = await pdf.getPage(i);
             const viewport = page.getViewport({ scale: 1.5 });
             const canvas = document.createElement('canvas');
-            canvas.width = viewport.width;
-            canvas.height = viewport.height;
+            canvas.width = viewport.width; canvas.height = viewport.height;
             await page.render({ canvasContext: canvas.getContext('2d'), viewport }).promise;
-            const dataUrl = canvas.toDataURL('image/jpeg', 0.80);
-            pages.push({ dataUrl, name: files[0].name + ' p' + i });
+            pages.push({ dataUrl: canvas.toDataURL('image/jpeg', 0.80), name: files[0].name + ' p' + i });
           }
-          // Compress each page and populate multiImageData
           let processed = 0;
           const tempData = new Array(pages.length);
           pages.forEach((p, idx) => {
@@ -693,40 +667,30 @@ function handleFile(input) {
               tempData[idx] = { name: p.name, base64: compressed.split(',')[1], dataUrl: compressed, mediaType: 'image/jpeg' };
               processed++;
               if (processed === pages.length) {
-                multiImageData = tempData;
-                currentFileType = 'image/jpeg';
-                pdfNotice.style.display = 'none';
-                pdfFilename.textContent = '';
+                multiImageData = tempData; currentFileType = 'image/jpeg';
+                pdfNotice.style.display = 'none'; pdfFilename.textContent = '';
                 img.style.display = 'none';
-                renderMultiImagePanel();
-                multiPanel.style.display = 'block';
+                renderMultiImagePanel(); multiPanel.style.display = 'block';
                 document.getElementById('read-handwriting-btn-single').style.display = 'block';
               }
             }, 150000);
           });
         }
-      } catch (err) {
-        showError('PDF error', 'Could not read this PDF. Try saving as JPG images instead. (' + err.message + ')');
-      }
+      } catch (err) { showError('PDF error', 'Could not read this PDF. Try saving as JPG images instead. (' + err.message + ')'); }
     };
     reader.onerror = () => showError('File error', 'Could not read the PDF.');
     reader.readAsArrayBuffer(files[0]);
     return;
   }
 
-  // Single image
   if (files.length === 1) {
     const reader = new FileReader();
     reader.onload = e => {
       resizeImageToJpeg(e.target.result, (jpegDataUrl) => {
-        capturedImageBase64 = jpegDataUrl.split(',')[1];
-        currentFileType = 'image/jpeg';
-        img.src = jpegDataUrl;
-        img.style.display = 'block';
-        img.style.cursor = 'zoom-in';
+        capturedImageBase64 = jpegDataUrl.split(',')[1]; currentFileType = 'image/jpeg';
+        img.src = jpegDataUrl; img.style.display = 'block'; img.style.cursor = 'zoom-in';
         img.onclick = () => openLightbox(img.src);
-        pdfNotice.style.display = 'none';
-        multiPanel.style.display = 'none';
+        pdfNotice.style.display = 'none'; multiPanel.style.display = 'none';
         document.querySelector('.upload-zone').style.display = 'none';
         document.getElementById('remove-image-btn').style.display = 'block';
         document.getElementById('read-handwriting-btn-single').style.display = 'block';
@@ -738,26 +702,17 @@ function handleFile(input) {
     return;
   }
 
-  // Multiple images — read all then show reorder panel
-  img.style.display = 'none';
-  pdfNotice.style.display = 'none';
-  multiPanel.style.display = 'none';
+  img.style.display = 'none'; pdfNotice.style.display = 'none'; multiPanel.style.display = 'none';
   document.querySelector('.upload-zone').style.display = 'none';
-
   let loaded = 0;
   const tempData = new Array(files.length);
-
   files.forEach((file, idx) => {
     const reader = new FileReader();
     reader.onload = e => {
-      // For multi-page, target 250KB per image so combined payload stays well under limit
       resizeImageToJpeg(e.target.result, (jpegDataUrl) => {
         tempData[idx] = { name: file.name, base64: jpegDataUrl.split(',')[1], dataUrl: jpegDataUrl, mediaType: 'image/jpeg' };
         loaded++;
-        if (loaded === files.length) {
-          multiImageData = tempData;
-          renderMultiImagePanel();
-        }
+        if (loaded === files.length) { multiImageData = tempData; renderMultiImagePanel(); }
       }, 150000);
     };
     reader.readAsDataURL(file);
@@ -767,29 +722,42 @@ function handleFile(input) {
 let transcriptionReady = false;
 let transcriptionConfidenceLevel = 'HIGH';
 
+function setReadHandwritingButtonsDisabled(disabled) {
+  // Disable/enable all read handwriting trigger buttons
+  const btns = document.querySelectorAll('#read-hw-btn-single, #read-hw-btn-cam, .read-hw-btn-multi');
+  btns.forEach(btn => {
+    btn.disabled = disabled;
+    btn.style.opacity = disabled ? '0.5' : '';
+    btn.style.cursor = disabled ? 'not-allowed' : '';
+  });
+}
+
 async function triggerTranscription() {
   const loadingEl = document.getElementById('transcription-loading');
   const loadingText = document.getElementById('transcription-loading-text');
   const previewCard = document.getElementById('transcription-preview-card');
   const previewBox = document.getElementById('pre-mark-transcription');
-  
+
   transcriptionReady = false;
   previewCard.style.display = 'none';
   loadingEl.style.display = 'block';
   loadingText.textContent = '📖 Reading handwriting...';
   document.getElementById('mark-btn').disabled = true;
   document.getElementById('mark-btn').textContent = '⏳ Reading handwriting first...';
+  // FIX 3: Disable all read handwriting buttons while in progress
+  setReadHandwritingButtonsDisabled(true);
 
   try {
     let result;
     if (multiImageData.length > 1) {
       result = await runTranscription(multiImageData, null, true);
     } else if (capturedImageBase64) {
-      const mediaType = currentFileType === 'application/pdf' ? 'application/pdf' 
+      const mediaType = currentFileType === 'application/pdf' ? 'application/pdf'
         : (currentFileType === 'image/png' ? 'image/png' : 'image/jpeg');
       result = await runTranscription(capturedImageBase64, mediaType, false);
     } else {
       loadingEl.style.display = 'none';
+      setReadHandwritingButtonsDisabled(false);
       return;
     }
 
@@ -800,6 +768,7 @@ async function triggerTranscription() {
     previewCard.style.display = 'block';
     document.getElementById('mark-btn').disabled = false;
     document.getElementById('mark-btn').textContent = '✦ Mark this writing';
+    setReadHandwritingButtonsDisabled(false);
 
   } catch(e) {
     loadingEl.style.display = 'none';
@@ -810,74 +779,34 @@ async function triggerTranscription() {
     transcriptionReady = true;
     document.getElementById('mark-btn').disabled = false;
     document.getElementById('mark-btn').textContent = '✦ Mark this writing';
+    setReadHandwritingButtonsDisabled(false);
     console.error('Transcription error:', e);
   }
 }
 
-// Track rotation per image (0, 90, 180, 270)
 let imageRotations = [];
 let singleImageRotation = 0;
 
 function openLightbox(src) {
-  const lb = document.getElementById('img-lightbox');
-  const lbImg = document.getElementById('img-lightbox-img');
-  lbImg.src = src;
-  lb.style.display = 'flex';
+  document.getElementById('img-lightbox-img').src = src;
+  document.getElementById('img-lightbox').style.display = 'flex';
 }
-
-function closeLightbox() {
-  document.getElementById('img-lightbox').style.display = 'none';
-}
-
-function rotateSingleImage() {
-  singleImageRotation = (singleImageRotation + 90) % 360;
-  const img = document.getElementById('preview-img');
-  
-  // Rotate the actual image data
-  const tempImg = new Image();
-  tempImg.onload = () => {
-    const canvas = document.createElement('canvas');
-    // Swap width/height for 90/270 degree rotations
-    if (singleImageRotation % 180 !== 0) {
-      canvas.width = tempImg.height;
-      canvas.height = tempImg.width;
-    } else {
-      canvas.width = tempImg.width;
-      canvas.height = tempImg.height;
-    }
-    const ctx = canvas.getContext('2d');
-    ctx.translate(canvas.width / 2, canvas.height / 2);
-    ctx.rotate(singleImageRotation * Math.PI / 180);
-    ctx.drawImage(tempImg, -tempImg.width / 2, -tempImg.height / 2);
-    const rotatedDataUrl = canvas.toDataURL('image/jpeg', 0.85);
-    capturedImageBase64 = rotatedDataUrl.split(',')[1];
-    img.src = rotatedDataUrl;
-  };
-  tempImg.src = img.src;
-}
+function closeLightbox() { document.getElementById('img-lightbox').style.display = 'none'; }
 
 function renderMultiImagePanel() {
   const panel = document.getElementById('multi-image-panel');
   const list = document.getElementById('image-sort-list');
   list.innerHTML = '';
-
-  // Init rotations array if needed
-  if (imageRotations.length !== multiImageData.length) {
-    imageRotations = multiImageData.map(() => 0);
-  }
+  if (imageRotations.length !== multiImageData.length) imageRotations = multiImageData.map(() => 0);
 
   multiImageData.forEach((imgData, idx) => {
     const item = document.createElement('div');
-    item.draggable = true;
-    item.dataset.idx = idx;
+    item.draggable = true; item.dataset.idx = idx;
     item.style.cssText = 'display:flex;align-items:center;gap:10px;background:#fff;border:1px solid #e0ddd8;border-radius:8px;padding:8px 12px;';
-
-    const rotation = imageRotations[idx] || 0;
 
     const thumb = document.createElement('img');
     thumb.src = imgData.dataUrl;
     thumb.style.cssText = 'width:60px;height:60px;object-fit:cover;border-radius:4px;border:1px solid #e0ddd8;flex-shrink:0;cursor:zoom-in;';
-    thumb.title = 'Click to enlarge';
     thumb.onclick = (e) => { e.stopPropagation(); openLightbox(imgData.dataUrl); };
 
     const dragHandle = document.createElement('span');
@@ -890,22 +819,20 @@ function renderMultiImagePanel() {
 
     const deleteBtn = document.createElement('button');
     deleteBtn.textContent = '✕';
-    deleteBtn.title = 'Remove this page';
     deleteBtn.style.cssText = 'padding:5px 9px;font-size:12px;border:1px solid #fca5a5;border-radius:6px;background:#fff5f5;color:#b91c1c;cursor:pointer;flex-shrink:0;font-family:inherit;';
     deleteBtn.onclick = (e) => {
       e.stopPropagation();
-      multiImageData.splice(idx, 1);
-      imageRotations.splice(idx, 1);
+      multiImageData.splice(idx, 1); imageRotations.splice(idx, 1);
       if (multiImageData.length === 0) {
         document.getElementById('multi-image-panel').style.display = 'none';
         document.getElementById('read-handwriting-btn-single').style.display = 'none';
         document.getElementById('transcription-preview-card').style.display = 'none';
+        // FIX 2: Restore upload zone when last image deleted
+        document.querySelector('.upload-zone').style.display = 'block';
         transcriptionReady = false;
         document.getElementById('mark-btn').disabled = true;
         document.getElementById('mark-btn').textContent = '✦ Mark this writing';
-      } else {
-        renderMultiImagePanel();
-      }
+      } else { renderMultiImagePanel(); }
     };
 
     const rotateBtn = document.createElement('button');
@@ -913,102 +840,63 @@ function renderMultiImagePanel() {
     rotateBtn.style.cssText = 'padding:5px 10px;font-size:12px;border:1px solid #e0ddd8;border-radius:6px;background:#faf9f7;color:#6b6b6b;cursor:pointer;flex-shrink:0;font-family:inherit;';
     rotateBtn.onclick = (e) => {
       e.stopPropagation();
-      const currentIdx = idx; // capture idx in closure
+      const currentIdx = idx;
       imageRotations[currentIdx] = ((imageRotations[currentIdx] || 0) + 90) % 360;
       const rotation = imageRotations[currentIdx];
-      
-      // Apply rotation and wait for it to complete before re-rendering
       const tempImg2 = new Image();
       tempImg2.onload = () => {
         const c = document.createElement('canvas');
         if (rotation % 180 !== 0) { c.width = tempImg2.height; c.height = tempImg2.width; }
         else { c.width = tempImg2.width; c.height = tempImg2.height; }
         const ctx2 = c.getContext('2d');
-        ctx2.translate(c.width / 2, c.height / 2);
-        ctx2.rotate(rotation * Math.PI / 180);
+        ctx2.translate(c.width / 2, c.height / 2); ctx2.rotate(rotation * Math.PI / 180);
         ctx2.drawImage(tempImg2, -tempImg2.width / 2, -tempImg2.height / 2);
         const rotatedDataUrl = c.toDataURL('image/jpeg', 0.72);
         multiImageData[currentIdx].dataUrl = rotatedDataUrl;
         multiImageData[currentIdx].base64 = rotatedDataUrl.split(',')[1];
         multiImageData[currentIdx].mediaType = 'image/jpeg';
-        renderMultiImagePanel(); // re-render only after rotation is complete
+        renderMultiImagePanel();
       };
       tempImg2.src = multiImageData[currentIdx].dataUrl;
     };
 
-    item.appendChild(dragHandle);
-    item.appendChild(thumb);
-    item.appendChild(label);
-    item.appendChild(rotateBtn);
-    item.appendChild(deleteBtn);
+    item.appendChild(dragHandle); item.appendChild(thumb); item.appendChild(label);
+    item.appendChild(rotateBtn); item.appendChild(deleteBtn);
 
-    // Drag events on handle only
     dragHandle.addEventListener('mousedown', () => { item.draggable = true; });
-    item.addEventListener('dragstart', e => {
-      e.dataTransfer.setData('text/plain', idx);
-      item.style.opacity = '0.5';
-    });
+    item.addEventListener('dragstart', e => { e.dataTransfer.setData('text/plain', idx); item.style.opacity = '0.5'; });
     item.addEventListener('dragend', () => { item.style.opacity = '1'; item.draggable = false; });
     item.addEventListener('dragover', e => { e.preventDefault(); item.style.background = '#f0fdf4'; });
     item.addEventListener('dragleave', () => { item.style.background = '#fff'; });
     item.addEventListener('drop', e => {
-      e.preventDefault();
-      item.style.background = '#fff';
+      e.preventDefault(); item.style.background = '#fff';
       const fromIdx = parseInt(e.dataTransfer.getData('text/plain'));
       const toIdx = parseInt(item.dataset.idx);
       if (fromIdx !== toIdx) {
-        const moved = multiImageData.splice(fromIdx, 1)[0];
-        multiImageData.splice(toIdx, 0, moved);
-        const movedRot = imageRotations.splice(fromIdx, 1)[0];
-        imageRotations.splice(toIdx, 0, movedRot);
+        const moved = multiImageData.splice(fromIdx, 1)[0]; multiImageData.splice(toIdx, 0, moved);
+        const movedRot = imageRotations.splice(fromIdx, 1)[0]; imageRotations.splice(toIdx, 0, movedRot);
         renderMultiImagePanel();
       }
     });
-
     list.appendChild(item);
   });
 
-  // Add page button
   const addBtn = document.createElement('button');
   addBtn.textContent = '＋ Add page';
   addBtn.style.cssText = 'width:100%;padding:9px;font-size:13px;font-weight:500;border:1px solid #bfdbfe;border-radius:8px;background:#eff6ff;color:#1d4ed8;cursor:pointer;font-family:inherit;margin-top:8px;';
   addBtn.onclick = () => { document.getElementById('add-page-input').value = ''; document.getElementById('add-page-input').click(); };
   list.appendChild(addBtn);
 
-  // Add Read handwriting button at bottom of panel
+  // FIX 3: Give multi-panel read button a class so setReadHandwritingButtonsDisabled can find it
   const readBtn = document.createElement('button');
   readBtn.textContent = '📖 Read handwriting';
+  readBtn.className = 'read-hw-btn-multi';
   readBtn.style.cssText = 'width:100%;padding:10px;font-size:13px;font-weight:500;border:1px solid #8b7355;border-radius:8px;background:#fff;color:#8b7355;cursor:pointer;font-family:inherit;margin-top:8px;';
   readBtn.onclick = () => triggerTranscription();
   list.appendChild(readBtn);
 
   panel.style.display = 'block';
   document.getElementById('transcription-preview-card').style.display = 'none';
-}
-
-function applyRotationToImage(idx, degrees) {
-  const imgData = multiImageData[idx];
-  const canvas = document.createElement('canvas');
-  const ctx = canvas.getContext('2d');
-  const image = new Image();
-  image.onload = () => {
-    const radians = degrees * Math.PI / 180;
-    if (degrees === 90 || degrees === 270) {
-      canvas.width = image.height;
-      canvas.height = image.width;
-    } else {
-      canvas.width = image.width;
-      canvas.height = image.height;
-    }
-    ctx.translate(canvas.width / 2, canvas.height / 2);
-    ctx.rotate(radians);
-    ctx.drawImage(image, -image.width / 2, -image.height / 2);
-    const rotatedDataUrl = canvas.toDataURL('image/jpeg', 0.85);
-    multiImageData[idx].dataUrl = rotatedDataUrl;
-    multiImageData[idx].base64 = rotatedDataUrl.split(',')[1];
-    multiImageData[idx].mediaType = 'image/jpeg';
-  };
-  image.src = imgData.dataUrl;
 }
 
 async function startCamera() {
@@ -1018,9 +906,7 @@ async function startCamera() {
     document.getElementById('video').srcObject = stream;
     document.getElementById('cam-wrap').style.display = 'block';
     document.getElementById('capture-btn').disabled = false;
-  } catch(e) {
-    showError('Camera unavailable', 'Could not access camera: ' + e.message + '. Try the upload option instead.');
-  }
+  } catch(e) { showError('Camera unavailable', 'Could not access camera: ' + e.message + '. Try the upload option instead.'); }
 }
 
 function capturePhoto() {
@@ -1029,14 +915,11 @@ function capturePhoto() {
   canvas.width = video.videoWidth; canvas.height = video.videoHeight;
   canvas.getContext('2d').drawImage(video, 0, 0);
   const dataUrl = canvas.toDataURL('image/jpeg', 0.92);
-  // Reset transcription state for new capture
   transcriptionReady = false;
   document.getElementById('mark-btn').disabled = true;
   document.getElementById('mark-btn').textContent = '✦ Mark this writing';
-  // Compress to stay under size limits
   resizeImageToJpeg(dataUrl, (compressed) => {
-    capturedImageBase64 = compressed.split(',')[1];
-    currentFileType = 'image/jpeg';
+    capturedImageBase64 = compressed.split(',')[1]; currentFileType = 'image/jpeg';
     const prev = document.getElementById('cam-preview');
     prev.src = compressed; prev.style.display = 'block';
     document.getElementById('cam-rotate-row').style.display = 'block';
@@ -1055,15 +938,12 @@ function rotateCameraPhoto() {
   img.onload = () => {
     const canvas = document.createElement('canvas');
     const swap = cameraRotation % 180 !== 0;
-    canvas.width = swap ? img.height : img.width;
-    canvas.height = swap ? img.width : img.height;
+    canvas.width = swap ? img.height : img.width; canvas.height = swap ? img.width : img.height;
     const ctx = canvas.getContext('2d');
-    ctx.translate(canvas.width / 2, canvas.height / 2);
-    ctx.rotate(cameraRotation * Math.PI / 180);
+    ctx.translate(canvas.width / 2, canvas.height / 2); ctx.rotate(cameraRotation * Math.PI / 180);
     ctx.drawImage(img, -img.width / 2, -img.height / 2);
     const rotatedDataUrl = canvas.toDataURL('image/jpeg', 0.82);
-    capturedImageBase64 = rotatedDataUrl.split(',')[1];
-    prev.src = rotatedDataUrl;
+    capturedImageBase64 = rotatedDataUrl.split(',')[1]; prev.src = rotatedDataUrl;
   };
   img.src = prev.src;
 }
@@ -1102,28 +982,18 @@ function toggleCurriculum() {
 async function reanalyse() {
   if (!currentResult) return;
   const correctedText = document.getElementById('extracted-text-box').value.trim();
-  // Also sync to pre-mark transcription box
   const preBox = document.getElementById('pre-mark-transcription');
   if (preBox) preBox.value = correctedText;
   if (!correctedText) { showError('No text', 'Please make sure there is text in the box before re-analysing.'); return; }
-
-  const meta = Object.values(curriculumMeta).find(m => m.name === currentResult.curriculum) || Object.values(curriculumMeta)[0];
   const nextGenre = currentResult.nextGenre;
   const yearLevel = currentResult.yearLevel;
   const genre = currentResult.genre;
   const teacherNote = currentResult.teacherNote;
-  const contextNote = teacherNote ? `
-
-Teacher context: ${teacherNote}` : '';
-
-  const messages = [{ role: 'user', content: `Assess this ${yearLevel} student's ${genre} writing. Their next piece will be a ${nextGenre}.${contextNote}
-
-${correctedText}` }];
-
+  const contextNote = teacherNote ? `\n\nTeacher context: ${teacherNote}` : '';
+  const messages = [{ role: 'user', content: `Assess this ${yearLevel} student's ${genre} writing. Their next piece will be a ${nextGenre}.${contextNote}\n\n${correctedText}` }];
   document.getElementById('loading').style.display = 'block';
   document.getElementById('loading-msg').textContent = 'Re-analysing with corrected text...';
   document.getElementById('mark-btn').disabled = true;
-
   try {
     const response = await fetch('/api/assess', {
       method: 'POST',
@@ -1134,49 +1004,22 @@ ${correctedText}` }];
     const data = await response.json();
     const raw = (data.content || []).map(i => i.text || '').join('').replace(/```json|```/g,'').trim();
     const result = JSON.parse(raw);
-
-    // Update current result with new analysis but keep corrected text
-    currentResult.result = result;
-    currentResult.extractedText = correctedText;
-    currentResult.result.transcribedText = correctedText;
-
-    // Update session
+    currentResult.result = result; currentResult.extractedText = correctedText; currentResult.result.transcribedText = correctedText;
     const idx = sessionResults.findIndex(r => r.timestamp === currentResult.timestamp && r.studentLabel === currentResult.studentLabel);
     if (idx > -1) sessionResults[idx] = {...currentResult};
-
     renderResult(currentResult);
-
-    // Re-open the extracted text panel
     document.getElementById('extracted-text-body').style.display = 'block';
     document.getElementById('extracted-toggle').textContent = '▲ hide';
-
-  } catch(e) {
-    showError('Connection error', e.message);
-  } finally {
-    document.getElementById('loading').style.display = 'none';
-    document.getElementById('mark-btn').disabled = false;
-  }
+  } catch(e) { showError('Connection error', e.message); }
+  finally { document.getElementById('loading').style.display = 'none'; document.getElementById('mark-btn').disabled = false; }
 }
-
 
 async function markWriting() {
   hideError();
-  if (!document.getElementById('privacy-check').checked) {
-    showError('Privacy confirmation needed', 'Please confirm no identifying information is included before submitting.');
-    return;
-  }
-  if (!document.getElementById('curriculum-select').value) {
-    showError('Please choose a state', 'Select a state or territory before marking.');
-    return;
-  }
-  if (!document.getElementById('year-select').value) {
-    showError('Please choose a year level', 'Select a year level before marking.');
-    return;
-  }
-  if (!document.getElementById('genre-select').value) {
-    showError('Please choose a writing type', 'Select the writing type before marking.');
-    return;
-  }
+  if (!document.getElementById('privacy-check').checked) { showError('Privacy confirmation needed', 'Please confirm no identifying information is included before submitting.'); return; }
+  if (!document.getElementById('curriculum-select').value) { showError('Please choose a state', 'Select a state or territory before marking.'); return; }
+  if (!document.getElementById('year-select').value) { showError('Please choose a year level', 'Select a year level before marking.'); return; }
+  if (!document.getElementById('genre-select').value) { showError('Please choose a writing type', 'Select the writing type before marking.'); return; }
   const currKey = document.getElementById('curriculum-select').value;
   const meta = curriculumMeta[currKey];
   const yearLevel = document.getElementById('year-select').value;
@@ -1186,26 +1029,20 @@ async function markWriting() {
   const teacherNote = document.getElementById('teacher-note').value.trim();
   const eald = document.getElementById('eald-check').checked;
   let messages = [];
-
   const ealdNote = eald ? '\n\nIMPORTANT: This student is an EAL/D learner (English as an Additional Language or Dialect). Adjust your assessment accordingly — recognise that language transfer, code-switching, and developing English syntax are features of EAL/D writing, not deficits. Celebrate linguistic strengths. Do not penalise for English-specific features that reflect the student\'s language background. Note EAL/D status explicitly in your overall assessment.' : '';
   const contextNote = (teacherNote ? `\n\nTeacher context: ${teacherNote}` : '') + ealdNote;
 
   if (currentTab !== 'text' && !transcriptionReady && (multiImageData.length > 0 || capturedImageBase64)) {
-    showError('Read handwriting first', 'Please click "Read handwriting" and wait for the transcription to complete before marking.');
-    return;
+    showError('Read handwriting first', 'Please click "Read handwriting" and wait for the transcription to complete before marking.'); return;
   }
 
   if (currentTab === 'text') {
     let txt = document.getElementById('text-input').value.trim();
     if (!txt) { showError('No writing entered', 'Please type or paste student writing first.'); return; }
-    txt = scrubNames(txt);
-    extractedText = txt;
+    txt = scrubNames(txt); extractedText = txt;
     messages = [{ role: 'user', content: `Assess this ${yearLevel} student's ${genre} writing. Their next piece will be a ${nextGenre}.${contextNote}\n\n${txt}` }];
   } else if (multiImageData.length > 1) {
-    const imageBlocks = multiImageData.map(img => ({
-      type: 'image',
-      source: { type: 'base64', media_type: img.mediaType || 'image/jpeg', data: img.base64 }
-    }));
+    const imageBlocks = multiImageData.map(img => ({ type: 'image', source: { type: 'base64', media_type: img.mediaType || 'image/jpeg', data: img.base64 } }));
     const preMarkBoxMulti = document.getElementById('pre-mark-transcription');
     const transcribedRawMulti = preMarkBoxMulti ? preMarkBoxMulti.value.trim() : '';
     const transcribedCleanMulti = transcribedRawMulti ? scrubNames(transcribedRawMulti) : '';
@@ -1213,26 +1050,17 @@ async function markWriting() {
     imageBlocks.push({ type: 'text', text: `These are ${multiImageData.length} pages of the same student's writing in order. Read all pages together as one piece and assess this ${yearLevel} student's ${genre} writing. Their next piece will be a ${nextGenre}.${contextNote}${transcriptionNoteMulti}` });
     extractedText = transcribedCleanMulti || '[Multiple pages uploaded]';
     messages = [{ role: 'user', content: imageBlocks }];
-    extractedText = '[Multiple pages uploaded]';
   } else if (capturedImageBase64) {
     const contentType = currentFileType === 'application/pdf' ? 'document' : 'image';
     const imageMediaType = ['image/png','image/gif','image/webp'].includes(currentFileType) ? currentFileType : 'image/jpeg';
-    const sourceObj = currentFileType === 'application/pdf'
-      ? { type: 'base64', media_type: 'application/pdf', data: capturedImageBase64 }
-      : { type: 'base64', media_type: imageMediaType, data: capturedImageBase64 };
+    const sourceObj = currentFileType === 'application/pdf' ? { type: 'base64', media_type: 'application/pdf', data: capturedImageBase64 } : { type: 'base64', media_type: imageMediaType, data: capturedImageBase64 };
     const preMarkBox = document.getElementById('pre-mark-transcription');
     const transcribedRaw = preMarkBox ? preMarkBox.value.trim() : '';
     const transcribedClean = transcribedRaw ? scrubNames(transcribedRaw) : '';
     const transcriptionNote = transcribedClean ? `\n\nThe handwriting has been pre-read and transcribed. Here is the transcribed text (use this alongside the image):\n${transcribedClean}` : '';
-    messages = [{ role: 'user', content: [
-      { type: contentType, source: sourceObj },
-      { type: 'text', text: `Assess this ${yearLevel} student's ${genre} handwritten work. Their next piece will be a ${nextGenre}.${contextNote}${transcriptionNote}` }
-    ]}];
+    messages = [{ role: 'user', content: [{ type: contentType, source: sourceObj }, { type: 'text', text: `Assess this ${yearLevel} student's ${genre} handwritten work. Their next piece will be a ${nextGenre}.${contextNote}${transcriptionNote}` }] }];
     extractedText = transcribedClean || '[Single image or PDF uploaded]';
-  } else {
-    showError('No writing provided', 'Please upload an image, use the camera, or type/paste writing first.');
-    return;
-  }
+  } else { showError('No writing provided', 'Please upload an image, use the camera, or type/paste writing first.'); return; }
 
   document.getElementById('mark-btn').disabled = true;
   document.getElementById('loading').style.display = 'block';
@@ -1244,49 +1072,25 @@ async function markWriting() {
     const response = await fetch('/api/assess', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        curriculumKey: currKey,
-        nextGenre,
-        messages
-      })
+      body: JSON.stringify({ curriculumKey: currKey, nextGenre, messages })
     });
-
-    if (!response.ok) {
-      const errData = await response.json().catch(() => ({}));
-      showError('API error ' + response.status, errData.error ? errData.error.message : 'Please try again.');
-      return;
-    }
-
+    if (!response.ok) { const errData = await response.json().catch(() => ({})); showError('API error ' + response.status, errData.error ? errData.error.message : 'Please try again.'); return; }
     const data = await response.json();
     if (data.error) { showError('Error', data.error.message || JSON.stringify(data.error)); return; }
-
     const raw = (data.content || []).map(i => i.text || '').join('').replace(/```json|```/g, '').trim();
     if (!raw) { showError('Empty response', 'No response received. Please try again.'); return; }
-
     let result;
     try {
-      // Try to extract JSON even if there's surrounding text
       const jsonMatch = raw.match(/\{[\s\S]*\}/);
-      const jsonStr = jsonMatch ? jsonMatch[0] : raw;
-      result = JSON.parse(jsonStr);
-    } catch(e) {
-      showError('Could not read response', 'Parse error: ' + e.message + '. Raw (first 300 chars): ' + raw.substring(0, 300));
-      return;
-    }
-
+      result = JSON.parse(jsonMatch ? jsonMatch[0] : raw);
+    } catch(e) { showError('Could not read response', 'Parse error: ' + e.message + '. Raw (first 300 chars): ' + raw.substring(0, 300)); return; }
     extractedText = extractedText || (currentTab !== 'text' ? '[Image/PDF uploaded]' : '');
     currentResult = { studentLabel, yearLevel, curriculum: meta.name, genre, nextGenre, teacherNote, eald, result, extractedText, timestamp: new Date().toLocaleTimeString() };
-    // Auto-save to session
     sessionResults.push({...currentResult});
     document.getElementById('session-count').textContent = sessionResults.length;
     renderResult(currentResult);
-
-  } catch(e) {
-    showError('Connection error', e.message);
-  } finally {
-    document.getElementById('loading').style.display = 'none';
-    document.getElementById('mark-btn').disabled = false;
-  }
+  } catch(e) { showError('Connection error', e.message); }
+  finally { document.getElementById('loading').style.display = 'none'; document.getElementById('mark-btn').disabled = false; }
 }
 
 function renderResult(r) {
@@ -1297,7 +1101,6 @@ function renderResult(r) {
     metaEl.style.display = 'block';
   } else { metaEl.style.display = 'none'; }
 
-  // Wellbeing flag — render first, above everything
   const wb = res.wellbeingFlag;
   const wbCard = document.getElementById('wellbeing-card');
   if (wb && wb.level) {
@@ -1305,25 +1108,19 @@ function renderResult(r) {
     wbCard.className = 'wellbeing-card ' + (isUrgent ? 'urgent' : 'concern');
     document.getElementById('wellbeing-icon').textContent = isUrgent ? '!' : '⚠';
     document.getElementById('wellbeing-eyebrow-text').textContent = isUrgent ? 'Urgent wellbeing concern' : 'Wellbeing concern';
-    document.getElementById('wellbeing-title').textContent = isUrgent
-      ? 'This writing may indicate the student is at risk'
-      : 'This writing contains content that may warrant a wellbeing check';
+    document.getElementById('wellbeing-title').textContent = isUrgent ? 'This writing may indicate the student is at risk' : 'This writing contains content that may warrant a wellbeing check';
     document.getElementById('wellbeing-note').textContent = wb.note || '';
     document.getElementById('wellbeing-advice').textContent = isUrgent
       ? 'Consider speaking with this student today and following your school\'s wellbeing referral process. Do not wait for further evidence. Your instinct as the teacher who knows this student matters.'
       : 'Read this piece with your knowledge of this student in mind. If the content feels personal or concerning, consider a gentle check-in conversation or a referral to your school\'s wellbeing team.';
     wbCard.style.display = 'block';
-  } else {
-    wbCard.style.display = 'none';
-  }
+  } else { wbCard.style.display = 'none'; }
 
-  // Populate result strip
   document.getElementById('level-badge').textContent = res.achievementLevel;
   document.getElementById('result-subtitle').textContent = r.curriculum + ' · ' + r.yearLevel + ' · ' + r.genre;
   document.getElementById('curriculum-badge').textContent = r.curriculum;
   document.getElementById('genre-badge').textContent = r.genre;
 
-  // Confidence badge in strip
   const conf = (r.result.transcriptionConfidence || 'HIGH').toUpperCase();
   const confBadge = document.getElementById('confidence-badge');
   if (conf === 'MEDIUM' || conf === 'LOW') {
@@ -1331,39 +1128,54 @@ function renderResult(r) {
     confBadge.style.display = 'inline-block';
     confBadge.style.background = 'rgba(254,215,170,0.9)';
     confBadge.style.color = '#c2410c';
-  } else {
-    confBadge.style.display = 'none';
-  }
+  } else { confBadge.style.display = 'none'; }
 
-  // Hide old confidence warning (replaced by badge)
   const confWarning = document.getElementById('confidence-warning');
   if (confWarning) confWarning.style.display = 'none';
+
+  // FIX 1: Grade score box
+  const scoreBox = document.getElementById('grade-score-box');
+  const scoreNum = document.getElementById('grade-score-number');
+  const scoreDesc = document.getElementById('grade-score-descriptor');
+  if (res.gradeScore !== undefined && res.gradeScore !== null && res.gradeScore !== '') {
+    const score = res.gradeScore;
+    scoreNum.textContent = score;
+    const scoreDescriptions = {
+      'F': 'End of Foundation standard',
+      'F.5': 'Mid Year 1 level',
+      1: 'End of Year 1 standard', 1.5: 'Mid Year 2 level',
+      2: 'End of Year 2 standard', 2.5: 'Mid Year 3 level',
+      3: 'End of Year 3 standard', 3.5: 'Mid Year 4 level',
+      4: 'End of Year 4 standard', 4.5: 'Mid Year 5 level',
+      5: 'End of Year 5 standard', 5.5: 'Mid Year 6 level',
+      6: 'End of Year 6 standard', 6.5: 'Mid Year 7 level',
+      7: 'End of Year 7 standard', 7.5: 'Mid Year 8 level',
+      8: 'End of Year 8 standard', 8.5: 'Mid Year 9 level',
+      9: 'End of Year 9 standard', 9.5: 'Mid Year 10 level',
+      10: 'End of Year 10 standard'
+    };
+    const key = (score === 'F' || score === 'F.5') ? score : Number(score);
+    scoreDesc.textContent = scoreDescriptions[key] || '';
+    scoreBox.style.display = 'flex';
+  } else { scoreBox.style.display = 'none'; }
+
   document.getElementById('overall-text').textContent = res.overall;
   document.getElementById('commendation-quote').textContent = res.commendationQuote;
   document.getElementById('commendation-comment').textContent = res.commendationComment;
+
   const genreLabels = {
     'general writing goals not tied to a specific text type': 'writing',
-    'narrative': 'narrative',
-    'information report': 'information report',
-    'persuasive / argumentative': 'persuasive',
-    'recount': 'recount',
-    'descriptive': 'descriptive',
-    'procedural': 'procedural',
-    'the same writing type': r.genre
+    'narrative': 'narrative', 'information report': 'information report',
+    'persuasive / argumentative': 'persuasive', 'recount': 'recount',
+    'descriptive': 'descriptive', 'procedural': 'procedural', 'the same writing type': r.genre
   };
   document.getElementById('next-genre-label').textContent = genreLabels[r.nextGenre] || r.nextGenre;
 
   const goalsList = document.getElementById('goals-list');
   goalsList.innerHTML = '';
-  // Handle case where model returns goals as a single string instead of array
   let goals = res.goals || [];
-  if (typeof goals === 'string') {
-    // Try to split on "Goal 1:", "Goal 2:", "Goal 3:" patterns
-    goals = goals.split(/Goal\s*\d+[:.]?\s*/i).filter(g => g.trim().length > 0);
-  }
-  if (!Array.isArray(goals) || goals.length === 0) {
-    goals = [String(res.goals || '')];
-  }
+  if (typeof goals === 'string') goals = goals.split(/Goal\s*\d+[:.]?\s*/i).filter(g => g.trim().length > 0);
+  if (!Array.isArray(goals) || goals.length === 0) goals = [String(res.goals || '')];
   goals.forEach((goal, i) => {
     const li = document.createElement('li');
     li.innerHTML = `<span class="goal-num">${i+1}</span><span class="goal-text">${goal.trim()}</span>`;
@@ -1382,30 +1194,20 @@ function renderResult(r) {
     pills.appendChild(span);
   });
 
-  // Render editing observation
   const editingWrap = document.getElementById('editing-observation-wrap');
   const editingText = document.getElementById('editing-observation-text');
-  if (res.editingObservation) {
-    editingText.textContent = res.editingObservation;
-    editingWrap.style.display = 'block';
-  } else {
-    editingWrap.style.display = 'none';
-  }
+  if (res.editingObservation) { editingText.textContent = res.editingObservation; editingWrap.style.display = 'block'; }
+  else { editingWrap.style.display = 'none'; }
 
   const noteWrap = document.getElementById('teacher-note-display-wrap');
-  if (r.teacherNote) {
-    document.getElementById('teacher-note-display').textContent = r.teacherNote;
-    noteWrap.style.display = 'block';
-  } else { noteWrap.style.display = 'none'; }
+  if (r.teacherNote) { document.getElementById('teacher-note-display').textContent = r.teacherNote; noteWrap.style.display = 'block'; }
+  else { noteWrap.style.display = 'none'; }
 
-  // Show transcribed text section — what the AI actually read
   const extractedWrap = document.getElementById('extracted-text-wrap');
   const extractedBox = document.getElementById('extracted-text-box');
   const extractedToggle = document.getElementById('extracted-toggle');
-  const transcribed = r.result.transcribedText || r.extractedText || 'No text available.';
-  extractedBox.value = transcribed;
-  const extractedBody = document.getElementById('extracted-text-body');
-  extractedBody.style.display = 'none';
+  extractedBox.value = r.result.transcribedText || r.extractedText || 'No text available.';
+  document.getElementById('extracted-text-body').style.display = 'none';
   extractedToggle.textContent = '▼ show';
   extractedWrap.style.display = 'block';
 
@@ -1415,7 +1217,6 @@ function renderResult(r) {
 function forgetCurrent() {
   if (!currentResult) return;
   if (!confirm('Remove this result from the session? This cannot be undone.')) return;
-  // Find and remove from session
   const idx = sessionResults.findIndex(r => r.timestamp === currentResult.timestamp && r.studentLabel === currentResult.studentLabel);
   if (idx > -1) sessionResults.splice(idx, 1);
   document.getElementById('session-count').textContent = sessionResults.length;
@@ -1433,8 +1234,7 @@ function renderSessionList() {
   const items = document.getElementById('session-items');
   const empty = document.getElementById('session-empty');
   if (sessionResults.length === 0) { empty.style.display = 'block'; items.innerHTML = ''; return; }
-  empty.style.display = 'none';
-  items.innerHTML = '';
+  empty.style.display = 'none'; items.innerHTML = '';
   sessionResults.forEach((r, i) => {
     const div = document.createElement('div');
     div.className = 'session-item';
@@ -1453,9 +1253,7 @@ function forgetFromSession(idx) {
 
 function clearSession() {
   if (!confirm('Clear all saved results for this session?')) return;
-  sessionResults = [];
-  document.getElementById('session-count').textContent = '0';
-  renderSessionList();
+  sessionResults = []; document.getElementById('session-count').textContent = '0'; renderSessionList();
 }
 
 function printResult() {
@@ -1464,6 +1262,8 @@ function printResult() {
   const goals = (r.result.goals || []).map((g, i) => `<li><strong>${i+1}.</strong> ${g}</li>`).join('');
   const codes = (r.result.outcomeCodes || []).map(o => `<span class="pill"><strong>${o.code}</strong> — ${o.label}</span>`).join('');
   const noteHtml = r.teacherNote ? `<div class="section"><h2>Teacher notes</h2><p class="note">${r.teacherNote}</p></div>` : '';
+  const gradeHtml = (r.result.gradeScore !== undefined && r.result.gradeScore !== null && r.result.gradeScore !== '')
+    ? `<div class="grade-print"><span class="grade-num">${r.result.gradeScore}</span><span class="grade-lbl">Writing level score</span></div>` : '';
   const win = window.open('', '_blank');
   win.document.write(`<!DOCTYPE html><html><head><title>Writing Feedback — ${r.studentLabel}</title>
   <style>
@@ -1471,11 +1271,12 @@ function printResult() {
   body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;max-width:680px;margin:2rem auto;padding:0 1.25rem 3rem;color:#1a1a1a;}
   h1{font-size:20px;font-weight:600;margin-bottom:4px;}
   .meta{font-size:13px;color:#6b6b6b;margin-bottom:1.25rem;}
-  .badges{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:1.5rem;}
+  .badges{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:1rem;}
   .badge{display:inline-block;padding:4px 12px;border-radius:6px;font-size:12px;font-weight:600;}
-  .b1{background:#dcfce7;color:#166534;}
-  .b2{background:#f3f0eb;color:#5a5a5a;}
-  .b3{background:#dbeafe;color:#1e40af;}
+  .b1{background:#dcfce7;color:#166534;}.b2{background:#f3f0eb;color:#5a5a5a;}.b3{background:#dbeafe;color:#1e40af;}
+  .grade-print{display:flex;align-items:center;gap:10px;background:#1e40af;border-radius:8px;padding:10px 16px;margin-bottom:1.25rem;width:fit-content;}
+  .grade-num{font-size:32px;font-weight:700;color:#fff;line-height:1;}
+  .grade-lbl{font-size:12px;color:#93c5fd;}
   .section{margin-bottom:1.25rem;}
   h2{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.06em;color:#9e9e9e;margin-bottom:6px;}
   p{font-size:14px;line-height:1.7;}
@@ -1491,7 +1292,6 @@ function printResult() {
   .pill{display:inline-block;padding:3px 10px;border-radius:99px;font-size:11px;border:1px solid #e0ddd8;color:#5a5a5a;background:#faf9f7;}
   .note{background:#faf9f7;border-left:2px solid #d0cdc7;padding:8px 12px;font-style:italic;font-size:13px;color:#6b6b6b;}
   .footer{margin-top:2rem;font-size:11px;color:#9e9e9e;border-top:1px solid #f0ede8;padding-top:8px;}
-  @media print{body{margin:1rem;}}.footer{position:running(footer);}
   </style></head><body>
   <h1>Writing Feedback</h1>
   <div class="meta">${r.studentLabel} · ${r.yearLevel} · ${r.genre} → ${r.nextGenre} · ${new Date().toLocaleDateString('en-AU')}</div>
@@ -1500,17 +1300,16 @@ function printResult() {
     <span class="badge b2">${r.result.curriculumStandard}</span>
     <span class="badge b3">${r.genre}</span>
   </div>
+  ${gradeHtml}
   <div class="section"><h2>Teacher assessment</h2><div class="assessment"><p>${r.result.overall}</p></div></div>
-  <div class="section"><h2>From their writing</h2>
-  <div class="commendation"><p class="quote">${r.result.commendationQuote}</p><p class="comment">${r.result.commendationComment}</p></div></div>
+  <div class="section"><h2>From their writing</h2><div class="commendation"><p class="quote">${r.result.commendationQuote}</p><p class="comment">${r.result.commendationComment}</p></div></div>
   <div class="section"><h2>Goals for their next ${r.nextGenre}</h2><ul class="goals">${goals}</ul></div>
   <div class="divider"></div>
   <div class="section"><h2>${r.curriculum} alignment</h2><p>${r.result.curriculumAlignment}</p><div class="pills">${codes}</div></div>
   ${noteHtml}
   <div class="footer">Discerna · ${r.curriculum} · Student data not stored or retained.</div>
   </body></html>`);
-  win.document.close();
-  win.print();
+  win.document.close(); win.print();
 }
 
 function resetTool() {
@@ -1535,36 +1334,22 @@ function resetTool() {
   document.getElementById('transcription-loading').style.display = 'none';
   const preBox = document.getElementById('pre-mark-transcription');
   if (preBox) preBox.value = '';
-  transcriptionReady = false;
-  transcriptionConfidenceLevel = 'HIGH';
-  imageRotations = [];
-  singleImageRotation = 0;
-  cameraRotation = 0;
+  transcriptionReady = false; transcriptionConfidenceLevel = 'HIGH';
+  imageRotations = []; singleImageRotation = 0; cameraRotation = 0;
   document.getElementById('cam-rotate-row').style.display = 'none';
   document.getElementById('cam-read-btn').style.display = 'none';
   document.getElementById('eald-check').checked = false;
   document.getElementById('read-handwriting-btn-single').style.display = 'none';
   const previewImg = document.getElementById('preview-img');
-  previewImg.onclick = null;
-  previewImg.style.cursor = 'default';
-  hideError();
-  currentResult = null;
-  extractedText = '';
-  multiImageData = [];
+  previewImg.onclick = null; previewImg.style.cursor = 'default';
+  hideError(); currentResult = null; extractedText = ''; multiImageData = [];
 }
 
 function removeUploadedImage() {
-  capturedImageBase64 = null;
-  multiImageData = [];
-  imageRotations = [];
-  singleImageRotation = 0;
-  transcriptionReady = false;
-  transcriptionConfidenceLevel = 'HIGH';
+  capturedImageBase64 = null; multiImageData = []; imageRotations = []; singleImageRotation = 0;
+  transcriptionReady = false; transcriptionConfidenceLevel = 'HIGH';
   const img = document.getElementById('preview-img');
-  img.style.display = 'none';
-  img.src = '';
-  img.onclick = null;
-  img.style.cursor = 'default';
+  img.style.display = 'none'; img.src = ''; img.onclick = null; img.style.cursor = 'default';
   document.getElementById('file-input').value = '';
   document.getElementById('add-page-input').value = '';
   document.getElementById('pdf-notice').style.display = 'none';
@@ -1573,6 +1358,7 @@ function removeUploadedImage() {
   document.getElementById('read-handwriting-btn-single').style.display = 'none';
   document.getElementById('transcription-preview-card').style.display = 'none';
   document.getElementById('transcription-loading').style.display = 'none';
+  // FIX 2: Restore upload zone
   document.querySelector('.upload-zone').style.display = 'block';
   document.getElementById('mark-btn').disabled = true;
   document.getElementById('mark-btn').textContent = '✦ Mark this writing';
@@ -1585,32 +1371,20 @@ function handleAddPage(input) {
   const files = Array.from(input.files);
   if (!files.length) return;
   hideError();
-
-  // If currently showing a single image, convert it to multiImageData first
   if (capturedImageBase64 && multiImageData.length === 0) {
     const existingName = document.getElementById('file-input').value.split('\\').pop().split('/').pop() || 'Page 1';
-    multiImageData = [{
-      name: existingName || 'Page 1',
-      base64: capturedImageBase64,
-      dataUrl: document.getElementById('preview-img').src,
-      mediaType: 'image/jpeg'
-    }];
-    imageRotations = [0];
-    capturedImageBase64 = null;
+    multiImageData = [{ name: existingName || 'Page 1', base64: capturedImageBase64, dataUrl: document.getElementById('preview-img').src, mediaType: 'image/jpeg' }];
+    imageRotations = [0]; capturedImageBase64 = null;
     document.getElementById('preview-img').style.display = 'none';
     document.getElementById('remove-image-btn').style.display = 'none';
     document.getElementById('read-handwriting-btn-single').style.display = 'none';
   }
-
-  // Reset transcription since pages have changed
   transcriptionReady = false;
   document.getElementById('mark-btn').disabled = true;
   document.getElementById('mark-btn').textContent = '✦ Mark this writing';
   document.getElementById('transcription-preview-card').style.display = 'none';
-
   let loaded = 0;
   const newPages = new Array(files.length);
-
   files.forEach((file, idx) => {
     const reader = new FileReader();
     reader.onload = e => {
