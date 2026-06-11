@@ -205,7 +205,7 @@ canvas { display: none; }
     <div class="selectors">
       <div class="sel-group">
         <label for="curriculum-select">State / curriculum</label>
-        <select id="curriculum-select" onchange="updateYearLevels()">
+        <select id="curriculum-select" >
           <option value="" disabled selected>Please choose</option>
           <option value="VIC">VIC</option>
           <option value="NSW">NSW</option>
@@ -216,10 +216,6 @@ canvas { display: none; }
           <option value="ACT">ACT</option>
           <option value="NT">NT</option>
         </select>
-      </div>
-      <div class="sel-group">
-        <label for="year-select">Year level</label>
-        <select id="year-select" onchange="updateEarlyYearsTip()"></select>
       </div>
       <div class="sel-group">
         <label for="genre-select">This writing type</label>
@@ -270,7 +266,7 @@ canvas { display: none; }
       <div class="privacy-note">
         <span>⚠️ Before uploading, ensure all student names, school names, and identifying information are covered or cropped from the image.</span>
       </div>
-      <div id="early-years-tip" style="display:none;background:#eff6ff;border:1px solid #bfdbfe;border-radius:8px;padding:10px 12px;margin-bottom:10px;font-size:12px;color:#1d4ed8;">💡 <strong>Tip:</strong> For Foundation, Grade 1 and 2 students, the Type / paste tab gives the most accurate results. For clearest image recognition, photograph writing straight-on in good lighting.</div>
+
       <div class="upload-zone" onclick="document.getElementById('file-input').click()">
         <div class="icon">🖼️</div>
         <p>Click to upload a photo, scan, or PDF of student writing</p>
@@ -470,10 +466,7 @@ let stream = null;
 let sessionResults = [];
 let currentResult = null;
 
-const yearLevelMap = {
-  NSW: ['Early Stage 1 (Kindergarten)','Year 1 (Stage 1)','Year 2 (Stage 1)','Year 3 (Stage 2)','Year 4 (Stage 2)','Year 5 (Stage 3)','Year 6 (Stage 3)','Year 7 (Stage 4)','Year 8 (Stage 4)','Year 9 (Stage 5)','Year 10 (Stage 5)'],
-  default: ['Foundation / Prep','Year 1','Year 2','Year 3','Year 4','Year 5','Year 6','Year 7','Year 8','Year 9','Year 10','Year 11','Year 12']
-};
+
 
 const curriculumMeta = {
   VIC: { name: 'Victorian Curriculum (F-10)' },
@@ -487,21 +480,7 @@ const curriculumMeta = {
   NAT: { name: 'Australian Curriculum v9.0' },
 };
 
-function updateYearLevels() {
-  const key = document.getElementById('curriculum-select').value;
-  const levels = yearLevelMap[key] || yearLevelMap.default;
-  const sel = document.getElementById('year-select');
-  sel.innerHTML = '';
-  const placeholder = document.createElement('option');
-  placeholder.value = ''; placeholder.textContent = 'Please choose'; placeholder.disabled = true; placeholder.selected = true;
-  sel.appendChild(placeholder);
-  levels.forEach((lvl) => {
-    const opt = document.createElement('option');
-    opt.value = lvl; opt.textContent = lvl;
-    sel.appendChild(opt);
-  });
-  updateEarlyYearsTip();
-}
+
 
 function resizeImageToJpeg(dataUrl, callback, targetBytes) {
   targetBytes = targetBytes || 200000;
@@ -559,13 +538,7 @@ async function runTranscription(imageData, mediaType, isMultiPage) {
   return { text: cleanText, confidence };
 }
 
-function updateEarlyYearsTip() {
-  const yearLevel = document.getElementById('year-select').value;
-  const earlyYears = ['Foundation', 'Prep', 'Year 1', 'Year 2', 'Kindergarten'];
-  const isEarly = earlyYears.some(y => yearLevel.includes(y));
-  const tip = document.getElementById('early-years-tip');
-  if (tip) tip.style.display = isEarly ? 'block' : 'none';
-}
+
 
 function switchTab(tab) {
   currentTab = tab;
@@ -961,11 +934,10 @@ async function reanalyse() {
   if (preBox) preBox.value = correctedText;
   if (!correctedText) { showError('No text', 'Please make sure there is text in the box before re-analysing.'); return; }
   const nextGenre = currentResult.nextGenre;
-  const yearLevel = currentResult.yearLevel;
   const genre = currentResult.genre;
   const teacherNote = currentResult.teacherNote;
   const contextNote = teacherNote ? `\n\nTeacher context: ${teacherNote}` : '';
-  const messages = [{ role: 'user', content: `Assess this ${yearLevel} student's ${genre} writing. Their next piece will be a ${nextGenre}.${contextNote}\n\n${correctedText}` }];
+  const messages = [{ role: 'user', content: `Assess this student's ${genre} writing. Their next piece will be a ${nextGenre}.${contextNote}\n\n${correctedText}` }];
   document.getElementById('loading').style.display = 'block';
   document.getElementById('loading-msg').textContent = 'Re-analysing with corrected text...';
   document.getElementById('mark-btn').disabled = true;
@@ -993,11 +965,11 @@ async function markWriting() {
   hideError();
   if (!document.getElementById('privacy-check').checked) { showError('Privacy confirmation needed', 'Please confirm no identifying information is included before submitting.'); return; }
   if (!document.getElementById('curriculum-select').value) { showError('Please choose a state', 'Select a state or territory before marking.'); return; }
-  if (!document.getElementById('year-select').value) { showError('Please choose a year level', 'Select a year level before marking.'); return; }
+
   if (!document.getElementById('genre-select').value) { showError('Please choose a writing type', 'Select the writing type before marking.'); return; }
   const currKey = document.getElementById('curriculum-select').value;
   const meta = curriculumMeta[currKey];
-  const yearLevel = document.getElementById('year-select').value;
+
   const genre = document.getElementById('genre-select').value;
   const nextGenre = document.getElementById('next-genre-select').value;
   const studentLabel = document.getElementById('student-label').value.trim() || 'Student';
@@ -1015,14 +987,14 @@ async function markWriting() {
     let txt = document.getElementById('text-input').value.trim();
     if (!txt) { showError('No writing entered', 'Please type or paste student writing first.'); return; }
     txt = scrubNames(txt); extractedText = txt;
-    messages = [{ role: 'user', content: `Assess this ${yearLevel} student's ${genre} writing. Their next piece will be a ${nextGenre}.${contextNote}\n\n${txt}` }];
+    messages = [{ role: 'user', content: `Assess this student's ${genre} writing. Their next piece will be a ${nextGenre}.${contextNote}\n\n${txt}` }];
   } else if (multiImageData.length > 1) {
     const imageBlocks = multiImageData.map(img => ({ type: 'image', source: { type: 'base64', media_type: img.mediaType || 'image/jpeg', data: img.base64 } }));
     const preMarkBoxMulti = document.getElementById('pre-mark-transcription');
     const transcribedRawMulti = preMarkBoxMulti ? preMarkBoxMulti.value.trim() : '';
     const transcribedCleanMulti = transcribedRawMulti ? scrubNames(transcribedRawMulti) : '';
     const transcriptionNoteMulti = transcribedCleanMulti ? `\n\nThe handwriting has been pre-read and transcribed. Here is the transcribed text (use this alongside the images):\n${transcribedCleanMulti}` : '';
-    imageBlocks.push({ type: 'text', text: `These are ${multiImageData.length} pages of the same student's writing in order. Read all pages together as one piece and assess this ${yearLevel} student's ${genre} writing. Their next piece will be a ${nextGenre}.${contextNote}${transcriptionNoteMulti}` });
+    imageBlocks.push({ type: 'text', text: `These are ${multiImageData.length} pages of the same student's writing in order. Read all pages together as one piece and assess this student's ${genre} writing. Their next piece will be a ${nextGenre}.${contextNote}${transcriptionNoteMulti}` });
     extractedText = transcribedCleanMulti || '[Multiple pages uploaded]';
     messages = [{ role: 'user', content: imageBlocks }];
   } else if (capturedImageBase64) {
@@ -1033,7 +1005,7 @@ async function markWriting() {
     const transcribedRaw = preMarkBox ? preMarkBox.value.trim() : '';
     const transcribedClean = transcribedRaw ? scrubNames(transcribedRaw) : '';
     const transcriptionNote = transcribedClean ? `\n\nThe handwriting has been pre-read and transcribed. Here is the transcribed text (use this alongside the image):\n${transcribedClean}` : '';
-    messages = [{ role: 'user', content: [{ type: contentType, source: sourceObj }, { type: 'text', text: `Assess this ${yearLevel} student's ${genre} handwritten work. Their next piece will be a ${nextGenre}.${contextNote}${transcriptionNote}` }] }];
+    messages = [{ role: 'user', content: [{ type: contentType, source: sourceObj }, { type: 'text', text: `Assess this student's ${genre} handwritten work. Their next piece will be a ${nextGenre}.${contextNote}${transcriptionNote}` }] }];
     extractedText = transcribedClean || '[Single image or PDF uploaded]';
   } else { showError('No writing provided', 'Please upload an image, use the camera, or type/paste writing first.'); return; }
 
@@ -1060,7 +1032,7 @@ async function markWriting() {
       result = JSON.parse(jsonMatch ? jsonMatch[0] : raw);
     } catch(e) { showError('Could not read response', 'Parse error: ' + e.message + '. Raw (first 300 chars): ' + raw.substring(0, 300)); return; }
     extractedText = extractedText || (currentTab !== 'text' ? '[Image/PDF uploaded]' : '');
-    currentResult = { studentLabel, yearLevel, curriculum: meta.name, genre, nextGenre, teacherNote, eald, result, extractedText, timestamp: new Date().toLocaleTimeString() };
+    currentResult = { studentLabel, curriculum: meta.name, genre, nextGenre, teacherNote, eald, result, extractedText, timestamp: new Date().toLocaleTimeString() };
     sessionResults.push({...currentResult});
     document.getElementById('session-count').textContent = sessionResults.length;
     renderResult(currentResult);
@@ -1072,7 +1044,7 @@ function renderResult(r) {
   const res = r.result;
   const metaEl = document.getElementById('student-meta');
   if (r.studentLabel && r.studentLabel !== 'Student') {
-    metaEl.textContent = r.studentLabel + ' · ' + r.yearLevel + ' · ' + r.genre + ' · ' + r.curriculum + (r.eald ? ' · EAL/D' : '');
+    metaEl.textContent = r.studentLabel + ' · ' + r.genre + ' · ' + r.curriculum + (r.eald ? ' · EAL/D' : '');
     metaEl.style.display = 'block';
   } else { metaEl.style.display = 'none'; }
 
@@ -1092,7 +1064,7 @@ function renderResult(r) {
   } else { wbCard.style.display = 'none'; }
 
   document.getElementById('level-badge').textContent = res.achievementLevel;
-  document.getElementById('result-subtitle').textContent = r.curriculum + ' · ' + r.yearLevel + ' · ' + r.genre;
+  document.getElementById('result-subtitle').textContent = r.curriculum + ' · ' + r.genre;
   document.getElementById('curriculum-badge').textContent = r.curriculum;
   document.getElementById('genre-badge').textContent = r.genre;
 
@@ -1210,7 +1182,7 @@ function renderSessionList() {
     const div = document.createElement('div');
     div.className = 'session-item';
     const scorePillHtml = (r.result && r.result.gradeScore !== undefined && r.result.gradeScore !== null && r.result.gradeScore !== '') ? `<span class="session-score-pill">${r.result.gradeScore}</span>` : '';
-    div.innerHTML = `<div class="session-item-top"><span class="session-item-name">${r.studentLabel}</span><div style="display:flex;gap:6px;align-items:center;">${scorePillHtml}<span class="session-item-time">${r.timestamp}</span><button onclick="event.stopPropagation();forgetFromSession(${i})" style="font-size:11px;padding:2px 7px;border:1px solid #fca5a5;border-radius:5px;background:#fff5f5;color:#b91c1c;cursor:pointer;">🗑 Forget</button></div></div><div class="session-item-meta">${r.result.achievementLevel} · ${r.yearLevel} · ${r.genre}</div>`;
+    div.innerHTML = `<div class="session-item-top"><span class="session-item-name">${r.studentLabel}</span><div style="display:flex;gap:6px;align-items:center;">${scorePillHtml}<span class="session-item-time">${r.timestamp}</span><button onclick="event.stopPropagation();forgetFromSession(${i})" style="font-size:11px;padding:2px 7px;border:1px solid #fca5a5;border-radius:5px;background:#fff5f5;color:#b91c1c;cursor:pointer;">🗑 Forget</button></div></div><div class="session-item-meta">${r.result.achievementLevel} · ${r.genre}</div>`;
     div.onclick = () => { renderResult(r); currentResult = r; document.getElementById('session-wrap').style.display = 'none'; };
     items.appendChild(div);
   });
@@ -1266,7 +1238,7 @@ function printResult() {
   .footer{margin-top:2rem;font-size:11px;color:#9e9e9e;border-top:1px solid #f0ede8;padding-top:8px;}
   </style></head><body>
   <h1>Writing Feedback</h1>
-  <div class="meta">${r.studentLabel} · ${r.yearLevel} · ${r.genre} → ${r.nextGenre} · ${new Date().toLocaleDateString('en-AU')}</div>
+  <div class="meta">${r.studentLabel} · ${r.genre} → ${r.nextGenre} · ${new Date().toLocaleDateString('en-AU')}</div>
   <div class="badges">
     <span class="badge b1">${r.result.achievementLevel}</span>
     <span class="badge b2">${r.result.curriculumStandard}</span>
@@ -1377,7 +1349,6 @@ function handleAddPage(input) {
   });
 }
 
-updateYearLevels();
 </script>
 </body>
 </html>
