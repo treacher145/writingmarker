@@ -428,19 +428,7 @@ canvas { display: none; }
       <ul class="goals-list" id="goals-list"></ul>
     </div>
 
-    <div class="result-body-card" id="extracted-text-wrap" style="display:none;">
-      <div class="section-label" style="margin-top:0;cursor:pointer;display:flex;justify-content:space-between;align-items:center;" onclick="toggleExtracted()">
-        <span>What the AI read</span>
-        <span id="extracted-toggle" style="font-size:10px;color:#94a3b8;font-weight:400;text-transform:none;letter-spacing:0;">▼ show</span>
-      </div>
-      <div id="extracted-text-body" style="display:none;margin-top:8px;">
-        <textarea id="extracted-text-box" style="width:100%;min-height:120px;font-size:13px;padding:10px 12px;border:1px solid #e2e8f0;border-radius:9px;background:#f8fafc;color:#64748b;line-height:1.7;font-family:inherit;resize:vertical;"></textarea>
-        <div style="display:flex;justify-content:flex-end;margin-top:6px;">
-          <button onclick="reanalyse()" style="padding:7px 14px;font-size:13px;border:1px solid #bfdbfe;border-radius:9px;background:#eff6ff;color:#1d4ed8;cursor:pointer;font-family:inherit;">↻ Re-analyse with corrected text</button>
-        </div>
-        <p style="font-size:11px;color:#94a3b8;margin-top:6px;">Edit the text above if the AI misread any words, then click Re-analyse.</p>
-      </div>
-    </div>
+
 
 
 
@@ -961,13 +949,7 @@ function showError(title, detail) {
 }
 function hideError() { document.getElementById('error-box').style.display = 'none'; }
 
-function toggleExtracted() {
-  const body = document.getElementById('extracted-text-body');
-  const toggle = document.getElementById('extracted-toggle');
-  const showing = body.style.display !== 'none';
-  body.style.display = showing ? 'none' : 'block';
-  toggle.textContent = showing ? '▼ show' : '▲ hide';
-}
+
 
 
 
@@ -1134,18 +1116,18 @@ function renderResult(r) {
     scoreNum.textContent = score;
     scoreDesc.style.display = 'block';
     const scoreDescriptions = {
-      'F': 'End of Foundation standard',
-      'F.5': 'Mid Year 1 level',
-      1: 'End of Year 1 standard', 1.5: 'Mid Year 2 level',
-      2: 'End of Year 2 standard', 2.5: 'Mid Year 3 level',
-      3: 'End of Year 3 standard', 3.5: 'Mid Year 4 level',
-      4: 'End of Year 4 standard', 4.5: 'Mid Year 5 level',
-      5: 'End of Year 5 standard', 5.5: 'Mid Year 6 level',
-      6: 'End of Year 6 standard', 6.5: 'Mid Year 7 level',
-      7: 'End of Year 7 standard', 7.5: 'Mid Year 8 level',
-      8: 'End of Year 8 standard', 8.5: 'Mid Year 9 level',
-      9: 'End of Year 9 standard', 9.5: 'Mid Year 10 level',
-      10: 'End of Year 10 standard'
+      'F': 'Foundation standard',
+      'F.5': 'Strong Foundation — approaching Year 1',
+      1: 'Year 1 standard', 1.5: 'Strong Year 1 — approaching Year 2',
+      2: 'Year 2 standard', 2.5: 'Strong Year 2 — approaching Year 3',
+      3: 'Year 3 standard', 3.5: 'Strong Year 3 — approaching Year 4',
+      4: 'Year 4 standard', 4.5: 'Strong Year 4 — approaching Year 5',
+      5: 'Year 5 standard', 5.5: 'Strong Year 5 — approaching Year 6',
+      6: 'Year 6 standard', 6.5: 'Strong Year 6 — approaching Year 7',
+      7: 'Year 7 standard', 7.5: 'Strong Year 7 — approaching Year 8',
+      8: 'Year 8 standard', 8.5: 'Strong Year 8 — approaching Year 9',
+      9: 'Year 9 standard', 9.5: 'Strong Year 9 — approaching Year 10',
+      10: 'Year 10 standard'
     };
     const key = (score === 'F' || score === 'F.5') ? score : Number(score);
     scoreDesc.textContent = scoreDescriptions[key] || '';
@@ -1197,13 +1179,7 @@ function renderResult(r) {
   if (r.teacherNote) { document.getElementById('teacher-note-display').textContent = r.teacherNote; noteWrap.style.display = 'block'; }
   else { noteWrap.style.display = 'none'; }
 
-  const extractedWrap = document.getElementById('extracted-text-wrap');
-  const extractedBox = document.getElementById('extracted-text-box');
-  const extractedToggle = document.getElementById('extracted-toggle');
-  extractedBox.value = r.result.transcribedText || r.extractedText || 'No text available.';
-  document.getElementById('extracted-text-body').style.display = 'none';
-  extractedToggle.textContent = '▼ show';
-  extractedWrap.style.display = 'block';
+
 
   document.getElementById('result-card').style.display = 'block';
 }
