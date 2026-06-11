@@ -385,32 +385,19 @@ canvas { display: none; }
       </div>
       <!-- Grade score box -->
       <div class="grade-score-box" id="grade-score-box" style="display:none;">
-        <div class="grade-score-number" id="grade-score-number"></div>
-        <div class="grade-score-divider"></div>
-        <div class="grade-score-label">
-          <strong id="grade-score-descriptor"></strong>
-          Writing level score
+        <div class="grade-score-num-wrap">
+          <span class="grade-score-number" id="grade-score-number"></span>
+        </div>
+        <div class="grade-score-info">
+          <span class="grade-score-descriptor" id="grade-score-descriptor"></span>
+          <span class="grade-score-sub">Writing level score</span>
         </div>
       </div>
     </div>
 
     <div class="student-meta" id="student-meta" style="display:none;"></div>
     <div id="confidence-warning" style="display:none;background:#fff7ed;border:1px solid #fed7aa;border-radius:8px;padding:10px 14px;margin-bottom:1rem;font-size:13px;color:#c2410c;line-height:1.5;">
-      ⚠️ <strong>Handwriting was difficult to read.</strong> The transcription may contain errors which could affect the accuracy of this assessment. Please check <em>What the AI read</em> below, correct any mistakes, and click Re-analyse for a more accurate result. For Foundation and Year 1 students, typing the writing directly gives the most reliable assessment.
-    </div>
-
-    <div class="result-body-card">
-      <div class="section-label" style="margin-top:0;">Teacher assessment</div>
-      <div class="assessment-box"><p id="overall-text"></p></div>
-      <div id="curriculum-inline-wrap" style="margin-top:14px;padding-top:14px;border-top:0.5px solid #f1f5f9;">
-        <div class="section-label" style="margin-top:0;" id="curriculum-section-label"></div>
-        <div class="feedback-text" id="curriculum-text"></div>
-        <div id="editing-observation-wrap" style="display:none;margin-top:10px;padding:10px 13px;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:10px;">
-          <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:#15803d;margin-bottom:4px;">✏️ Editing &amp; revision</div>
-          <div class="feedback-text" id="editing-observation-text" style="color:#166534;font-size:13px;"></div>
-        </div>
-        <div class="outcome-pills" id="outcome-pills"></div>
-      </div>
+      ⚠️ <strong>Handwriting was difficult to read.</strong> The transcription may contain errors. For Foundation and Year 1 students, typing the writing directly gives the most reliable assessment.
     </div>
 
     <div class="commendation" id="commendation-card">
@@ -426,6 +413,20 @@ canvas { display: none; }
     <div class="result-body-card">
       <div class="section-label" style="margin-top:0;">Goals for their next <span id="next-genre-label"></span></div>
       <ul class="goals-list" id="goals-list"></ul>
+    </div>
+
+    <div class="result-body-card">
+      <div class="section-label" style="margin-top:0;">Teacher assessment</div>
+      <div class="assessment-box"><p id="overall-text"></p></div>
+      <div id="curriculum-inline-wrap" style="margin-top:14px;padding-top:14px;border-top:0.5px solid #f1f5f9;">
+        <div class="section-label" style="margin-top:0;" id="curriculum-section-label"></div>
+        <div class="feedback-text" id="curriculum-text"></div>
+        <div id="editing-observation-wrap" style="display:none;margin-top:10px;padding:10px 13px;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:10px;">
+          <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:#15803d;margin-bottom:4px;">✏️ Editing &amp; revision</div>
+          <div class="feedback-text" id="editing-observation-text" style="color:#166534;font-size:13px;"></div>
+        </div>
+        <div class="outcome-pills" id="outcome-pills"></div>
+      </div>
     </div>
 
 
